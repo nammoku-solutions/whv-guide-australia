@@ -1,6 +1,6 @@
 type ReportNotification = {
   kind: "report";
-  targetType: "post" | "comment" | "user";
+  targetType: "post" | "comment" | "user" | "listing";
   targetId: string;
   reason: string;
 };

@@ -25,6 +25,7 @@ const targetTypeLabel: Record<ReportTargetType, string> = {
   post: "投稿",
   comment: "コメント",
   user: "ユーザー",
+  listing: "掲載",
 };
 
 export function ReportsManager() {
@@ -79,7 +80,12 @@ export function ReportsManager() {
       if (!supabase) return;
       if (report.target_type === "user") return;
       setBusyId(report.id);
-      const table = report.target_type === "post" ? "forum_posts" : "forum_comments";
+      const table =
+        report.target_type === "post"
+          ? "forum_posts"
+          : report.target_type === "comment"
+            ? "forum_comments"
+            : "listings";
       const { error: hideErr } = await supabase
         .from(table)
         .update({ is_hidden: true })
@@ -148,6 +154,16 @@ export function ReportsManager() {
                       {targetTypeLabel[report.target_type]}
                     </div>
                     <div className="text-xs text-slate-400">{report.target_id}</div>
+                    {report.target_type === "listing" ? (
+                      <a
+                        href={`/community/market/listing/${report.target_id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs text-sky-700 underline"
+                      >
+                        掲載を表示
+                      </a>
+                    ) : null}
                   </td>
                   <td className="px-4 py-3 max-w-xs whitespace-pre-wrap text-slate-700">
                     {report.reason}

@@ -11,6 +11,7 @@ const targetTypeLabel: Record<Report["targetType"], string> = {
   post: "投稿",
   comment: "コメント",
   user: "ユーザー",
+  listing: "掲載",
 };
 
 export function ReportTable({ reports }: { reports: Report[] }) {

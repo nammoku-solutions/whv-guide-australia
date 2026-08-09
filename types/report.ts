@@ -1,4 +1,4 @@
-export type ReportTargetType = "post" | "comment" | "user";
+export type ReportTargetType = "post" | "comment" | "user" | "listing";
 export type ReportStatus = "pending" | "in_progress" | "resolved" | "rejected";
 
 export const REPORT_REASONS = [

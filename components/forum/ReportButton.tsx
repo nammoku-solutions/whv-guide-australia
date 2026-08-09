@@ -12,18 +12,22 @@ type ReportButtonProps = {
   label?: string;
   // 対象の作成者ID。ログイン中ユーザーが本人なら通報ボタンを表示しない。
   authorId?: string;
+  // 通報理由の選択肢を差し替える場合に指定（マーケットプレイス用など）。
+  reasons?: readonly string[];
 };
 
 const targetLabel: Record<ReportTargetType, string> = {
   post: "投稿",
   comment: "コメント",
   user: "ユーザー",
+  listing: "掲載",
 };
 
-export function ReportButton({ targetType, targetId, label, authorId }: ReportButtonProps) {
+export function ReportButton({ targetType, targetId, label, authorId, reasons }: ReportButtonProps) {
   const { profile } = useAuth();
+  const reasonOptions = reasons ?? REPORT_REASONS;
   const [open, setOpen] = useState(false);
-  const [reason, setReason] = useState<string>(REPORT_REASONS[0]);
+  const [reason, setReason] = useState<string>(reasonOptions[0]);
   const [detail, setDetail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const [message, setMessage] = useState("");
@@ -113,7 +117,7 @@ export function ReportButton({ targetType, targetId, label, authorId }: ReportBu
               onChange={(e) => setReason(e.target.value)}
               className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs"
             >
-              {REPORT_REASONS.map((r) => (
+              {reasonOptions.map((r) => (
                 <option key={r} value={r}>
                   {r}
                 </option>

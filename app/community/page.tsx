@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { CategoryCard } from "@/components/forum/CategoryCard";
 import { PostCard } from "@/components/forum/PostCard";
@@ -28,6 +29,31 @@ export default async function CommunityPage() {
         <h1 className="text-3xl font-extrabold">コミュニティ掲示板</h1>
         <p className="mt-2 text-slate-300">閲覧は誰でも可能。投稿・コメントはログイン済みのactiveユーザーのみ可能です。</p>
       </section>
+
+      <section className="rounded-2xl border border-sky-200 bg-sky-50 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">求人・家・車を探す / 掲載する</h2>
+            <p className="text-sm text-slate-600">
+              雑談・相談の掲示板とは別に、ユーザー投稿型のマーケット（求人・シェアハウス・シェアメイト・車の売買）があります。
+            </p>
+          </div>
+          <Link
+            href="/community/market"
+            className="rounded-full bg-sky-700 px-5 py-2 text-sm font-semibold text-white"
+          >
+            マーケットを見る
+          </Link>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2 text-sm">
+          <Link href="/community/market/job" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">💼 求人を探す</Link>
+          <Link href="/community/market/housing" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🏠 家を探す</Link>
+          <Link href="/community/market/roommate" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🤝 シェアメイトを探す</Link>
+          <Link href="/community/market/vehicle" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🚗 車を探す</Link>
+          <Link href="/community/market/new" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">＋ 掲載する</Link>
+        </div>
+      </section>
+
 
       <section className="grid gap-4 md:grid-cols-2">
         {categories.map((category) => (
