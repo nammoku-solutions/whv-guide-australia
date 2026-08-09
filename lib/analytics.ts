@@ -9,8 +9,14 @@ export type MarketplaceEvent =
   | "listing_contact"
   | "listing_close";
 
+/**
+ * ドキュメント（レジュメ／カバーレター）テンプレートのプレビュー・ダウンロードイベント。
+ * 氏名・メール・電話・本文などの個人情報や本文は絶対に送らない（種別・形式・テンプレIDのみ）。
+ */
+export type DocumentEvent = "document_preview" | "document_download";
+
 export function trackEvent(
-  name: MarketplaceEvent,
+  name: MarketplaceEvent | DocumentEvent,
   params: Record<string, string | number | boolean> = {},
 ): void {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;

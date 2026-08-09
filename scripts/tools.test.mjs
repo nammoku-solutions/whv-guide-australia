@@ -31,6 +31,12 @@ import {
   sortApplications,
 } from "../lib/tools/logic/applications.mjs";
 import { buildChecklistText, buildEmergencyCardText } from "../lib/tools/logic/download.mjs";
+import {
+  wrapText,
+  documentToText,
+  parseTextToDoc,
+  documentPlainText,
+} from "../lib/tools/documents/model.mjs";
 
 // ---- checklist.mjs -------------------------------------------------------
 
@@ -399,4 +405,82 @@ test("buildEmergencyCardText: safe with missing values object", () => {
   const text = buildEmergencyCardText(EC_FIELDS, undefined, EC_CONTACTS);
   assert.ok(text.includes("氏名: -"));
   assert.ok(text.includes("血液型: -"));
+});
+
+// ---- documents/model.mjs -------------------------------------------------
+
+test("wrapText: greedy word-wrap keeps within width and never drops words", () => {
+  const lines = wrapText("the quick brown fox jumps over", 10);
+  assert.ok(lines.every((l) => l.length <= 10));
+  assert.equal(lines.join(" "), "the quick brown fox jumps over");
+});
+
+test("wrapText: word longer than width stays on its own line", () => {
+  const lines = wrapText("supercalifragilistic ok", 8);
+  assert.deepEqual(lines, ["supercalifragilistic", "ok"]);
+});
+
+test("wrapText: empty/whitespace input yields a single empty line", () => {
+  assert.deepEqual(wrapText("   "), [""]);
+  assert.deepEqual(wrapText(""), [""]);
+});
+
+const SAMPLE_DOC = {
+  id: "sample",
+  label: "サンプル",
+  fileBaseName: "sample",
+  kind: "resume",
+  blocks: [
+    { type: "header", name: "Jane Doe", contactLines: ["Sydney, NSW | 000 | jane@example.com", "WHV 417"] },
+    { type: "heading", text: "PROFESSIONAL SUMMARY" },
+    { type: "paragraph", text: "Reliable worker with strong teamwork and customer service skills." },
+    { type: "heading", text: "SKILLS" },
+    { type: "bullets", items: ["Customer service", "Cash handling"] },
+    { type: "heading", text: "STEPS" },
+    { type: "numbered", items: ["First step", "Second step"] },
+    { type: "lines", lines: ["Kind regards,", "Jane Doe"] },
+  ],
+};
+
+test("documentToText: renders header, headings, bullets and numbered list", () => {
+  const text = documentToText(SAMPLE_DOC);
+  assert.ok(text.includes("Jane Doe"));
+  assert.ok(text.includes("PROFESSIONAL SUMMARY"));
+  assert.ok(text.includes("- Customer service"));
+  assert.ok(text.includes("- Cash handling"));
+  assert.ok(text.includes("1. First step"));
+  assert.ok(text.includes("2. Second step"));
+  assert.ok(text.endsWith("\n"));
+});
+
+test("documentPlainText: collects all visible wording regardless of block type", () => {
+  const plain = documentPlainText(SAMPLE_DOC);
+  assert.ok(plain.includes("Jane Doe"));
+  assert.ok(plain.includes("Customer service"));
+  assert.ok(plain.includes("First step"));
+  assert.ok(plain.includes("Kind regards,"));
+});
+
+test("parseTextToDoc: round-trips content so preview/DOCX/PDF/TXT stay consistent", () => {
+  // Part 6: exporting to text and re-parsing must preserve the same wording/order.
+  const roundTripped = parseTextToDoc(documentToText(SAMPLE_DOC), { kind: "resume" });
+  assert.equal(documentPlainText(roundTripped), documentPlainText(SAMPLE_DOC));
+});
+
+test("parseTextToDoc: classifies bullets, headings and header from plain text", () => {
+  const doc = parseTextToDoc(
+    ["Jane Doe", "Sydney | 000", "", "SKILLS", "", "- One", "- Two"].join("\n"),
+  );
+  assert.equal(doc.blocks[0].type, "header");
+  assert.equal(doc.blocks[0].name, "Jane Doe");
+  assert.equal(doc.blocks[1].type, "heading");
+  assert.equal(doc.blocks[2].type, "bullets");
+  assert.deepEqual(doc.blocks[2].items, ["One", "Two"]);
+});
+
+test("documentToText: blank optional fields are omitted, not faked", () => {
+  const doc = { blocks: [{ type: "paragraph", text: "" }, { type: "bullets", items: [] }] };
+  const text = documentToText(doc);
+  // no placeholder/invented values are inserted
+  assert.ok(!/\bTODO\b|\bN\/A\b|undefined|null/.test(text));
 });

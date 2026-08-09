@@ -35,3 +35,26 @@ button:disabled,
 [aria-disabled="true"] {
   cursor: not-allowed;
 }
+
+/* ドキュメントプレビュー（レジュメ／カバーレター）の印刷対応。
+   印刷時はプレビュー用紙のみを A4 全幅で出力し、余白・影・角丸は除去する。 */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .doc-print-sheet,
+  .doc-print-sheet * {
+    visibility: visible;
+  }
+  .doc-print-sheet {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    max-width: none;
+    width: 100%;
+    box-shadow: none !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    border-radius: 0;
+    padding: 16mm;
+  }
+}

@@ -3,16 +3,12 @@
  *
  * これは記入例のひな型です。実際の経歴・応募先に合わせて必ず書き換えてください。
  * 一般的な応募慣行に沿った構成の目安であり、最適な形は職種・企業・地域により異なります。
+ *
+ * 構造化ドキュメント（StructuredDoc）を唯一の情報源とし、プレビュー・Word(.docx)・
+ * PDF・テキストのすべてをこのデータから生成する（内容の食い違いを防ぐ）。
  */
 
-export type CoverLetterTemplate = {
-  id: string;
-  label: string;
-  /** ダウンロード用ファイル名（拡張子なし）。 */
-  fileBaseName: string;
-  /** プレーンテキストのひな型本文。 */
-  body: string;
-};
+import type { StructuredDoc } from "@/lib/tools/documents/types";
 
 export type ChannelMessage = {
   id: string;
@@ -21,95 +17,110 @@ export type ChannelMessage = {
   body: string;
 };
 
-const HOSPITALITY = `[Your Full Name]
-[Suburb, State] | [Phone] | [Email]
+const CONTACT = "[Suburb, State] | [Phone] | [Email]";
+const SIGN_OFF = ["Kind regards,", "[Your Full Name]"];
 
-[Date]
+const HOSPITALITY: StructuredDoc = {
+  id: "hospitality",
+  label: "接客・ホスピタリティ",
+  fileBaseName: "cover-letter-hospitality",
+  kind: "cover_letter",
+  blocks: [
+    { type: "header", name: "[Your Full Name]", contactLines: [CONTACT] },
+    { type: "lines", lines: ["[Date]"] },
+    { type: "lines", lines: ["Dear Hiring Manager,"] },
+    {
+      type: "paragraph",
+      text: "I am writing to apply for the [role, e.g. wait staff / barista] position at [Venue Name]. I am on a Working Holiday visa (subclass 417) with full working rights and I am available for an immediate start, including weekends.",
+    },
+    {
+      type: "paragraph",
+      text: "I have experience in [customer service / cafe / restaurant] and I hold a current RSA ([State]). I work well in a fast-paced team, handle payments accurately and enjoy giving friendly service to customers.",
+    },
+    {
+      type: "paragraph",
+      text: "I would welcome the chance to meet you and show what I can bring to your team. Thank you for considering my application.",
+    },
+    { type: "lines", lines: SIGN_OFF },
+  ],
+};
 
-Dear Hiring Manager,
+const FARM: StructuredDoc = {
+  id: "farm",
+  label: "ファーム・農作業",
+  fileBaseName: "cover-letter-farm",
+  kind: "cover_letter",
+  blocks: [
+    { type: "header", name: "[Your Full Name]", contactLines: [CONTACT] },
+    { type: "lines", lines: ["[Date]"] },
+    { type: "lines", lines: ["Dear [Farm / Employer Name],"] },
+    {
+      type: "paragraph",
+      text: "I am writing to apply for farm work at [Farm Name]. I am on a Working Holiday visa (subclass 417) with full working rights and I am happy to work in regional areas. I can start immediately and I am available for [dates].",
+    },
+    {
+      type: "paragraph",
+      text: "I am hard-working, physically fit and comfortable with outdoor manual labour in all weather. I have experience in [picking / packing / general farm work] ([Yes/No]). I have my own transport: [Yes/No].",
+    },
+    {
+      type: "paragraph",
+      text: "I would appreciate the opportunity to work with you. Thank you for your time.",
+    },
+    { type: "lines", lines: SIGN_OFF },
+  ],
+};
 
-I am writing to apply for the [role, e.g. wait staff / barista] position at
-[Venue Name]. I am on a Working Holiday visa (subclass 417) with full working
-rights and I am available for an immediate start, including weekends.
+const WAREHOUSE: StructuredDoc = {
+  id: "warehouse",
+  label: "倉庫・物流",
+  fileBaseName: "cover-letter-warehouse",
+  kind: "cover_letter",
+  blocks: [
+    { type: "header", name: "[Your Full Name]", contactLines: [CONTACT] },
+    { type: "lines", lines: ["[Date]"] },
+    { type: "lines", lines: ["Dear Hiring Manager,"] },
+    {
+      type: "paragraph",
+      text: "I am writing to apply for the warehouse/logistics position at [Company Name]. I am on a Working Holiday visa (subclass 417) with full working rights and I am available for an immediate start, including shift work.",
+    },
+    {
+      type: "paragraph",
+      text: "I am reliable and safety-focused, and I am comfortable with physical work and repetitive tasks. I hold a [Forklift Licence / White Card, if any] and have experience with [picking, packing, RF scanners].",
+    },
+    {
+      type: "paragraph",
+      text: "I would welcome the chance to discuss how I can contribute to your team. Thank you for considering my application.",
+    },
+    { type: "lines", lines: SIGN_OFF },
+  ],
+};
 
-I have experience in [customer service / cafe / restaurant] and I hold a
-current RSA ([State]). I work well in a fast-paced team, handle payments
-accurately and enjoy giving friendly service to customers.
+const GENERAL: StructuredDoc = {
+  id: "general",
+  label: "汎用（その他の職種）",
+  fileBaseName: "cover-letter-general",
+  kind: "cover_letter",
+  blocks: [
+    { type: "header", name: "[Your Full Name]", contactLines: [CONTACT] },
+    { type: "lines", lines: ["[Date]"] },
+    { type: "lines", lines: ["Dear Hiring Manager,"] },
+    {
+      type: "paragraph",
+      text: "I am writing to express my interest in the [role] position at [Company Name]. I am on a Working Holiday visa (subclass 417) with full working rights and I am available to start [when].",
+    },
+    {
+      type: "paragraph",
+      text: '[One or two sentences about your relevant experience and skills, e.g. "I have X years of experience in Y and I am confident with Z."]. I am reliable, enthusiastic and a quick learner.',
+    },
+    {
+      type: "paragraph",
+      text: "I have attached my resume and would welcome the opportunity to discuss my application. Thank you for your time and consideration.",
+    },
+    { type: "lines", lines: SIGN_OFF },
+  ],
+};
 
-I would welcome the chance to meet you and show what I can bring to your team.
-Thank you for considering my application.
-
-Kind regards,
-[Your Full Name]`;
-
-const FARM = `[Your Full Name]
-[Suburb, State] | [Phone] | [Email]
-
-[Date]
-
-Dear [Farm / Employer Name],
-
-I am writing to apply for farm work at [Farm Name]. I am on a Working Holiday
-visa (subclass 417) with full working rights and I am happy to work in regional
-areas. I can start immediately and I am available for [dates].
-
-I am hard-working, physically fit and comfortable with outdoor manual labour in
-all weather. I have experience in [picking / packing / general farm work]
-([Yes/No]). I have my own transport: [Yes/No].
-
-I would appreciate the opportunity to work with you. Thank you for your time.
-
-Kind regards,
-[Your Full Name]`;
-
-const WAREHOUSE = `[Your Full Name]
-[Suburb, State] | [Phone] | [Email]
-
-[Date]
-
-Dear Hiring Manager,
-
-I am writing to apply for the warehouse/logistics position at [Company Name].
-I am on a Working Holiday visa (subclass 417) with full working rights and I am
-available for an immediate start, including shift work.
-
-I am reliable and safety-focused, and I am comfortable with physical work and
-repetitive tasks. I hold a [Forklift Licence / White Card, if any] and have
-experience with [picking, packing, RF scanners].
-
-I would welcome the chance to discuss how I can contribute to your team.
-Thank you for considering my application.
-
-Kind regards,
-[Your Full Name]`;
-
-const GENERAL = `[Your Full Name]
-[Suburb, State] | [Phone] | [Email]
-
-[Date]
-
-Dear Hiring Manager,
-
-I am writing to express my interest in the [role] position at [Company Name].
-I am on a Working Holiday visa (subclass 417) with full working rights and I am
-available to start [when].
-
-[One or two sentences about your relevant experience and skills, e.g. "I have
-X years of experience in Y and I am confident with Z."]. I am reliable,
-enthusiastic and a quick learner.
-
-I have attached my resume and would welcome the opportunity to discuss my
-application. Thank you for your time and consideration.
-
-Kind regards,
-[Your Full Name]`;
-
-export const COVER_LETTER_TEMPLATES: CoverLetterTemplate[] = [
-  { id: "hospitality", label: "接客・ホスピタリティ", fileBaseName: "cover-letter-hospitality", body: HOSPITALITY },
-  { id: "farm", label: "ファーム・農作業", fileBaseName: "cover-letter-farm", body: FARM },
-  { id: "warehouse", label: "倉庫・物流", fileBaseName: "cover-letter-warehouse", body: WAREHOUSE },
-  { id: "general", label: "汎用（その他の職種）", fileBaseName: "cover-letter-general", body: GENERAL },
-];
+export const COVER_LETTER_TEMPLATES: StructuredDoc[] = [HOSPITALITY, FARM, WAREHOUSE, GENERAL];
 
 export const COVER_LETTER_SHORT_MESSAGES: ChannelMessage[] = [
   {
