@@ -14,7 +14,10 @@
     "validate:content": "node scripts/validate-content.mjs",
     "validate:articles": "node scripts/validate-articles.mjs",
     "test:content": "node --test scripts/content.test.mjs",
-    "test:tools": "node --test scripts/tools.test.mjs"
+    "test:tools": "node --test scripts/tools.test.mjs",
+    "test:ai": "tsx --test scripts/ai.test.mts",
+    "ai:index": "tsx scripts/ai-index.mts",
+    "ai:reindex": "tsx scripts/ai-index.mts --reindex"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -36,6 +39,7 @@
     "eslint-config-next": "^16.2.7",
     "png-to-ico": "^3.0.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5",
     "yaml": "^2.9.0"
   }
