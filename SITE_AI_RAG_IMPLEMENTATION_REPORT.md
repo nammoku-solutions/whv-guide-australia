@@ -96,8 +96,8 @@ eval/dataset.ts           評価データセット（36問）
 
 - **チャンク化**: 固定文字数分割ではなく、記事の構造化フィールド（要点・基本情報・解説・手順・ヒント・注意点・FAQ・英語フレーズ）を意味的セクションへ。最大約1200文字で分割、極小セクションは結合。各chunkにタイトル＋見出しを前置。
 - **埋め込み**: `gemini-embedding-001`、768次元（Matryoshka、3072未満は単位長正規化）。多言語で日本語品質良好。`RETRIEVAL_DOCUMENT`（索引側）/`RETRIEVAL_QUERY`（クエリ側）を使い分け。
-- **生成**: 既定 `gemini-2.5-flash-lite`（低コスト）、複雑用 `gemini-2.5-flash`（Phase 4）。SDK非依存（fetch で REST）。
-- **モデルID選定理由**: いずれも 2.5 系の現行GA。flash-lite は高頻度Q&Aで最安・低遅延。埋め込みは 001 が現行の多言語モデルで日本語に強い。すべて環境変数で差し替え可能（DB/アプリ再設計不要）。
+- **生成**: 既定 `gemini-3.5-flash-lite`（低コスト）、複雑用 `gemini-3.5-flash`（Phase 4）。SDK非依存（fetch で REST）。
+- **モデルID選定理由**: 現行 GA の 3.5 系。flash-lite は高頻度Q&Aで最安・低遅延。（旧 `gemini-2.5-flash-lite` は新規キーで 404「no longer available to new users」のため 3.5 へ変更。）埋め込みは 001 が現行の多言語モデルで日本語に強い。すべて環境変数で差し替え可能（DB/アプリ再設計不要）。
 
 ---
 

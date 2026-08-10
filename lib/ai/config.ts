@@ -50,9 +50,9 @@ export const aiConfig = {
 
   generation: {
     /** 既定の低コスト生成モデル（高頻度Q&A向け）。 */
-    model: envStr("AI_GENERATION_MODEL", "gemini-2.5-flash-lite"),
+    model: envStr("AI_GENERATION_MODEL", "gemini-3.5-flash-lite"),
     /** 将来の複雑/高リスク質問向けの高性能モデル（既定では未使用）。 */
-    modelComplex: envStr("AI_GENERATION_MODEL_COMPLEX", "gemini-2.5-flash"),
+    modelComplex: envStr("AI_GENERATION_MODEL_COMPLEX", "gemini-3.5-flash"),
     /** 生成の最大出力トークン。応答長を抑えてコストとレイテンシを制御。 */
     maxOutputTokens: envInt("AI_GENERATION_MAX_TOKENS", 700),
     temperature: envFloat("AI_GENERATION_TEMPERATURE", 0.2),

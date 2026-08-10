@@ -50,7 +50,7 @@ Version 1（セマンティックRAG）を土台に、**再設計なし**で品�
 ## Phase 4 — 生成モデルのアップグレード / 複雑クエリルーティング
 **目的**: 簡単な質問は安価モデル、難問/高リスクのみ高性能モデル。
 
-1. `AI_GENERATION_MODEL_COMPLEX` を目的のモデルに設定（既定 `gemini-2.5-flash`）。
+1. `AI_GENERATION_MODEL_COMPLEX` を目的のモデルに設定（既定 `gemini-3.5-flash`）。
 2. `AI_COMPLEX_ROUTING_ENABLED=true`。
 3. ルーティング条件は `pipeline.ts` の `useComplex` で調整可能（現状: 高リスク or chunk数が上限）。
    関連chunk数・質問複雑度・リスク・MIXED・前ターン失敗などを追加可能。
