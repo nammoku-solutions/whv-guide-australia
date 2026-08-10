@@ -77,6 +77,10 @@ export const aiConfig = {
     similarityThreshold: envFloat("AI_SIMILARITY_THRESHOLD", 0.62),
     /** 同一記事から採用する最大chunk数（多様性確保）。 */
     maxChunksPerArticle: envInt("AI_MAX_CHUNKS_PER_ARTICLE", 2),
+    /** キーワード検索の候補数（ハイブリッド時）。 */
+    keywordCandidateCount: envInt("AI_KEYWORD_CANDIDATES", 20),
+    /** Reciprocal Rank Fusion の平滑化定数 k。 */
+    rrfK: envInt("AI_RRF_K", 60),
   },
 
   /** 各段階の機能フラグ。V1 は reranker/verifier/複雑ルーティング/listing すべて OFF。 */
@@ -85,7 +89,9 @@ export const aiConfig = {
     verifyEnabled: envBool("AI_VERIFY_ENABLED", false),
     complexRoutingEnabled: envBool("AI_COMPLEX_ROUTING_ENABLED", false),
     marketplaceSearchEnabled: envBool("AI_MARKETPLACE_SEARCH_ENABLED", false),
-    hybridSearchEnabled: envBool("AI_HYBRID_SEARCH_ENABLED", false),
+    // Phase 2: セマンティック＋キーワードのハイブリッド検索（既定 ON）。
+    // キーワードRPC未適用でも keywordSearch は空を返し、セマンティック相当に自動縮退する。
+    hybridSearchEnabled: envBool("AI_HYBRID_SEARCH_ENABLED", true),
   },
 
   limits: {

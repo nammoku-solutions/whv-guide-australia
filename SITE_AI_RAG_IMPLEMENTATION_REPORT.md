@@ -35,8 +35,8 @@
      → Sources / ツール推薦 → Response
 ```
 
-初期構成: Router=basic（決定的）, Retriever=ON（セマンティック）, Reranker=OFF,
-Generator=ON, Verifier=OFF, 複雑ルーティング=OFF, マーケット検索=OFF, ハイブリッド=OFF。
+初期構成: Router=basic（決定的）, Retriever=ON（**セマンティック＋日本語キーワードのハイブリッド／RRF, Phase 2 実装済み**）, Reranker=OFF,
+Generator=ON, Verifier=OFF, 複雑ルーティング=OFF, マーケット検索=OFF。
 
 ### モジュール構成（`lib/ai/`）
 ```
@@ -73,14 +73,22 @@ eval/dataset.ts           評価データセット（36問）
 
 ---
 
-## 3. データベース変更（`0009_ai_rag.sql`）
+## 3. データベース変更（`0009_ai_rag.sql` / `0010_ai_keyword_search.sql`）
 
+### 0009（Phase 1）
 - `create extension vector`（pgvector）
 - `ai_article_chunks`（`embedding vector(768)` ほかメタデータ、RLS: anon SELECT不可・モデレーターのみ可、書込は service-role のみ）
 - `match_ai_article_chunks(...)`（SECURITY DEFINER、`embedding_version` 一致のみ検索、`anon/authenticated` へは EXECUTE を revoke）
-- `ai_rate_limits` ＋ `ai_increment_rate_limit(...)`（原子的インクリメント、service-role専用）
+- `ai_rate_limits` ＋ 原子的 `ai_increment_rate_limit(...)`（service-role専用）
 - `ai_feedback`（最小・非個人、RLS: 挿入は service-role、閲覧はモデレーター）
-- インデックス: slug / embedding_version / content_hash。**V1は完全一致（seq）コサイン検索**。HNSW は将来オプション（SQLコメント・ロードマップ参照）。
+- インデックス: slug / embedding_version / content_hash。**V1は完全一致（seq）コサイン検索**。HNSW は将来オプション。
+
+### 0010（Phase 2・追加のみ／非破壊）
+- `create extension pg_trgm`（Postgres 標準・無償。外部サービスなし）
+- `ai_article_chunks.content_tsv`（`to_tsvector('simple', …)` の**生成カラム**）＋ GIN インデックス（ASCII略語・数字の全文一致）
+- `content` への **pg_trgm GIN インデックス**（日本語の部分一致 ILIKE を高速化）
+- `match_ai_article_chunks_keyword(p_terms, p_query, match_count, p_embedding_version)`（SECURITY DEFINER、`anon/authenticated` へ EXECUTE revoke）
+- 0009 の埋め込み・セマンティックRPCは**無変更**。
 
 ---
 
@@ -95,8 +103,12 @@ eval/dataset.ts           評価データセット（36問）
 
 ## 5. 検索戦略・しきい値・出典・ツール・ルーター
 
-- **検索**: クエリ埋め込み → `match_ai_article_chunks` で上位候補 → 類似度しきい値 `0.62`（`AI_SIMILARITY_THRESHOLD`）以上のみ → 記事あたり最大2chunkで多様性確保 → 最終3〜5chunk（`AI_MAX_CONTEXT_CHUNKS`）。
-- **接地**: しきい値未満/0件は生成を呼ばず定型 unsupported 応答（ハルシネーション・コスト・遅延を抑制）。
+- **検索（ハイブリッド, Phase 2）**: セマンティック（pgvector）＋日本語キーワード（全文＋pg_trgm）を並列実行し、**Reciprocal Rank Fusion（RRF, k=60）**で融合。
+  - セマンティック: クエリ埋め込み → `match_ai_article_chunks` → 類似度しきい値 `0.62`（`AI_SIMILARITY_THRESHOLD`）。
+  - キーワード: クエリから ASCII 略語・数字＋日本語内容語＋ドメイン同義語を抽出（`lib/ai/retrieval/keyword.ts`）→ `match_ai_article_chunks_keyword`。TFN・ABN・DASP・Rego・417・462・WHV・Superannuation・myGov・Medicare・RSA・RSG・郵便番号などの完全一致を強化。英略語⇄日本語の相互同義語展開で言語をまたいで再現率を確保。
+  - 融合後、記事あたり最大2chunkで多様性確保 → 最終3〜5chunk（`AI_MAX_CONTEXT_CHUNKS`）。
+- **接地**: セマンティック類似度がしきい値以上、または「強い完全一致語（略語/数字/ドメイン用語）」があってキーワードがヒットした場合に接地。どちらも無ければ生成を呼ばず定型 unsupported（ハルシネーション・コスト・遅延を抑制）。一般的な日本語NLクエリはセマンティックしきい値で守られる。
+- **縮退**: マイグレーション0010未適用時はキーワードRPCが無いため `keywordSearch` は空を返し、自動的にセマンティック相当へ縮退（launch をブロックしない）。
 - **出典**: 取得済みメタデータからのみ生成。モデルにはURLを出力させない。重複排除し2〜4件。取得外URLは除去。
 - **ツール推薦**: `lib/tools/registry.ts` を単一の真実として、キーワード辞書でマッチ。ルートは発明しない。
 - **ルーター**: 決定的（ツール語・掲載語・スコープ語）。将来モデル分類器へ差し替え可能（戻り値型を維持）。
@@ -139,7 +151,7 @@ eval/dataset.ts           評価データセット（36問）
 
 | 検証 | 結果 |
 | --- | --- |
-| `npm run test:ai`（ルーター/スコープ/ツール/チャンク/出典） | ✅ 7/7 pass |
+| `npm run test:ai`（ルーター/スコープ/ツール/チャンク/出典/キーワード抽出/同義語/RRF） | ✅ 12/12 pass |
 | `npm run test:content` / `test:tools` | ✅ pass（既存、非回帰） |
 | `npx tsc --noEmit`（typecheck） | ✅ エラー0 |
 | `npm run lint` | ✅ エラー0（placeholder引数の警告4のみ、`_`接頭辞・将来使用） |
@@ -161,13 +173,17 @@ eval/dataset.ts           評価データセット（36問）
 ## 12. 残作業（手動設定が必要）
 
 1. Supabase SQL エディタで `supabase/migrations/0009_ai_rag.sql` を適用（pgvector有効化含む）。
-2. 本番/ローカル環境変数を設定: `GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `AI_RATE_LIMIT_SALT`（ランダム値）。他は `.env.example` の既定でOK。
-3. `npm run ai:index`（初回インデックス）。まず `-- --dry-run` で差分確認推奨。
-4. GitHub Actions を使う場合はリポジトリ Secrets を登録（上記シークレット）。
-5. 本番でライブ検索・unsupportedクエリ・UI動作を確認。
+2. **Phase 2**: 続けて `supabase/migrations/0010_ai_keyword_search.sql` を適用（pg_trgm・全文/trグラム索引・キーワードRPC）。未適用でもキーワードは自動縮退しセマンティックのみで動作する。
+3. 本番/ローカル環境変数を設定: `GEMINI_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `AI_RATE_LIMIT_SALT`（ランダム値）。`AI_HYBRID_SEARCH_ENABLED` は既定 true（明示無効化する場合のみ false）。他は `.env.example` の既定でOK。
+4. `npm run ai:index`（初回インデックス）。まず `-- --dry-run` で差分確認推奨。`content_tsv` は生成カラムのため upsert 時に自動更新される（再インデックス不要）。
+5. GitHub Actions を使う場合はリポジトリ Secrets を登録（上記シークレット）。
+6. 本番でライブ検索・unsupportedクエリ・UI動作を確認。
 
 ---
 
-## 13. Phase 2 推奨（次の一手）
+## 13. Phase 2 実装済み（日本語キーワード＋ハイブリッド RRF）
 
-**日本語向けキーワード検索＋ハイブリッド化**を最優先。TFN/ABN/DASP/Rego/417/462/郵便番号など完全一致語の取りこぼしを RRF で補う。API/フロントの再設計は不要（`AI_HYBRID_SEARCH_ENABLED=true` と `retrieval/keyword.ts` 実装のみ）。詳細は `SITE_AI_UPGRADE_ROADMAP.md`。
+本リリースで Phase 2 を実装・有効化（`AI_HYBRID_SEARCH_ENABLED` 既定 ON）。TFN/ABN/DASP/Rego/417/462 など完全一致語の取りこぼしを RRF で補う。
+chat API・UI・型（`RetrievalCandidate` / `Reranker` / `AnswerVerifier`）は未変更。キーワード抽出は決定的で 12 件のテストで検証済み（例: 「TFNとは？」→tfn / 「417と462の違い」→417,462 / 「Rego 更新」→rego,更新 / 「DASP 申請」→dasp,申請 / 「スーパーを返金…」→スーパー,Superannuation,返金）。
+
+**次の一手（Phase 3）**: 多言語 Reranker の導入（`AI_RERANK_ENABLED=true`）。API/フロント再設計不要。詳細は `SITE_AI_UPGRADE_ROADMAP.md`。

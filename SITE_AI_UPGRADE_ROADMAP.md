@@ -14,19 +14,23 @@ Version 1（セマンティックRAG）を土台に、**再設計なし**で品�
 
 ---
 
-## Phase 2 — ハイブリッド検索（日本語キーワード）
+## Phase 2 — ハイブリッド検索（日本語キーワード）✅ 実装済み
 **目的**: TFN・ABN・DASP・Rego・PPSR・417・462・郵便番号・Award名など完全一致語の取りこぼし解消。
 
-1. Postgres 全文検索を用意（`supabase/migrations/00XX_ai_keyword.sql`）:
-   - `ai_article_chunks` に `content_tsv tsvector` 列を追加し GIN インデックスを作成。
-   - 日本語は `simple` 設定＋二文字トークン化、または `pg_bigm`/`pgroonga` 拡張を検討（英字・数字の完全一致に強い）。
-   - キーワード検索 RPC `match_ai_article_chunks_keyword(query text, match_count int, p_embedding_version text)` を追加（SECURITY DEFINER、anon revoke）。
-2. `lib/ai/retrieval/keyword.ts` を実装（上記RPC呼び出し → `RetrievalCandidate[]`、`source:'keyword'`）。
-3. 融合は既存の `lib/ai/retrieval/hybrid.ts`（RRF）をそのまま使用。
-4. `AI_HYBRID_SEARCH_ENABLED=true` に設定（`retriever.ts` が自動的にセマンティック＋キーワード＋融合へ切替）。
-5. しきい値はセマンティック単独時のみ適用のため、融合時の閾値ロジックを `retriever.ts` で調整（例: 融合上位N＋最小セマンティックスコア併用）。
+実装内容（本リリース）:
+1. `supabase/migrations/0010_ai_keyword_search.sql`（追加・非破壊）:
+   - `pg_trgm` 拡張（無償・Postgres標準）。外部サービスなし。
+   - `ai_article_chunks.content_tsv`（`to_tsvector('simple', …)` の**生成カラム**）＋ GIN 索引（ASCII略語・数字の全文一致）。
+   - `content` への **pg_trgm GIN 索引**（日本語の部分一致 ILIKE を高速化）。
+   - RPC `match_ai_article_chunks_keyword(p_terms text[], p_query text, match_count int, p_embedding_version text)`（SECURITY DEFINER、anon/authenticated revoke）。
+2. `lib/ai/retrieval/keyword.ts`: クエリから ASCII 略語/数字＋日本語内容語＋ドメイン同義語を抽出（`extractKeywordTerms`）、RPC 呼び出し、`source:'keyword'` で返す。RPC 未適用時は空を返し縮退。`hasStrongKeyword` で接地判定を補助。
+3. 融合は `lib/ai/retrieval/hybrid.ts`（RRF, k=`AI_RRF_K`）。
+4. `AI_HYBRID_SEARCH_ENABLED` を既定 **true** に変更（`retriever.ts` が自動でセマンティック＋キーワード＋融合へ）。
+5. 接地ロジックを更新: セマンティックしきい値超え **または**「強い完全一致語＋キーワードヒット」で接地。一般NLクエリはセマンティックしきい値で保護。
 
 **再設計不要**: chat API・UI・generator は不変。
+
+**再チューニングの勘所**: 同義語辞書は `keyword.ts` の `SYNONYMS`、ストップワードは `JA_STOPWORDS` を編集。より高精度な日本語形態素が必要になったら `pgroonga`（対応プランのみ）を検討可能だが、現状の trグラム＋アプリ側トークナイズで無償のまま十分。
 
 ---
 

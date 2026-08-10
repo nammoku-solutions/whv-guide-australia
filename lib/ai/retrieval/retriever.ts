@@ -1,7 +1,7 @@
 import { aiConfig } from "../config";
 import type { RetrievalCandidate } from "../types";
 import { semanticSearch } from "./semantic";
-import { keywordSearch } from "./keyword";
+import { keywordSearch, hasStrongKeyword } from "./keyword";
 import { rankFusion } from "./hybrid";
 
 export type RetrievalResult = {
@@ -36,30 +36,43 @@ function diversify(
 
 /**
  * 検索オーケストレーション。生成モデルには依存しない（責務分離）。
- * V1 はセマンティックのみ。AI_HYBRID_SEARCH_ENABLED でキーワード＋融合に切替。
+ * ハイブリッド有効時はセマンティック＋キーワードを RRF で融合する。
+ *
+ * 接地判定（hasGrounding）:
+ *   - セマンティック類似度がしきい値以上の候補があれば接地。
+ *   - もしくは「強い完全一致語」（TFN/ABN/417/Rego 等）があり、キーワード検索が
+ *     ヒットした場合も接地とみなす（完全一致クエリの取りこぼし防止）。
+ *   - これにより一般的な日本語NLクエリはセマンティックしきい値で守られ、
+ *     ハルシネーション・無駄な生成コストを抑える。
  */
 export async function retrieve(query: string): Promise<RetrievalResult> {
-  const { similarityThreshold, maxContextChunks, maxChunksPerArticle } =
+  const { similarityThreshold, maxContextChunks, maxChunksPerArticle, rrfK } =
     aiConfig.retrieval;
 
-  let candidates: RetrievalCandidate[];
   if (aiConfig.features.hybridSearchEnabled) {
     const [semantic, keyword] = await Promise.all([
       semanticSearch(query),
       keywordSearch(query),
     ]);
-    candidates = rankFusion(semantic, keyword);
-  } else {
-    candidates = await semanticSearch(query);
+
+    const semanticAbove = semantic.filter((c) => c.score >= similarityThreshold);
+    const keywordGrounds = keyword.length > 0 && hasStrongKeyword(query);
+    const grounded = semanticAbove.length > 0 || keywordGrounds;
+
+    const fused = rankFusion(semantic, keyword, rrfK);
+    const context = grounded
+      ? diversify(fused, maxContextChunks, maxChunksPerArticle)
+      : [];
+
+    return { context, candidates: fused, hasGrounding: grounded };
   }
 
+  // セマンティックのみ。
+  const candidates = await semanticSearch(query);
   candidates.sort((a, b) => b.score - a.score);
-
-  // ハイブリッド時はスコアが融合スコアになるため、しきい値はセマンティック時のみ適用。
-  const aboveThreshold = aiConfig.features.hybridSearchEnabled
-    ? candidates
-    : candidates.filter((c) => c.score >= similarityThreshold);
-
+  const aboveThreshold = candidates.filter(
+    (c) => c.score >= similarityThreshold,
+  );
   const context = diversify(
     aboveThreshold,
     maxContextChunks,

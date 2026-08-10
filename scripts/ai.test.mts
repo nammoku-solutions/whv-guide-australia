@@ -10,6 +10,11 @@ import { routeQuestion } from "../lib/ai/router";
 import { recommendTools } from "../lib/ai/recommendations/tools";
 import { buildAllChunks, getIndexableArticles } from "../lib/ai/content-source";
 import { buildSources } from "../lib/ai/recommendations/articles";
+import {
+  extractKeywordTerms,
+  hasStrongKeyword,
+} from "../lib/ai/retrieval/keyword";
+import { rankFusion } from "../lib/ai/retrieval/hybrid";
 import { evalCases } from "../lib/ai/eval/dataset";
 import type { RetrievalCandidate } from "../lib/ai/types";
 
@@ -94,4 +99,85 @@ test("sources: dedupe by url and cap count", () => {
     sources.map((s) => s.url),
     ["/guides/a", "/guides/b"],
   );
+});
+
+// --- Phase 2: keyword extraction / synonyms / strong-term / RRF ---
+
+test("keyword: exact acronym & number queries extract the right terms", () => {
+  const cases: Array<[string, string[]]> = [
+    ["TFNとは？", ["tfn"]],
+    ["417と462の違い", ["417", "462"]],
+    ["ABNで働く場合", ["abn"]],
+    ["Rego 更新", ["rego"]],
+    ["DASP 申請", ["dasp"]],
+  ];
+  for (const [q, expected] of cases) {
+    const terms = extractKeywordTerms(q).map((t) => t.toLowerCase());
+    for (const e of expected) {
+      assert.ok(
+        terms.includes(e),
+        `expected term "${e}" from "${q}" (got ${terms.join(",")})`,
+      );
+    }
+  }
+});
+
+test("keyword: domain synonyms expand across languages", () => {
+  const superTerms = extractKeywordTerms("スーパーを返金してもらう方法").map((t) =>
+    t.toLowerCase(),
+  );
+  assert.ok(superTerms.includes("superannuation"), "スーパー -> Superannuation");
+  assert.ok(superTerms.includes("返金"), "keeps JA content word 返金");
+
+  const tfnTerms = extractKeywordTerms("TFNの申請方法").map((t) => t.toLowerCase());
+  assert.ok(tfnTerms.includes("タックスファイルナンバー"), "TFN -> JA synonym");
+});
+
+test("keyword: strong-term detection distinguishes exact vs NL queries", () => {
+  assert.equal(hasStrongKeyword("Rego 更新"), true);
+  assert.equal(hasStrongKeyword("417と462の違い"), true);
+  assert.equal(hasStrongKeyword("スーパーの返金"), true, "domain synonym counts");
+  assert.equal(
+    hasStrongKeyword("オーストラリアで仕事を始める前に必要な手続き"),
+    false,
+    "plain NL query has no strong exact term",
+  );
+});
+
+test("keyword: natural-language query extracts meaningful content words", () => {
+  const terms = extractKeywordTerms(
+    "オーストラリアで仕事を始める前に必要な手続きを教えて",
+  );
+  assert.ok(terms.length > 0);
+  assert.ok(
+    terms.some((t) => t.includes("仕事")),
+    `expected a work-related term (got ${terms.join(",")})`,
+  );
+  // particles / suffixes must be dropped
+  assert.ok(!terms.includes("を"));
+  assert.ok(!terms.includes("方法"));
+});
+
+test("hybrid: RRF fuses ranks and dedupes shared chunks", () => {
+  const mk = (id: string, score: number): RetrievalCandidate => ({
+    chunkId: id,
+    articleId: id.split("::")[0],
+    title: id,
+    slug: id.split("::")[0],
+    url: `/guides/${id.split("::")[0]}`,
+    category: "visa",
+    heading: "h",
+    content: "c",
+    riskLevel: "low",
+    score,
+  });
+  const semantic = [mk("a::0", 0.9), mk("b::0", 0.8), mk("c::0", 0.7)];
+  const keyword = [mk("c::0", 5), mk("d::0", 4)];
+  const fused = rankFusion(semantic, keyword, 60);
+
+  const ids = fused.map((f) => f.chunkId);
+  assert.equal(new Set(ids).size, ids.length, "no duplicate chunks after fusion");
+  // c::0 appears in both lists -> should rank at/near the top via RRF.
+  assert.equal(ids[0], "c::0", "chunk present in both lists ranks first");
+  assert.ok(ids.includes("d::0"), "keyword-only chunk is included");
 });
