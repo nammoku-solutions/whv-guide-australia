@@ -70,7 +70,7 @@ export async function embedTexts(
 
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
-    throw new Error(`Embedding request failed (${res.status}): ${detail.slice(0, 200)}`);
+    throw new Error(`Embedding request failed (${res.status}): ${detail.slice(0, 600)}`);
   }
 
   const json = (await res.json()) as {

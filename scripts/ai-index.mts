@@ -54,12 +54,47 @@ if (versionArg) {
   process.env.AI_EMBEDDING_VERSION = versionArg.split("=")[1];
 }
 
-const EMBED_BATCH = 50;
+const EMBED_BATCH = 100;
+// バッチ間の待機（無償枠のレート制限を穏やかに回避）。
+const BATCH_DELAY_MS = 3000;
+// 429/5xx 時の再試行回数と既定の待機（分単位のクォータ回復を待つ）。
+const MAX_RETRIES = 15;
+const DEFAULT_BACKOFF_MS = 60000;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
+}
 
 function chunk<T>(arr: T[], size: number): T[][] {
   const out: T[][] = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
   return out;
+}
+
+/**
+ * 埋め込みを再試行付きで生成する。429（クォータ超過）や 5xx では待機して再試行し、
+ * 分単位のレート制限を跨いで完走できるようにする。既に upsert 済みの chunk は
+ * content hash 差分でスキップされるため、中断・再実行しても安全（冪等）。
+ */
+async function embedWithRetry(texts: string[]): Promise<number[][]> {
+  let attempt = 0;
+  for (;;) {
+    try {
+      return await embedTexts(texts, "RETRIEVAL_DOCUMENT");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      const is429 = msg.includes("(429)");
+      const is5xx = /\(5\d\d\)/.test(msg);
+      attempt++;
+      if ((!is429 && !is5xx) || attempt > MAX_RETRIES) throw err;
+      const m = msg.match(/retryDelay"?\s*:?\s*"?(\d+)s/);
+      const waitMs = (m ? Number(m[1]) * 1000 : DEFAULT_BACKOFF_MS) + 1000;
+      console.log(
+        `[ai:index] rate-limited (attempt ${attempt}/${MAX_RETRIES}); waiting ${Math.round(waitMs / 1000)}s…`,
+      );
+      await sleep(waitMs);
+    }
+  }
 }
 
 async function main() {
@@ -115,11 +150,10 @@ async function main() {
 
   // 変更分の埋め込みを生成して upsert。
   let embedded = 0;
-  for (const batch of chunk(toEmbed, EMBED_BATCH)) {
-    const vectors = await embedTexts(
-      batch.map((c) => c.content),
-      "RETRIEVAL_DOCUMENT",
-    );
+  const batches = chunk(toEmbed, EMBED_BATCH);
+  for (let b = 0; b < batches.length; b++) {
+    const batch = batches[b];
+    const vectors = await embedWithRetry(batch.map((c) => c.content));
     const rows = batch.map((c, i) => ({
       chunk_id: c.chunkId,
       article_id: c.articleId,
@@ -147,6 +181,7 @@ async function main() {
     }
     embedded += rows.length;
     console.log(`[ai:index] upserted ${embedded}/${toEmbed.length}`);
+    if (b < batches.length - 1) await sleep(BATCH_DELAY_MS);
   }
 
   // 古い chunk を削除。
