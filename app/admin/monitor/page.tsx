@@ -30,10 +30,12 @@ type NewsRow = {
   source_organisation: string | null;
   source_title: string | null;
   source_url: string | null;
+  source_published_at: string | null;
   status: string;
   publication_mode: string;
   detected_at: string;
   related_guide_slug: string | null;
+  is_backfill: boolean | null;
 };
 
 type ImpactRow = {
@@ -166,6 +168,11 @@ function Panel() {
                   <span className="text-slate-500">
                     {n.change_group}・信頼度 {(n.confidence ?? 0).toFixed(2)}・{n.detected_at?.slice(0, 10)}
                   </span>
+                  {n.is_backfill ? (
+                    <span className="rounded-full bg-indigo-50 px-2 py-0.5 font-semibold text-indigo-700">
+                      歴史バックフィル・公式日 {n.source_published_at?.slice(0, 10) ?? "?"}・取込 {n.detected_at?.slice(0, 10)}
+                    </span>
+                  ) : null}
                 </div>
                 <p className="mt-1 font-bold text-slate-900">{n.title}</p>
                 <p className="mt-1 text-sm text-slate-600">{n.summary}</p>

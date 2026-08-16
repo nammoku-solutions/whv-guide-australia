@@ -26,6 +26,13 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["visa", "preparation", "second-visa"],
     autoPublishEligibility: false,
+    // 部局全体の公式ニュースアーカイブ（日付つき）。歴史的バックフィルの代表窓口として
+    // Home Affairs はこの 1 ソースにだけ設定し、重複探索を避ける。
+    historical: {
+      method: "archive",
+      listUrl: "https://immi.homeaffairs.gov.au/news-media/archive",
+      maxEntries: 60,
+    },
   },
   {
     sourceId: "homeaffairs-whv-462",
@@ -93,6 +100,12 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["tax-return", "money", "jobs"],
     autoPublishEligibility: false,
+    // 単一の「現在の税率」ページのみ。日付つきの公式アーカイブ/フィードがなく、
+    // 過去の変更を安全に再構成できないためバックフィル非対応。
+    historical: {
+      method: "unsupported",
+      reason: "現在の税率ページのみ（日付つきアーカイブ/フィードなし）。",
+    },
   },
   {
     sourceId: "ato-tfn",
@@ -147,6 +160,13 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["jobs", "money", "farm", "gig-work"],
     autoPublishEligibility: false,
+    // Fair Work の公式ニュースルーム（日付つきメディアリリース一覧）。多くは個別企業の
+    // 摘発情報で、関連度分類でフィルタされる想定。WHV に関わる制度・賃金の告知だけを拾う。
+    historical: {
+      method: "archive",
+      listUrl: "https://www.fairwork.gov.au/newsroom/media-releases",
+      maxEntries: 40,
+    },
   },
   {
     sourceId: "fairwork-visa-holders",
@@ -188,6 +208,10 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["health", "arrival"],
     autoPublishEligibility: false,
+    historical: {
+      method: "unsupported",
+      reason: "現在の相互医療協定ページのみ（日付つきアーカイブ/フィードなし）。",
+    },
   },
   {
     sourceId: "servicesaustralia-medicare",

@@ -16,6 +16,10 @@ export type AutomatedNews = NewsItem & {
   sourceOrganisation?: string;
   detectedAt?: string;
   verifiedAt?: string;
+  /** 歴史的バックフィルで取り込まれた項目か（UI ラベル用）。 */
+  isBackfill?: boolean;
+  /** 公式公開日（YYYY-MM-DD, 表示・順序制御用）。 */
+  sourcePublishedAt?: string;
 };
 
 type NewsRow = {
@@ -35,9 +39,12 @@ type NewsRow = {
   published_at: string | null;
   risk_level: string;
   related_guide_slug: string | null;
+  is_backfill: boolean | null;
 };
 
 function toDate(row: NewsRow): string {
+  // 歴史的バックフィルは公式公開日で並べる（取り込み日=8月を「新着」に見せない）。
+  if (row.is_backfill && row.source_published_at) return row.source_published_at.slice(0, 10);
   const raw = row.published_at ?? row.source_published_at ?? row.detected_at ?? "";
   return raw ? raw.slice(0, 10) : new Date().toISOString().slice(0, 10);
 }
@@ -71,6 +78,8 @@ function mapRow(row: NewsRow): AutomatedNews {
     sourceOrganisation: row.source_organisation ?? undefined,
     detectedAt: row.detected_at ?? undefined,
     verifiedAt: row.verified_at ?? undefined,
+    isBackfill: row.is_backfill ?? undefined,
+    sourcePublishedAt: row.source_published_at?.slice(0, 10) ?? undefined,
   };
 }
 
@@ -81,7 +90,7 @@ export async function getAutomatedNews(): Promise<AutomatedNews[]> {
   const { data, error } = await client
     .from("news_items")
     .select(
-      "id, slug, title, summary, body, category, change_group, source_organisation, source_title, source_url, source_published_at, detected_at, verified_at, published_at, risk_level, related_guide_slug",
+      "id, slug, title, summary, body, category, change_group, source_organisation, source_title, source_url, source_published_at, detected_at, verified_at, published_at, risk_level, related_guide_slug, is_backfill",
     )
     .eq("status", "published")
     .order("published_at", { ascending: false, nullsFirst: false })

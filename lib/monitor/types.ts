@@ -44,6 +44,33 @@ export type FetchStatus =
   | "blocked"
   | "unexpected_structure";
 
+/**
+ * 歴史的バックフィル（過去の公式ニュースの一括取り込み）用のソース設定。
+ * ソースが日付つきの公式アーカイブ/フィードを公開している場合にのみ設定する。
+ * 「現在の状態ページ」しか公開していないソースは method="unsupported" にする。
+ */
+export type HistoricalSourceConfig =
+  | {
+      /** RSS/Atom フィードから過去エントリを取得。 */
+      method: "rss";
+      feedUrl: string;
+      /** 1 ソースあたりに取り込む最大エントリ数（コスト上限）。 */
+      maxEntries?: number;
+    }
+  | {
+      /** 公式のニュース一覧/アーカイブページ（日付つきリンク）から取得。 */
+      method: "archive";
+      listUrl: string;
+      /** 追加のページ URL（?page=1 等）。過度なクロールを避けるため少数に限る。 */
+      extraListUrls?: string[];
+      maxEntries?: number;
+    }
+  | {
+      /** 現在の状態ページのみで、過去の変更を安全に再構成できない。 */
+      method: "unsupported";
+      reason: string;
+    };
+
 /** 記事への影響度。 */
 export type ImpactLevel =
   | "unaffected"
@@ -75,6 +102,11 @@ export type SourceDefinition = {
    * ときに自動公開してよいか。高リスクは常に review。
    */
   autoPublishEligibility: boolean;
+  /**
+   * 歴史的バックフィル用の設定（任意）。未設定のソースは「現在の状態ページのみ」と
+   * みなし、バックフィル非対応（historical_backfill_unsupported）として扱う。
+   */
+  historical?: HistoricalSourceConfig;
 };
 
 /** 取得結果（決定的処理の入力）。 */

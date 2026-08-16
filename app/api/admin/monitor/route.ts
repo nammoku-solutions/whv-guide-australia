@@ -36,7 +36,7 @@ export async function GET(request: Request) {
     admin
       .from("news_items")
       .select(
-        "id, slug, title, summary, category, change_group, risk_level, confidence, source_organisation, source_title, source_url, status, publication_mode, detected_at, verified_at, published_at, related_guide_slug",
+        "id, slug, title, summary, category, change_group, risk_level, confidence, source_organisation, source_title, source_url, source_published_at, status, publication_mode, detected_at, verified_at, published_at, related_guide_slug, is_backfill",
       )
       .order("created_at", { ascending: false })
       .limit(100),

@@ -18,9 +18,11 @@
     "test:notifications": "node --test scripts/notifications.test.mjs",
     "test:ai": "tsx --test scripts/ai.test.mts",
     "test:monitor": "tsx --test scripts/monitor.test.mts",
+    "test:backfill": "tsx --test scripts/backfill.test.mts",
     "ai:index": "tsx scripts/ai-index.mts",
     "ai:reindex": "tsx scripts/ai-index.mts --reindex",
-    "monitor": "tsx scripts/monitor-sources.mts"
+    "monitor": "tsx scripts/monitor-sources.mts",
+    "news:backfill": "tsx scripts/news-backfill.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
