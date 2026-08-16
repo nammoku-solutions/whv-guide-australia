@@ -20,6 +20,7 @@ import { indexPublishedNews } from "../indexNews";
 import type { ModelCaller } from "../gemini";
 import type { RiskLevel, Relevance, SourceDefinition } from "../types";
 import { parseOfficialDate } from "./dates";
+import { resolveContentFile } from "./seedContent";
 import {
   validateAndCanonicalise,
   isOfficialFinalUrl,
@@ -56,8 +57,10 @@ export type SeedInput = {
   title?: string | null;
   /** 取得で復元できないときの公式公開日（YYYY-MM-DD 等）。 */
   publishedAt?: string | null;
-  /** 取得がブロックされたときのフォールバック公式本文。 */
+  /** 取得がブロックされたときのフォールバック公式本文（インライン）。 */
   content?: string | null;
+  /** content の代わりに、公式本文を貼り付けた UTF-8 .txt ファイルへの相対パス。 */
+  contentFile?: string | null;
 };
 
 export type SeedMode = "url_fetch" | "manual_content" | "invalid";
@@ -72,7 +75,9 @@ export type SeedResult =
   | "missing_title"
   | "missing_content"
   | "invalid_date"
-  | "out_of_range";
+  | "out_of_range"
+  | "content_conflict"
+  | "content_file_error";
 
 export type SeedResultRow = {
   inputUrl: string;
@@ -122,6 +127,8 @@ export type RunSeedOptions = {
   from?: string;
   to?: string;
   mode: "dry_run" | "apply";
+  /** contentFile を解決する許可ルート（既定: process.cwd() = リポジトリルート）。 */
+  seedBaseDir?: string;
   deps?: SeedDeps;
 };
 
@@ -207,7 +214,7 @@ const FETCH_FALLBACK_HINT =
  */
 export async function buildCandidateFromSeed(
   seed: SeedInput,
-  opts: { from?: string; to?: string; importedAt: string },
+  opts: { from?: string; to?: string; importedAt: string; baseDir?: string },
   deps: SeedDeps,
 ): Promise<SeedBuild> {
   // 1. URL 検証 + 正規化。
@@ -229,7 +236,21 @@ export async function buildCandidateFromSeed(
     return { ok: false, mode: "invalid", result: "invalid_source", canonicalUrl, detail: "INVALID_SOURCE: 対応するレジストリソースがありません。" };
   }
 
-  const providedContent = (seed.content ?? "").trim();
+  // 1b. 供給本文の解決（content と contentFile の曖昧さを拒否）。
+  const inlineContent = (seed.content ?? "").trim();
+  const contentFilePath = (seed.contentFile ?? "").trim();
+  if (inlineContent && contentFilePath) {
+    return { ok: false, mode: "manual_content", result: "content_conflict", canonicalUrl, source, detail: "CONTENT_AND_CONTENT_FILE_CONFLICT: content と contentFile は同時指定できません（どちらか一方に）。" };
+  }
+  let providedContent = inlineContent;
+  if (contentFilePath) {
+    const baseDir = opts.baseDir ?? process.cwd();
+    const r = resolveContentFile(contentFilePath, baseDir);
+    if (!r.ok) {
+      return { ok: false, mode: "manual_content", result: "content_file_error", canonicalUrl, source, detail: `${r.code}: ${r.detail}` };
+    }
+    providedContent = r.content.trim();
+  }
   const providedTitle = (seed.title ?? "").trim();
   const providedDateRaw = (seed.publishedAt ?? "").trim();
 
@@ -318,6 +339,7 @@ export async function buildCandidateFromSeed(
 export async function runSeedBackfill(opts: RunSeedOptions): Promise<SeedReport> {
   const { seeds, from, to, mode } = opts;
   const deps = opts.deps ?? {};
+  const baseDir = opts.seedBaseDir ?? process.cwd();
   const notes: string[] = [];
 
   const admin = deps.admin !== undefined ? deps.admin : getBackfillAdmin();
@@ -357,7 +379,7 @@ export async function runSeedBackfill(opts: RunSeedOptions): Promise<SeedReport>
 
   for (const seed of seeds) {
     try {
-      const build = await buildCandidateFromSeed(seed, { from, to, importedAt }, deps);
+      const build = await buildCandidateFromSeed(seed, { from, to, importedAt, baseDir }, deps);
       if (!build.ok) {
         rows.push({
           inputUrl: seed.url,
@@ -399,7 +421,9 @@ export async function runSeedBackfill(opts: RunSeedOptions): Promise<SeedReport>
   }
 
   // 集計（シード固有の失敗種別を含む）。
-  const invalidCount = rows.filter((r) => r.result === "invalid_url" || r.result === "invalid_source").length;
+  const invalidCount = rows.filter(
+    (r) => r.result === "invalid_url" || r.result === "invalid_source" || r.result === "content_conflict",
+  ).length;
   const fetchFailedCount = rows.filter(
     (r) =>
       r.result === "fetch_blocked" ||
@@ -407,7 +431,8 @@ export async function runSeedBackfill(opts: RunSeedOptions): Promise<SeedReport>
       r.result === "missing_title" ||
       r.result === "missing_content" ||
       r.result === "invalid_date" ||
-      r.result === "out_of_range",
+      r.result === "out_of_range" ||
+      r.result === "content_file_error",
   ).length;
 
   if (willWrite && admin && runId) {

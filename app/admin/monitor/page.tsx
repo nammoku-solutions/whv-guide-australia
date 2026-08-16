@@ -51,12 +51,34 @@ type ImpactRow = {
   status: string;
 };
 
-type Payload = { changes: ChangeRow[]; news: NewsRow[]; impacts: ImpactRow[] };
+type HealthRow = {
+  sourceId: string;
+  organisation: string;
+  sourceName: string;
+  url: string;
+  riskLevel: string;
+  health: "healthy" | "degraded" | "failing" | "never_succeeded";
+  lastStatus: string | null;
+  lastChecked: string | null;
+  lastSuccess: string | null;
+  lastChanged: string | null;
+  consecutiveFailures: number;
+  hasBaseline: boolean;
+};
+
+type Payload = { changes: ChangeRow[]; news: NewsRow[]; impacts: ImpactRow[]; health: HealthRow[] };
 
 const RISK_BADGE: Record<string, string> = {
   high: "bg-rose-50 text-rose-700",
   medium: "bg-amber-50 text-amber-700",
   low: "bg-sky-50 text-sky-700",
+};
+
+const HEALTH_BADGE: Record<string, string> = {
+  healthy: "bg-emerald-50 text-emerald-700",
+  degraded: "bg-amber-50 text-amber-700",
+  failing: "bg-rose-50 text-rose-700",
+  never_succeeded: "bg-slate-100 text-slate-600",
 };
 
 function Panel() {
@@ -80,7 +102,7 @@ function Panel() {
     });
     const json = await res.json();
     if (!json.ok) throw new Error(json.error ?? "読み込みに失敗しました。");
-    return { changes: json.changes, news: json.news, impacts: json.impacts };
+    return { changes: json.changes, news: json.news, impacts: json.impacts, health: json.health ?? [] };
   }, [getToken]);
 
   // setState は promise コールバック内でのみ行う（effect 内の同期 setState を避ける）。
@@ -143,6 +165,8 @@ function Panel() {
   const reviewNews = data.news.filter((n) => n.status === "review_required");
   const publishedNews = data.news.filter((n) => n.status === "published");
   const openImpacts = data.impacts.filter((i) => i.status === "open");
+  const health = data.health ?? [];
+  const unhealthy = health.filter((h) => h.health === "failing" || h.health === "never_succeeded");
 
   return (
     <div className="space-y-10">
@@ -152,6 +176,60 @@ function Panel() {
         <Stat label="検出された変更" value={data.changes.length} tone="text-sky-700" />
         <Stat label="要確認の記事影響" value={openImpacts.length} tone="text-rose-700" />
       </div>
+
+      {/* ソースヘルス（取得健全性の可視化） */}
+      <section className="space-y-3">
+        <h2 className="text-xl font-bold">
+          ソースヘルス
+          {unhealthy.length > 0 ? (
+            <span className="ml-2 rounded-full bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-700">
+              要注意 {unhealthy.length}
+            </span>
+          ) : null}
+        </h2>
+        {health.length === 0 ? (
+          <p className="text-sm text-slate-500">監視状態はまだありません（スケジューラ実行後に表示）。</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-left text-xs">
+              <thead className="text-slate-500">
+                <tr>
+                  <th className="px-2 py-1">ヘルス</th>
+                  <th className="px-2 py-1">ソース</th>
+                  <th className="px-2 py-1">状態</th>
+                  <th className="px-2 py-1">最終確認</th>
+                  <th className="px-2 py-1">最終成功</th>
+                  <th className="px-2 py-1">連続失敗</th>
+                  <th className="px-2 py-1">最終変更</th>
+                </tr>
+              </thead>
+              <tbody>
+                {health.map((h) => (
+                  <tr key={h.sourceId} className="border-t border-slate-100">
+                    <td className="px-2 py-1">
+                      <span className={`rounded-full px-2 py-0.5 font-semibold ${HEALTH_BADGE[h.health] ?? ""}`}>
+                        {h.health}
+                      </span>
+                    </td>
+                    <td className="px-2 py-1">
+                      <a href={h.url} target="_blank" rel="noopener noreferrer" className="font-semibold text-slate-700 hover:text-sky-700">
+                        {h.organisation}｜{h.sourceName}
+                      </a>
+                    </td>
+                    <td className="px-2 py-1 text-slate-600">{h.lastStatus ?? "-"}</td>
+                    <td className="px-2 py-1 text-slate-500">{h.lastChecked?.slice(0, 10) ?? "-"}</td>
+                    <td className="px-2 py-1 text-slate-500">{h.lastSuccess?.slice(0, 10) ?? "-"}</td>
+                    <td className={`px-2 py-1 ${h.consecutiveFailures > 0 ? "font-semibold text-rose-700" : "text-slate-500"}`}>
+                      {h.consecutiveFailures}
+                    </td>
+                    <td className="px-2 py-1 text-slate-500">{h.lastChanged?.slice(0, 10) ?? "-"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       {/* レビュー要求ニュース */}
       <section className="space-y-3">

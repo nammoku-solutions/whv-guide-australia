@@ -160,6 +160,8 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["jobs", "money", "farm", "gig-work"],
     autoPublishEligibility: false,
+    // Fair Work は応答が遅く timeout しやすいため、ソース固有のタイムアウトを延長する。
+    fetchTimeoutMs: 30000,
     // Fair Work の公式ニュースルーム（日付つきメディアリリース一覧）。多くは個別企業の
     // 摘発情報で、関連度分類でフィルタされる想定。WHV に関わる制度・賃金の告知だけを拾う。
     historical: {
@@ -180,6 +182,7 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["jobs", "community", "farm"],
     autoPublishEligibility: false,
+    fetchTimeoutMs: 30000,
   },
   {
     sourceId: "fairwork-public-holidays",
@@ -193,6 +196,7 @@ export const officialSources: SourceDefinition[] = [
     enabled: true,
     relatedCategories: ["jobs", "travel"],
     autoPublishEligibility: true,
+    fetchTimeoutMs: 30000,
   },
 
   // ===== Services Australia（Medicare / 相互医療） =====

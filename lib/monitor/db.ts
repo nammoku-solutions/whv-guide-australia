@@ -39,6 +39,18 @@ export async function getSourceState(
   return (data as SourceState) ?? null;
 }
 
+/** 全ソースの監視状態を取得する（ヘルス表示用・読み取り専用）。 */
+export async function getAllSourceStates(
+  admin: SupabaseClient,
+): Promise<Map<string, SourceState>> {
+  const { data } = await admin
+    .from("monitor_source_state")
+    .select("source_id, content_hash, last_checked, last_changed, last_status, consecutive_failures");
+  const map = new Map<string, SourceState>();
+  for (const row of (data as SourceState[] | null) ?? []) map.set(row.source_id, row);
+  return map;
+}
+
 /** 取得成功だが変更なし: last_checked / status のみ更新。 */
 export async function markChecked(
   admin: SupabaseClient,

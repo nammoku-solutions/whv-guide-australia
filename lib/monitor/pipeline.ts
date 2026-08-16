@@ -38,7 +38,7 @@ import {
   insertArticleImpacts,
 } from "./db";
 import type { ModelCaller } from "./gemini";
-import type { SourceDefinition } from "./types";
+import type { SourceDefinition, FetchStatus } from "./types";
 
 export type SourceOutcome =
   | "failure"
@@ -56,6 +56,8 @@ export type SourceResult = {
   sourceName: string;
   outcome: SourceOutcome;
   detail: string;
+  /** 取得ステータス（ヘルス集計用。失敗時は blocked/timeout 等）。 */
+  fetchStatus?: FetchStatus;
   newsSlug?: string;
   impacts?: number;
   indexed?: boolean;
@@ -86,10 +88,15 @@ export async function processSource(
   // 1. 取得
   const url =
     source.monitoringMethod === "rss" && source.feedUrl ? source.feedUrl : source.url;
-  const fetched = await fetchSource(url, deps.fetchImpl);
+  // ソース固有タイムアウトを尊重。timeout は一時的なネットワーク不調のことがあるため
+  // 1 回だけ再試行する（無限リトライはしない・ブロックは再試行しない）。
+  let fetched = await fetchSource(url, deps.fetchImpl, source.fetchTimeoutMs);
+  if (fetched.status === "timeout") {
+    fetched = await fetchSource(url, deps.fetchImpl, source.fetchTimeoutMs);
+  }
   if (fetched.status !== "success" || !fetched.raw) {
     await markFailure(admin, source.sourceId, fetched.status, fetched.error, prevFailures);
-    return { ...base, outcome: "failure", detail: `取得失敗: ${fetched.status}` };
+    return { ...base, outcome: "failure", detail: `取得失敗: ${fetched.status}`, fetchStatus: fetched.status };
   }
 
   // 2. 抽出・正規化
@@ -102,7 +109,7 @@ export async function processSource(
       "抽出結果が空",
       prevFailures,
     );
-    return { ...base, outcome: "failure", detail: "抽出結果が空（構造変化の可能性）" };
+    return { ...base, outcome: "failure", detail: "抽出結果が空（構造変化の可能性）", fetchStatus: "unexpected_structure" };
   }
 
   // 3. ハッシュ比較（決定的）

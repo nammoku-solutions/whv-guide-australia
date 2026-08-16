@@ -45,6 +45,9 @@ next-env.d.ts
 news-backfill-seeds.local.json
 *.seeds.local.json
 news-backfill-seeds.*.local.json
+# operator-pasted official source text (keep tracked examples under news-seeds/)
+news-seeds/*.local.txt
+news-seeds/local/
 
 # modernization tooling artifacts
 .github/modernize/

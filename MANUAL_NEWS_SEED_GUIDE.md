@@ -6,6 +6,12 @@
 ブラウザで見つけた**公式 URL**（と必要なら**公式本文**）を、既存の歴史的バックフィル
 パイプラインに投入するための特権バッチです。**日本語ニュース記事を手で書く必要はありません。**
 
+> **contentFile（長文向け・推奨）:** 長い公式本文は JSON へ直接貼ると壊れやすいので、UTF-8 の `.txt`
+> ファイルへ貼り付け、シードから `contentFile` で参照できます（本ガイド末尾「contentFile」参照）。
+> なぜ手動が必要かは [OFFICIAL_SOURCE_MONITOR_HEALTH_REPORT.md](OFFICIAL_SOURCE_MONITOR_HEALTH_REPORT.md)
+> を参照（Home Affairs / ATO は 403、Fair Work は timeout で live 取得が degraded）。
+
+
 - これは日次モニタの置き換えではありません。
 - 自動アーカイブ探索（`npm run news:backfill`）の置き換えでもありません。追加の取り込み経路です。
 - 生成・関連度・grounding・重複防止・リスク/公開ポリシー・記事影響・AI 索引はすべて既存規則を再利用します。
@@ -171,7 +177,57 @@ Bot 保護の回避（UA 偽装・CAPTCHA/Cloudflare 回避・プロキシ・ス
 | `MISSING_OFFICIAL_DATE` | 公式日を抽出できない | `publishedAt` を指定（推測しない） |
 | `CONTENT_TOO_SHORT` | 本文が短すぎる/抽出不可 | 公式本文を `content` に貼り付け |
 | `OUT_OF_RANGE` | 指定 `--from/--to` 範囲外 | 範囲を見直す |
+| `CONTENT_AND_CONTENT_FILE_CONFLICT` | `content` と `contentFile` の同時指定 | どちらか一方に |
+| `CONTENT_FILE_NOT_FOUND` | contentFile が無い/読めない | パスを確認（リポジトリルート相対） |
+| `CONTENT_FILE_OUTSIDE_ALLOWED_ROOT` | 許可ルート外/トラバーサル | リポジトリ配下の `.txt` を指定 |
+| `CONTENT_FILE_TOO_LARGE` | 256KB 超 | 本文だけを貼った小さい `.txt` に |
+| `CONTENT_FILE_EMPTY` | 空ファイル | 公式本文を貼り付け |
+| `CONTENT_FILE_ENCODING_ERROR` | UTF-8 でない | UTF-8 で保存 |
 | `DUPLICATE` | 既存ニュースと同一イベント | 対応不要（重複はスキップ） |
 
 秘匿値（service-role / Gemini キー）はサーバー側のみ。シードファイルの公式本文は
-`.gitignore`（`news-backfill-seeds.local.json`）で誤コミットを防ぎます。
+`.gitignore`（`news-backfill-seeds.local.json` / `news-seeds/*.local.txt` / `news-seeds/local/`）で
+誤コミットを防ぎます。
+
+---
+
+## 11. contentFile（長い公式本文向け）
+
+長文の JSON エスケープを避けるため、公式本文を UTF-8 の `.txt` に貼り付け、シードから参照します。
+
+推奨レイアウト:
+
+```text
+news-backfill-seeds.local.json
+news-seeds/
+  2026-07-30-japanese-fruit-pickers.local.txt
+```
+
+シード JSON:
+
+```json
+[
+  {
+    "url": "OFFICIAL_URL",
+    "title": "OFFICIAL_TITLE",
+    "publishedAt": "2026-07-30",
+    "contentFile": "./news-seeds/2026-07-30-japanese-fruit-pickers.local.txt"
+  }
+]
+```
+
+ルール:
+- `contentFile` は**リポジトリルートからの相対パス**。ルート外・トラバーサル・シンボリックリンク脱出・
+  デバイス/特殊ファイルは拒否。UTF-8 のみ・最大 256KB。
+- `content` と `contentFile` の**同時指定は不可**（曖昧さを避けるため拒否）。
+- `.txt` には**公式ページ本文をそのまま**貼り付け（要約・リライトしない）。生成される日本語ニュースは
+  この供給テキストのみを根拠（grounding）にします。
+- 取り込み後の処理（関連度・grounding・dedupe・リスク・公開・記事影響・AI 索引）はインライン `content` と同一です。
+
+実行:
+
+```bash
+npm run news:backfill:seed -- --file news-backfill-seeds.local.json --dry-run
+npm run news:backfill:seed -- --file news-backfill-seeds.local.json --apply
+```
+

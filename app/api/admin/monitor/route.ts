@@ -7,6 +7,9 @@
 import { NextResponse } from "next/server";
 import { getAiAdminClient } from "@/lib/ai/server/supabaseAdmin";
 import { requireModerator } from "@/lib/monitor/adminAuth";
+import { getEnabledSources } from "@/lib/monitor/registry";
+import { buildHealthReport } from "@/lib/monitor/health";
+import type { SourceState } from "@/lib/monitor/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,7 +28,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const [changes, news, impacts] = await Promise.all([
+  const [changes, news, impacts, states] = await Promise.all([
     admin
       .from("monitor_changes")
       .select(
@@ -47,12 +50,28 @@ export async function GET(request: Request) {
       )
       .order("created_at", { ascending: false })
       .limit(200),
+    admin
+      .from("monitor_source_state")
+      .select("source_id, content_hash, last_checked, last_changed, last_status, consecutive_failures"),
   ]);
+
+  // ソースヘルスは既存の監視状態から導出（追加 DB 列なし）。
+  const stateById = new Map<string, SourceState>();
+  for (const row of ((states.data as SourceState[] | null) ?? [])) stateById.set(row.source_id, row);
+  const health = buildHealthReport(getEnabledSources(), stateById);
 
   return NextResponse.json({
     ok: true,
     changes: changes.data ?? [],
     news: news.data ?? [],
     impacts: impacts.data ?? [],
+    health: health.rows,
+    healthSummary: {
+      total: health.total,
+      healthy: health.healthy,
+      degraded: health.degraded,
+      failing: health.failing,
+      neverSucceeded: health.neverSucceeded,
+    },
   });
 }

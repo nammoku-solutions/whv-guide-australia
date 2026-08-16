@@ -294,3 +294,13 @@ dry-run 無書き込み・apply 書き込み・公開分のみ増分インデッ
   npm run news:backfill:seed -- --file news-backfill-seeds.local.json --apply
   ```
 
+### 10.6 追補: contentFile と live 監視ヘルス
+- **contentFile**: 長い公式本文を UTF-8 `.txt` に貼り付けて `contentFile` で参照可能（JSON エスケープ回避）。
+  パス安全（ルート外/トラバーサル/シンボリックリンク脱出/デバイス拒否・UTF-8・最大 256KB）。
+  `content` との同時指定は拒否。取り込み後は既存の Manual Content と同一経路。詳細は
+  [MANUAL_NEWS_SEED_GUIDE.md](MANUAL_NEWS_SEED_GUIDE.md)。
+- **live 監視ヘルス**: 歴史バックフィルと live 監視は別問題。Home Affairs / ATO はサーバー側取得を 403 で
+  拒否、Fair Work は timeout するため、live 監視も degraded になり得る。可視化と運用は
+  [OFFICIAL_SOURCE_MONITOR_HEALTH_REPORT.md](OFFICIAL_SOURCE_MONITOR_HEALTH_REPORT.md) を参照
+  （`npm run monitor:health`・`/admin/monitor` のソースヘルス）。degraded ソースは Manual Seed で補完する。
+

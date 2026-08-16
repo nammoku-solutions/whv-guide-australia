@@ -6,7 +6,7 @@
  * GitHub Actions（日次 cron / 手動）と、ローカル実行の両方で使う単一エントリ。
  * 秘匿値はログに出力しない。無変更ページでは Gemini を呼ばない。
  */
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync, appendFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -51,9 +51,6 @@ async function main() {
     process.exit(1);
   }
 
-  const counts: Record<string, number> = {};
-  for (const r of results) counts[r.outcome] = (counts[r.outcome] ?? 0) + 1;
-
   console.log("\n[monitor] per-source results:");
   for (const r of results) {
     const extra = r.newsSlug ? ` slug=${r.newsSlug}` : "";
@@ -62,16 +59,71 @@ async function main() {
     console.log(`  - ${r.sourceId} [${r.outcome}] ${r.detail}${extra}${imp}${idx}`);
   }
 
-  console.log("\n[monitor] summary:");
-  for (const [k, v] of Object.entries(counts).sort()) {
-    console.log(`  ${k}: ${v}`);
+  // 取得健全性の集計（失敗を「変更なし」に丸めない）。fetchStatus 由来。
+  const { summariseRun } = await import("../lib/monitor/health");
+  const s = summariseRun(results);
+  const summaryLines = [
+    "Monitor run:",
+    `Sources: ${s.total}`,
+    `Success (fetched): ${s.success}`,
+    `Blocked: ${s.blocked}`,
+    `Timeout: ${s.timeout}`,
+    `HTTP error: ${s.httpError}`,
+    `Parse/structure error: ${s.parseError}`,
+    `Meaningful changes: ${s.meaningfulChanges}`,
+    `News generated: ${s.newsGenerated}`,
+    `Review required: ${s.reviewRequired}`,
+    `Published: ${s.published}`,
+  ];
+  console.log("\n[monitor] " + summaryLines.join("\n[monitor] "));
+
+  // 永続的なブロック/タイムアウトを可視化（GitHub アノテーション。本文・秘匿値は出さない）。
+  for (const r of results) {
+    if (r.outcome === "failure") {
+      console.log(`::warning title=Monitor source ${r.sourceId}::fetch ${r.fetchStatus ?? "failed"} (${r.organisation})`);
+    }
   }
 
-  const failures = results.filter((r) => r.outcome === "failure").length;
+  // GitHub Actions のステップサマリに簡潔なヘルスを書き出す（存在すれば）。
+  const stepSummary = process.env.GITHUB_STEP_SUMMARY;
+  if (stepSummary) {
+    const md = [
+      "## Official source monitor",
+      "",
+      `| metric | count |`,
+      `| --- | --- |`,
+      `| Sources | ${s.total} |`,
+      `| Success (fetched) | ${s.success} |`,
+      `| Blocked | ${s.blocked} |`,
+      `| Timeout | ${s.timeout} |`,
+      `| HTTP error | ${s.httpError} |`,
+      `| Parse/structure error | ${s.parseError} |`,
+      `| Meaningful changes | ${s.meaningfulChanges} |`,
+      `| News generated | ${s.newsGenerated} |`,
+      `| Review required | ${s.reviewRequired} |`,
+      `| Published | ${s.published} |`,
+      "",
+    ];
+    if (s.success < s.total) {
+      md.push("> ⚠️ 一部の公式ソースが取得できていません（blocked/timeout/parse）。`npm run monitor:health` で詳細を確認してください。", "");
+    }
+    try {
+      appendFileSync(stepSummary, md.join("\n"));
+    } catch {
+      /* サマリ書き込み失敗は致命ではない */
+    }
+  }
+
   console.log(
-    `\n[monitor] DONE. total=${results.length} failures=${failures} autoPublished=${counts["auto_published"] ?? 0} review=${counts["review"] ?? 0}`,
+    `\n[monitor] DONE. total=${s.total} success=${s.success} failures=${s.failures} published=${s.published} review=${s.reviewRequired}`,
   );
-  // 取得失敗があっても「変更なし」とは扱わない。ジョブは成功終了しつつ失敗件数を明示。
+
+  // 失敗ポリシー: 個別ソースの一時的失敗ではジョブを落とさない。ただし全ソースが
+  // 取得失敗（＝システム的障害）の場合は非ゼロ終了で強く可視化する。
+  if (s.total > 0 && s.success === 0) {
+    console.error("[monitor] SYSTEMIC FAILURE: すべての公式ソースの取得に失敗しました。");
+    process.exit(1);
+  }
 }
 
 main().catch((err) => {

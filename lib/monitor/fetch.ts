@@ -12,13 +12,18 @@ const USER_AGENT =
 /**
  * 単一 URL を取得する。タイムアウト・HTTP エラー・ブロック（403/429）を区別する。
  * @param fetchImpl テスト用に fetch を差し替え可能。
+ * @param timeoutMs ソース固有のタイムアウト上書き（未指定なら全体設定を使用）。
  */
 export async function fetchSource(
   url: string,
   fetchImpl: typeof fetch = fetch,
+  timeoutMs?: number,
 ): Promise<FetchResult> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), monitorConfig.fetchTimeoutMs);
+  const timer = setTimeout(
+    () => controller.abort(),
+    timeoutMs ?? monitorConfig.fetchTimeoutMs,
+  );
   try {
     const res = await fetchImpl(url, {
       method: "GET",

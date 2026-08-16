@@ -219,3 +219,25 @@
 - ニュース統合: [lib/newsAuto.ts](lib/newsAuto.ts)（`/news`・`/news/[slug]`・ホーム・sitemap にマージ）
 - Actions: [.github/workflows/monitor-sources.yml](.github/workflows/monitor-sources.yml)
 - 参照: [OFFICIAL_SOURCE_REGISTRY.md](OFFICIAL_SOURCE_REGISTRY.md)
+
+---
+
+## 10. 追補: 実行時ヘルス可視化（監査）
+
+ワークフローの存在・終了コード 0 を「監視が機能している」とみなさないため、実行時の取得健全性を可視化した。
+
+- **ソースヘルス導出**（DB 列を追加せず既存 `monitor_source_state` から）:
+  [lib/monitor/health.ts](lib/monitor/health.ts) — healthy / degraded / failing / never_succeeded。
+- **読み取り専用 CLI**: `npm run monitor:health`（[scripts/monitor-health.mts](scripts/monitor-health.mts)）。
+  取得・Gemini・ベースライン変更を行わない。
+- **日次ジョブの簡潔サマリ**: Success/Blocked/Timeout/HTTP error/Parse error/Meaningful changes/
+  News generated/Review required/Published を出力し、失敗は `::warning::`＋`GITHUB_STEP_SUMMARY` に可視化。
+  **生の政府本文・秘匿値は出力しない。**
+- **失敗ポリシー**: 個別ソースの一時的失敗ではジョブを落とさない。**全ソース取得失敗（システム的障害）**の
+  ときのみ非ゼロ終了。ヘルスステップ（`if: always()`）を追加。
+- **ソース固有タイムアウト**: Fair Work に `fetchTimeoutMs=30000` を付与し、timeout に 1 回だけ再試行。
+- **実測（読み取り専用プローブ）**: Home Affairs=403 / ATO=403 / Fair Work=timeout(30s) / Service NSW=404。
+  現在の `monitor_source_state` は全 18 = `never_succeeded`。**「自動監視が正常」とは言えない**。
+  詳細と degraded ソースの Manual Seed フォールバックは
+  [OFFICIAL_SOURCE_MONITOR_HEALTH_REPORT.md](OFFICIAL_SOURCE_MONITOR_HEALTH_REPORT.md)。
+- Bot 保護の回避（UA 偽装・プロキシ・ステルス・CAPTCHA/Cloudflare 回避）は**行っていない**。

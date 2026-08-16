@@ -10,8 +10,9 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { resolve, dirname, join } from "node:path";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -524,3 +525,164 @@ test("resolveOfficialSource: 最長パス一致で適切なソース", () => {
   const s2 = resolveOfficialSource(HA_417);
   assert.equal(s2?.sourceId, "homeaffairs-whv-417");
 });
+
+// =========================================================
+// contentFile サポート（Part A）
+// =========================================================
+const CF_BODY =
+  "The Working Holiday visa pricing estimator was updated by the Department of Home Affairs. Working holiday makers should check the official visa application charge before applying. This is copied verbatim from the official page for grounding purposes.";
+
+function tmpSeedDir(): string {
+  return mkdtempSync(join(tmpdir(), "seedcf-"));
+}
+
+test("A1/A2: 有効な contentFile を読み込む", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "official.txt"), CF_BODY, "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "公式タイトル", publishedAt: "2026-07-30", contentFile: "./official.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, true);
+  if (build.ok) {
+    assert.ok(build.candidate.content.includes("pricing estimator"));
+    assert.equal(build.candidate.officialPublishedAt, "2026-07-30");
+    assert.equal(build.mode, "manual_content");
+  }
+});
+
+test("A2: UTF-8（日本語）contentFile を読み込む", async () => {
+  const dir = tmpSeedDir();
+  const jp = "ワーキングホリデービザの申請料に関する公式ページが更新されました。".repeat(6);
+  writeFileSync(join(dir, "jp.txt"), jp, "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", contentFile: "./jp.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, true);
+  if (build.ok) assert.ok(build.candidate.content.includes("ワーキングホリデー"));
+});
+
+test("A7: 見つからない contentFile は CONTENT_FILE_NOT_FOUND", async () => {
+  const dir = tmpSeedDir();
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", contentFile: "./missing.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) {
+    assert.equal(build.result, "content_file_error");
+    assert.ok(build.detail.includes("CONTENT_FILE_NOT_FOUND"));
+  }
+});
+
+test("A7: 空の contentFile は CONTENT_FILE_EMPTY", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "empty.txt"), "   \n  ", "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", contentFile: "./empty.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) assert.ok(build.detail.includes("CONTENT_FILE_EMPTY"));
+});
+
+test("A7: 大きすぎる contentFile は CONTENT_FILE_TOO_LARGE", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "big.txt"), "a".repeat(300 * 1024), "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", contentFile: "./big.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) assert.ok(build.detail.includes("CONTENT_FILE_TOO_LARGE"));
+});
+
+test("A3/A7: 許可ルート外（トラバーサル）は拒否", async () => {
+  const dir = tmpSeedDir();
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", contentFile: "../../../../etc/passwd" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) assert.ok(build.detail.includes("CONTENT_FILE_OUTSIDE_ALLOWED_ROOT"));
+});
+
+test("A2/A7: content と contentFile の同時指定は拒否", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "x.txt"), CF_BODY, "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", content: CF_BODY, contentFile: "./x.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) {
+    assert.equal(build.result, "content_conflict");
+    assert.ok(build.detail.includes("CONTENT_AND_CONTENT_FILE_CONFLICT"));
+  }
+});
+
+test("A6/A8: インライン content は従来どおり動作", async () => {
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", content: CF_BODY },
+    { importedAt: new Date().toISOString() },
+    {},
+  );
+  assert.equal(build.ok, true);
+});
+
+test("A4: URL 取得失敗でも contentFile で成功", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "fallback.txt"), CF_BODY, "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", publishedAt: "2026-07-30", contentFile: "./fallback.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    { fetchImpl: fetchStatus(403) }, // 取得は失敗するが contentFile があるので使わない
+  );
+  assert.equal(build.ok, true);
+});
+
+test("A2: contentFile ありでタイトル欠落は missing_title", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "c.txt"), CF_BODY, "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, publishedAt: "2026-07-30", contentFile: "./c.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) assert.equal(build.result, "missing_title");
+});
+
+test("A2: contentFile ありで日付欠落は invalid_date", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "c.txt"), CF_BODY, "utf8");
+  const build = await buildCandidateFromSeed(
+    { url: HA_PRICING, title: "T", contentFile: "./c.txt" },
+    { importedAt: new Date().toISOString(), baseDir: dir },
+    {},
+  );
+  assert.equal(build.ok, false);
+  if (!build.ok) assert.equal(build.result, "invalid_date");
+});
+
+test("A4/A6: contentFile が既存パイプラインを通り公開される（dry-run）", async () => {
+  const dir = tmpSeedDir();
+  writeFileSync(join(dir, "pub.txt"), CF_BODY, "utf8");
+  const r = await runSeedBackfill({
+    seeds: [{ url: HA_PRICING, title: "公式: ビザ費用の更新", publishedAt: "2026-06-18", contentFile: "./pub.txt" }],
+    mode: "dry_run",
+    seedBaseDir: dir,
+    deps: { admin: null, classifyCaller: classifyHighly, generateCaller: genGood },
+  });
+  assert.equal(r.publishedCount, 1);
+  assert.equal(r.seeds[0].result, "published");
+});
+

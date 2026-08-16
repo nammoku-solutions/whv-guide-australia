@@ -107,6 +107,11 @@ export type SourceDefinition = {
    * みなし、バックフィル非対応（historical_backfill_unsupported）として扱う。
    */
   historical?: HistoricalSourceConfig;
+  /**
+   * ソース固有の取得タイムアウト（ms, 任意）。応答は正常だが遅いソース向け。
+   * 未設定なら全体設定（MONITOR_FETCH_TIMEOUT_MS）を使う。
+   */
+  fetchTimeoutMs?: number;
 };
 
 /** 取得結果（決定的処理の入力）。 */

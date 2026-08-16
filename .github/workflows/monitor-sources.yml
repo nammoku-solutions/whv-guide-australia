@@ -52,4 +52,15 @@ jobs:
           AI_EMBEDDING_VERSION: ${{ secrets.AI_EMBEDDING_VERSION }}
           NEWS_AUTO_PUBLISH_LOW_RISK: ${{ vars.NEWS_AUTO_PUBLISH_LOW_RISK }}
           NEWS_AUTO_PUBLISH_HIGH_RISK: ${{ vars.NEWS_AUTO_PUBLISH_HIGH_RISK }}
+        # 失敗ポリシー: 個別ソースの一時的な blocked/timeout ではジョブを落とさない
+        # （警告アノテーション + ステップサマリで可視化）。全ソースが取得失敗した
+        # システム的障害の場合のみ、monitor スクリプトが非ゼロ終了しジョブを失敗させる。
         run: npm run monitor
+
+      - name: Source health (read-only summary)
+        if: always()
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        # 状態の読み取りのみ（取得・生成・ハッシュ変更なし）。ヘルスをステップサマリへ。
+        run: npm run monitor:health

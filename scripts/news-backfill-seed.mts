@@ -73,6 +73,8 @@ const RESULT_LABEL: Record<string, string> = {
   missing_content: "本文不足",
   invalid_date: "日付不正",
   out_of_range: "範囲外",
+  content_conflict: "content/contentFile 競合",
+  content_file_error: "contentFile エラー",
   error: "エラー",
 };
 
@@ -95,6 +97,7 @@ function readSeedFile(file: string): SeedInput[] {
     title: s.title ?? null,
     publishedAt: s.publishedAt ?? null,
     content: s.content ?? null,
+    contentFile: s.contentFile ?? null,
   }));
 }
 
@@ -109,11 +112,14 @@ function printUsage() {
 
 オプション:
   --url <URL>         公式 URL（複数指定可）
-  --file <path>       シード JSON 配列（[{url,title?,publishedAt?,content?}]）
+  --file <path>       シード JSON 配列（[{url,title?,publishedAt?,content?,contentFile?}]）
   --from / --to       任意の公式日レンジ（範囲外シードは拒否）
   --dry-run           既定。書き込みなし
   --apply             実書き込み（要 Supabase service-role + migration 0012/0013）
   --allow-wide-range  --from/--to が広い場合の明示許可
+
+contentFile: 公式本文を貼り付けた UTF-8 .txt へのリポジトリルート相対パス。
+  content と contentFile の同時指定は不可。長文は contentFile を推奨。
 
 まず --dry-run を実行し、問題なければ --apply してください。`);
 }
@@ -169,7 +175,7 @@ async function main() {
   console.log(`[seed] mode=${mode} seeds=${seeds.length}${from ? ` range=${from}→${to}` : ""}`);
   if (mode === "dry_run") console.log("[seed] dry-run: News・AI 索引・監視ベースラインへの書き込みは行いません。");
 
-  const report = await runSeedBackfill({ seeds, from, to, mode, deps: {} });
+  const report = await runSeedBackfill({ seeds, from, to, mode, seedBaseDir: ROOT, deps: {} });
 
   console.log("\n==== 手動シード バックフィル レポート ====");
   console.log(`Mode: ${report.mode}${report.from ? `  Range: ${report.from} → ${report.to}` : ""}`);
