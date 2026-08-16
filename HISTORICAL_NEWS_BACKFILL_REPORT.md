@@ -4,6 +4,11 @@
 実行結果をまとめます。既存の公式ソース監視/ニュース自動化（`OFFICIAL_SOURCE_MONITOR_AND_NEWS_AUTOMATION_REPORT.md`）を
 **再利用**し、日次モニタとそのベースラインは一切変更していません。
 
+> **追記（手動シード）:** 政府サイトのサーバー側取得が blocked/timeout になる問題に対応するため、
+> オペレータが公式 URL（と必要なら公式本文）を与えて**同じ**バックフィルパイプラインへ投入する
+> 「手動シード（Manual Seed）」を追加しました。詳細は本文末尾の「手動シード」節と
+> [MANUAL_NEWS_SEED_GUIDE.md](MANUAL_NEWS_SEED_GUIDE.md) を参照してください。
+
 ```
 2026-06-01
    ↓  歴史的公式ニュース バックフィル（本機能・一度きり）
@@ -225,3 +230,67 @@ dry-run 無書き込み・apply 書き込み・公開分のみ増分インデッ
 - 公開/管理連携：[lib/newsAuto.ts](lib/newsAuto.ts) /
   [app/api/admin/monitor/route.ts](app/api/admin/monitor/route.ts) /
   [app/admin/monitor/page.tsx](app/admin/monitor/page.tsx)
+
+---
+
+## 10. 手動シード（Manual Seed）
+
+政府サイトのサーバー側取得が blocked/timeout になる問題への追加取り込み経路。オペレータが公式 URL
+（と必要なら公式本文）を与え、**同じ**バックフィルパイプライン（`processCandidate`）で処理する。
+別系統のニュース生成器は作っていない。
+
+### 10.1 アーキテクチャ（共有パイプラインの再利用）
+
+```
+自動アーカイブ探索 ┐
+                   ├→ HistoricalCandidate → processCandidate（共有） → news_items / article_impacts / AI 索引
+手動シード         ┘
+```
+
+- [lib/monitor/backfill/pipeline.ts](lib/monitor/backfill/pipeline.ts)：1 候補処理を
+  `processCandidate` / `tallyStats` / `resolveWriteReadiness` として抽出し、自動探索・手動シードで共有。
+- [lib/monitor/backfill/officialDomains.ts](lib/monitor/backfill/officialDomains.ts)：レジストリ由来の
+  `*.gov.au` 許可リスト、URL 正規化（http→https・フラグメント/トラッキング除去・末尾スラッシュ）、
+  **送信 URL と最終リダイレクト先の両方**を検証、レジストリソース解決（最長パス一致）。
+- [lib/monitor/backfill/seed.ts](lib/monitor/backfill/seed.ts)：`SeedInput` の検証、公式メタデータ抽出
+  （og:title / article:published_time / time / Last updated）、取得優先＋手動本文フォールバック、
+  `runSeedBackfill`（バッチ耐性）。日付・タイトルは**推測しない**（不足時は明確なエラー）。
+- CLI：[scripts/news-backfill-seed.mts](scripts/news-backfill-seed.mts)（`npm run news:backfill:seed`）。
+  `--url`（複数）/ `--file` / `--from` / `--to` / `--dry-run`（既定）/ `--apply`。
+- テンプレート：[news-backfill-seeds.example.json](news-backfill-seeds.example.json)（`.gitignore` で
+  `news-backfill-seeds.local.json` を除外）。
+- スキーマ：[supabase/migrations/0013_news_backfill_origin.sql](supabase/migrations/0013_news_backfill_origin.sql)
+  （`news_items.backfill_origin` / `news_backfill_runs.origin`。**0011/0012 は変更しない**）。
+- 管理表示：`/admin/monitor` に「手動シード・公式日・取込日」ラベル。既存の承認/却下動線をそのまま利用。
+- テスト：[scripts/backfill-seed.test.mts](scripts/backfill-seed.test.mts)（`npm run test:backfill:seed`, 31 ケース）。
+
+### 10.2 再利用した既存規則（別ルールを作らない）
+関連度分類・grounded 生成・`checkGrounding`・重複防止（手書き/自動/バックフィル/実行内）・
+公開ポリシー・リスク分類（高リスク=常に `review_required`）・記事影響（公式日考慮）・
+公開分のみの増分 AI 索引。手動シードは「強制公開」ではない。
+
+### 10.3 セキュリティ・隔離
+- 手動シードは live-monitor のベースライン（`monitor_source_state` / snapshots / changes / `content_hash` /
+  `last_checked` / `last_changed` / 失敗数）に**一切書き込まない**（構造/挙動の両方でテスト）。
+- 公開の無認証取り込み API は無し（特権 CLI + service-role のみ）。Bot 保護の回避はしない。
+- シードファイルの公式本文は `.gitignore` で誤コミットを防止（例テンプレートのみ追跡）。
+
+### 10.4 検証
+| 検証 | 結果 |
+| --- | --- |
+| `npm run test:backfill:seed`（31 ケース） | ✅ 31 pass / 0 fail |
+| `npm run test:backfill`（自動探索の回帰） | ✅ 33 pass |
+| `npm run test:monitor`（既存モニタ回帰） | ✅ 20 pass |
+| `npx tsc --noEmit` | ✅ エラーなし |
+| `npm run lint` | ✅ エラー 0（既存 warning 4 件のみ） |
+| `npm run build` | ✅ Compiled successfully |
+
+### 10.5 手動セットアップ
+- Supabase：[supabase/migrations/0013_news_backfill_origin.sql](supabase/migrations/0013_news_backfill_origin.sql)
+  を `0012` の後に適用（origin ラベル用。未適用でも取り込みは動作するが手動シード/アーカイブの区別ラベルは付かない）。
+- 実行（オペレータが公式 URL を収集後）：
+  ```
+  npm run news:backfill:seed -- --file news-backfill-seeds.local.json --dry-run
+  npm run news:backfill:seed -- --file news-backfill-seeds.local.json --apply
+  ```
+

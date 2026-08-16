@@ -49,7 +49,7 @@ export async function fetchSource(
     if (!raw || raw.trim().length === 0) {
       return { status: "unexpected_structure", httpStatus: res.status };
     }
-    return { status: "success", httpStatus: res.status, raw, contentType };
+    return { status: "success", httpStatus: res.status, raw, contentType, finalUrl: res.url };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     if (err instanceof Error && err.name === "AbortError") {

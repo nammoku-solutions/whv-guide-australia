@@ -41,6 +41,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# manual news-seed operator input (keep the example template tracked)
+news-backfill-seeds.local.json
+*.seeds.local.json
+news-backfill-seeds.*.local.json
+
 # modernization tooling artifacts
 .github/modernize/
 *:Zone.Identifier

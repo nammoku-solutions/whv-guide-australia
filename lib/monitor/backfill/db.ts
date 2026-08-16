@@ -29,16 +29,33 @@ export async function backfillColumnsReady(admin: SupabaseClient): Promise<boole
   return !cols.error;
 }
 
+/** マイグレーション 0013（backfill_origin 列）が適用済みか。未適用でも書き込みは可能。 */
+export async function originColumnReady(admin: SupabaseClient): Promise<boolean> {
+  const cols = await admin.from("news_items").select("backfill_origin").limit(1);
+  return !cols.error;
+}
+
+export type BackfillOrigin = "archive" | "manual_seed";
+
 /** 実行レコードを作成し id を返す。 */
 export async function createRun(
   admin: SupabaseClient,
   from: string,
   to: string,
   mode: "dry_run" | "apply",
+  origin?: BackfillOrigin,
 ): Promise<string | null> {
+  const row: Record<string, unknown> = {
+    from_date: from,
+    to_date: to,
+    mode,
+    status: "running",
+  };
+  // origin 列は 0013 でのみ存在。呼び出し側が存在を確認したときだけ含める。
+  if (origin) row.origin = origin;
   const { data, error } = await admin
     .from("news_backfill_runs")
-    .insert({ from_date: from, to_date: to, mode, status: "running" })
+    .insert(row)
     .select("id")
     .maybeSingle();
   if (error) return null;
@@ -121,6 +138,8 @@ export async function insertBackfillNews(
     status: "published" | "review_required";
     runId: string | null;
     importedAt: string;
+    /** 0013 適用済みのときのみ設定（archive | manual_seed）。 */
+    origin?: BackfillOrigin;
   },
 ): Promise<string | null> {
   const c = args.candidate;
@@ -130,39 +149,43 @@ export async function insertBackfillNews(
     args.news.whatToDo ? `取るべき行動：${args.news.whatToDo}` : "",
   ].filter((s) => s && s.trim());
 
+  const payload: Record<string, unknown> = {
+    slug: args.slug,
+    title: args.news.title,
+    summary: args.news.summary,
+    what_changed: args.news.whatChanged || null,
+    who_is_affected: args.news.whoIsAffected || null,
+    what_to_do: args.news.whatToDo || null,
+    body,
+    category: args.source.category,
+    change_group: args.source.changeGroup,
+    source_organisation: args.source.organisation,
+    source_title: args.source.sourceName,
+    // 公式の告知 URL を出典として保持（アーカイブ記事 URL 等）。
+    source_url: c.officialUrl || args.source.url,
+    source_published_at: `${c.officialPublishedAt}T00:00:00Z`,
+    source_updated_at: c.officialUpdatedAt ? `${c.officialUpdatedAt}T00:00:00Z` : null,
+    // 取り込み日時（実際にこのバックフィルが検出した日時）。公式日とは別。
+    detected_at: args.importedAt,
+    verified_at: args.importedAt.slice(0, 10),
+    risk_level: args.riskLevel,
+    confidence: args.news.confidence,
+    related_article_ids: args.relatedArticleIds,
+    related_guide_slug: args.relatedGuideSlug,
+    publication_mode: args.publicationMode,
+    status: args.status,
+    content_hash: args.contentHash,
+    event_key: args.eventKey,
+    is_backfill: true,
+    backfill_run_id: args.runId,
+    published_at: args.status === "published" ? args.importedAt : null,
+  };
+  // backfill_origin 列は 0013 でのみ存在。存在確認済みのときだけ含める。
+  if (args.origin) payload.backfill_origin = args.origin;
+
   const { data, error } = await admin
     .from("news_items")
-    .insert({
-      slug: args.slug,
-      title: args.news.title,
-      summary: args.news.summary,
-      what_changed: args.news.whatChanged || null,
-      who_is_affected: args.news.whoIsAffected || null,
-      what_to_do: args.news.whatToDo || null,
-      body,
-      category: args.source.category,
-      change_group: args.source.changeGroup,
-      source_organisation: args.source.organisation,
-      source_title: args.source.sourceName,
-      // 公式の告知 URL を出典として保持（アーカイブ記事 URL 等）。
-      source_url: c.officialUrl || args.source.url,
-      source_published_at: `${c.officialPublishedAt}T00:00:00Z`,
-      source_updated_at: c.officialUpdatedAt ? `${c.officialUpdatedAt}T00:00:00Z` : null,
-      // 取り込み日時（実際にこのバックフィルが検出した日時）。公式日とは別。
-      detected_at: args.importedAt,
-      verified_at: args.importedAt.slice(0, 10),
-      risk_level: args.riskLevel,
-      confidence: args.news.confidence,
-      related_article_ids: args.relatedArticleIds,
-      related_guide_slug: args.relatedGuideSlug,
-      publication_mode: args.publicationMode,
-      status: args.status,
-      content_hash: args.contentHash,
-      event_key: args.eventKey,
-      is_backfill: true,
-      backfill_run_id: args.runId,
-      published_at: args.status === "published" ? args.importedAt : null,
-    })
+    .insert(payload)
     .select("id")
     .maybeSingle();
   if (error) return null;

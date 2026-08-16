@@ -117,6 +117,8 @@ export type FetchResult = {
   raw?: string;
   contentType?: string;
   error?: string;
+  /** リダイレクト後の最終 URL（公式ドメイン検証に使う, あれば）。 */
+  finalUrl?: string;
 };
 
 /** 抽出後の正規化コンテンツ。 */

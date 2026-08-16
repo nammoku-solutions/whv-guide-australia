@@ -36,6 +36,7 @@ type NewsRow = {
   detected_at: string;
   related_guide_slug: string | null;
   is_backfill: boolean | null;
+  backfill_origin: string | null;
 };
 
 type ImpactRow = {
@@ -170,7 +171,7 @@ function Panel() {
                   </span>
                   {n.is_backfill ? (
                     <span className="rounded-full bg-indigo-50 px-2 py-0.5 font-semibold text-indigo-700">
-                      歴史バックフィル・公式日 {n.source_published_at?.slice(0, 10) ?? "?"}・取込 {n.detected_at?.slice(0, 10)}
+                      {n.backfill_origin === "manual_seed" ? "手動シード" : "歴史バックフィル"}・公式日 {n.source_published_at?.slice(0, 10) ?? "?"}・取込 {n.detected_at?.slice(0, 10)}
                     </span>
                   ) : null}
                 </div>
