@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { Container } from "@/components/layout/Container";
+import { SaveButton } from "@/components/common/SaveButton";
 import { getAllNews, getNewsCategoryLabel } from "@/lib/news";
 import { getMergedNewsBySlug } from "@/lib/newsAuto";
 import { getArticleBySlug } from "@/lib/articles";
@@ -109,6 +110,9 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         </div>
         <h1 className="text-3xl font-extrabold leading-tight text-slate-900">{item.title}</h1>
         <p className="text-slate-600">{item.summary}</p>
+        <div className="pt-1">
+          <SaveButton itemType="news" itemId={item.slug} />
+        </div>
       </header>
 
       <article className="space-y-4 text-slate-700">

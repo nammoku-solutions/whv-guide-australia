@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { Container } from "@/components/layout/Container";
 import { VerifiedDate } from "@/components/articles/VerifiedDate";
 import { OfficialSourceBox } from "@/components/articles/OfficialSourceBox";
+import { SaveButton } from "@/components/common/SaveButton";
 import type { ToolMeta } from "@/lib/tools/types";
 
 type ToolShellProps = {
@@ -38,6 +39,10 @@ export function ToolShell({ tool, disclaimer, children }: ToolShellProps) {
         <h1 className="mt-2 text-3xl font-extrabold">{tool.title}</h1>
         <p className="mt-3 max-w-2xl text-sky-50">{tool.description}</p>
       </section>
+
+      <div className="flex items-center justify-end">
+        <SaveButton itemType="tool" itemId={tool.slug} />
+      </div>
 
       {tool.verifiedAt ? <VerifiedDate verifiedAt={tool.verifiedAt} /> : null}
 

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { ListingCard } from "@/components/market/ListingCard";
 import { ListingFilters } from "@/components/market/ListingFilters";
+import { SaveSearchButton } from "@/components/market/SaveSearchButton";
 import { AdBanner } from "@/components/ads/AdBanner";
 import { getListingsByType, type ListingFilters as Filters } from "@/lib/listings";
 import { getListingTypeConfig, LISTING_TYPES } from "@/lib/listingConfig";
@@ -73,6 +74,10 @@ export default async function MarketTypePage({ params, searchParams }: PageProps
       </div>
 
       <ListingFilters type={type} />
+
+      <div className="flex justify-end">
+        <SaveSearchButton type={type} />
+      </div>
 
       {listings.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">

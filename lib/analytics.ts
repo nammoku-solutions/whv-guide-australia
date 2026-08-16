@@ -15,8 +15,21 @@ export type MarketplaceEvent =
  */
 export type DocumentEvent = "document_preview" | "document_download";
 
+/**
+ * マイページ・保存アイテム・通知まわりのイベント。
+ * ユーザーID・メール・メッセージ本文・応募内容などの個人情報は絶対に送らない
+ * （item_type / notification_type などの非個人的な区分値のみ）。
+ */
+export type PersonalisationEvent =
+  | "save_item"
+  | "unsave_item"
+  | "dashboard_view"
+  | "notification_open"
+  | "notification_target_click"
+  | "saved_search_create";
+
 export function trackEvent(
-  name: MarketplaceEvent | DocumentEvent,
+  name: MarketplaceEvent | DocumentEvent | PersonalisationEvent,
   params: Record<string, string | number | boolean> = {},
 ): void {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;

@@ -15,6 +15,7 @@
     "validate:articles": "node scripts/validate-articles.mjs",
     "test:content": "node --test scripts/content.test.mjs",
     "test:tools": "node --test scripts/tools.test.mjs",
+    "test:notifications": "node --test scripts/notifications.test.mjs",
     "test:ai": "tsx --test scripts/ai.test.mts",
     "test:monitor": "tsx --test scripts/monitor.test.mts",
     "ai:index": "tsx scripts/ai-index.mts",

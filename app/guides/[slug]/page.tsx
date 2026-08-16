@@ -22,6 +22,7 @@ import { FeedbackRequestLink } from "@/components/articles/FeedbackRequestLink";
 import { ArticleAd } from "@/components/ads/ArticleAd";
 import { ArticleFeedback } from "@/components/feedback/ArticleFeedback";
 import { ShareButtons } from "@/components/common/ShareButtons";
+import { SaveButton } from "@/components/common/SaveButton";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { Container } from "@/components/layout/Container";
 import { getArticleBySlug, getAutoRelatedArticles, getCategoryLabel, getAllArticles } from "@/lib/articles";
@@ -201,7 +202,10 @@ export default async function GuideDetailPage({ params }: GuideDetailPageProps) 
         ]}
       />
       <ArticleHeader article={article} />
-      <ShareButtons title={article.title} />
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <ShareButtons title={article.title} />
+        <SaveButton itemType="article" itemId={article.slug} />
+      </div>
 
       {article.verifiedAt ? (
         <VerifiedDate verifiedAt={article.verifiedAt} updatedAt={article.updatedAt} />

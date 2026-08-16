@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { isModerator } from "@/lib/moderation";
+import { useUnreadCount } from "@/components/notifications/useUnreadCount";
 
 type HeaderAuthProps = {
   /** アカウントメニューが開いているか（ヘッダーのオーバーレイ調停用）。 */
@@ -14,6 +15,7 @@ type HeaderAuthProps = {
 
 export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
   const { isLoggedIn, profile, loading, session, signOut } = useAuth();
+  const unreadCount = useUnreadCount();
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -106,7 +108,7 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls={menuId}
-        className="flex h-10 items-center gap-1.5 rounded-full border border-slate-200 pl-1 pr-2 text-sm text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
+        className="relative flex h-10 items-center gap-1.5 rounded-full border border-slate-200 pl-1 pr-2 text-sm text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
       >
         <span
           aria-hidden="true"
@@ -115,6 +117,14 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
         >
           {profile.avatarUrl ? "" : initial}
         </span>
+        {unreadCount > 0 ? (
+          <span
+            className="absolute left-6 top-0.5 min-w-[1rem] rounded-full bg-rose-500 px-1 text-center text-[10px] font-bold leading-4 text-white"
+            aria-label={`未読の通知が${unreadCount}件あります`}
+          >
+            {unreadCount > 9 ? "9+" : unreadCount}
+          </span>
+        ) : null}
         <span className="hidden max-w-[8rem] truncate font-medium sm:inline">{displayName}</span>
         <svg
           viewBox="0 0 20 20"
@@ -145,6 +155,29 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
             {email ? <p className="truncate text-xs text-slate-500">{email}</p> : null}
           </div>
           <div className="my-1 border-t border-slate-100" aria-hidden="true" />
+          <Link
+            href="/mypage"
+            role="menuitem"
+            data-menu-item
+            onClick={handleSelect}
+            className="block rounded-lg px-3 py-2 text-slate-700 transition hover:bg-sky-50 hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+          >
+            マイページ
+          </Link>
+          <Link
+            href="/notifications"
+            role="menuitem"
+            data-menu-item
+            onClick={handleSelect}
+            className="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 transition hover:bg-sky-50 hover:text-sky-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+          >
+            <span>通知</span>
+            {unreadCount > 0 ? (
+              <span className="min-w-[1.25rem] rounded-full bg-rose-500 px-1.5 text-center text-xs font-bold leading-5 text-white">
+                {unreadCount > 99 ? "99+" : unreadCount}
+              </span>
+            ) : null}
+          </Link>
           <Link
             href="/profile"
             role="menuitem"
