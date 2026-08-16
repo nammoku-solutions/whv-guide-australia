@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { Container } from "@/components/layout/Container";
 import { getFeaturedArticles } from "@/lib/articles";
 import { getLatestForumPosts } from "@/lib/forum";
-import { getLatestNews, getNewsCategoryLabel } from "@/lib/news";
+import { getNewsCategoryLabel } from "@/lib/news";
+import { getLatestMergedNews } from "@/lib/newsAuto";
 import { ArticleList } from "@/components/articles/ArticleList";
 import { PostCard } from "@/components/forum/PostCard";
 import { AdBanner } from "@/components/ads/AdBanner";
@@ -24,7 +25,7 @@ export const revalidate = 60;
 export default async function Home() {
   const featuredArticles = getFeaturedArticles(4);
   const latestPosts = await getLatestForumPosts(3);
-  const latestNews = getLatestNews(3);
+  const latestNews = await getLatestMergedNews(3);
 
   const itemListJsonLd = {
     "@context": "https://schema.org",

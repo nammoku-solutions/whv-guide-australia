@@ -1,0 +1,55 @@
+# 公式情報源の日次モニタリング & ニュース自動化。
+#
+# 決定的な取得 → 変更検知 → （変更時のみ）関連度分類・日本語ニュース生成 →
+# 公開ポリシー判定 → 記事影響分析 → 自動公開分のみ AI インデックス更新。
+# 無変更ページでは Gemini を呼ばない。取得失敗は「変更なし」に丸めない。
+#
+# 必要なリポジトリ Secrets（Settings -> Secrets and variables -> Actions）:
+#   GEMINI_API_KEY
+#   NEXT_PUBLIC_SUPABASE_URL
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY   (公開ニュース読み取り用。任意)
+#   SUPABASE_SERVICE_ROLE_KEY
+#   AI_EMBEDDING_VERSION            (任意。未設定なら 'v1')
+# 任意の設定変数（Variables）:
+#   NEWS_AUTO_PUBLISH_LOW_RISK      (既定 true)
+#   NEWS_AUTO_PUBLISH_HIGH_RISK     (既定 false)
+# シークレットはログに出力しない。
+name: Monitor Official Sources
+
+on:
+  schedule:
+    # 毎日 UTC 19:00（オーストラリア東部の朝ごろ）。必要に応じて調整。
+    - cron: "0 19 * * *"
+  workflow_dispatch: {}
+
+# 監視ジョブの多重実行を防ぐ（不整合な書き込み/インデックス更新を避ける）。
+concurrency:
+  group: monitor-sources
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run source monitor (fetch -> detect -> generate -> store -> index)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AI_EMBEDDING_VERSION: ${{ secrets.AI_EMBEDDING_VERSION }}
+          NEWS_AUTO_PUBLISH_LOW_RISK: ${{ vars.NEWS_AUTO_PUBLISH_LOW_RISK }}
+          NEWS_AUTO_PUBLISH_HIGH_RISK: ${{ vars.NEWS_AUTO_PUBLISH_HIGH_RISK }}
+        run: npm run monitor

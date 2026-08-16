@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/siteConfig";
 import { getAllArticles, getArticleCategories } from "@/lib/articles";
 import { getAllForumPosts, getForumCategories } from "@/lib/forum";
-import { getAllNews } from "@/lib/news";
+import { getMergedNews } from "@/lib/newsAuto";
 import { getPublishedNewsTemplates } from "@/lib/newsTemplates";
 import { getPublishedTools } from "@/lib/tools/registry";
 
@@ -43,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       { path: "/community", priority: 0.9, changeFrequency: "daily" },
       { path: "/tools", priority: 0.8, changeFrequency: "monthly" },
       { path: "/news", priority: 0.8, changeFrequency: "weekly" },
+      { path: "/changes", priority: 0.7, changeFrequency: "daily" },
       { path: "/news/templates", priority: 0.6, changeFrequency: "monthly" },
       { path: "/request", priority: 0.5, changeFrequency: "monthly" },
       { path: "/about", priority: 0.4, changeFrequency: "yearly" },
@@ -71,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const newsRoutes: MetadataRoute.Sitemap = getAllNews().map((item) => ({
+  const newsRoutes: MetadataRoute.Sitemap = (await getMergedNews()).map((item) => ({
     url: `${siteConfig.url}/news/${item.slug}`,
     lastModified: new Date(item.date),
     changeFrequency: "monthly",

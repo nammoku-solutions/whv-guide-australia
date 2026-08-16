@@ -16,8 +16,10 @@
     "test:content": "node --test scripts/content.test.mjs",
     "test:tools": "node --test scripts/tools.test.mjs",
     "test:ai": "tsx --test scripts/ai.test.mts",
+    "test:monitor": "tsx --test scripts/monitor.test.mts",
     "ai:index": "tsx scripts/ai-index.mts",
-    "ai:reindex": "tsx scripts/ai-index.mts --reindex"
+    "ai:reindex": "tsx scripts/ai-index.mts --reindex",
+    "monitor": "tsx scripts/monitor-sources.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

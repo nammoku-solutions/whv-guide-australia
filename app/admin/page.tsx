@@ -36,6 +36,12 @@ function Dashboard() {
           <p className="text-sm text-slate-500">未対応のリクエスト</p>
           <p className="mt-2 text-3xl font-bold text-sky-700">{feedbackCount ?? "—"}</p>
         </Link>
+        <Link href="/admin/monitor" className="rounded-2xl border border-slate-200 bg-white p-6 sm:col-span-2">
+          <p className="text-sm text-slate-500">公式情報モニタリング</p>
+          <p className="mt-2 text-lg font-bold text-emerald-700">
+            検出された変更・自動公開ニュース・レビュー要求・記事影響を確認 →
+          </p>
+        </Link>
       </div>
     </Container>
   );

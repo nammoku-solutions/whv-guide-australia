@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { Container } from "@/components/layout/Container";
-import { getAllNews, getNewsBySlug, getNewsCategoryLabel } from "@/lib/news";
+import { getAllNews, getNewsCategoryLabel } from "@/lib/news";
+import { getMergedNewsBySlug } from "@/lib/newsAuto";
 import { getArticleBySlug } from "@/lib/articles";
 import { siteConfig, absoluteUrl } from "@/lib/siteConfig";
 
@@ -11,13 +12,17 @@ type NewsDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+// 手書きニュースは静的生成。自動ニュースの未知 slug はオンデマンド生成（既定の
+// dynamicParams=true）＋ ISR（1時間）で反映する。
+export const revalidate = 3600;
+
 export function generateStaticParams() {
   return getAllNews().map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({ params }: NewsDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const item = getNewsBySlug(slug);
+  const item = await getMergedNewsBySlug(slug);
   if (!item) {
     return { title: "ニュースが見つかりません" };
   }
@@ -43,7 +48,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps): Promise
 
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const { slug } = await params;
-  const item = getNewsBySlug(slug);
+  const item = await getMergedNewsBySlug(slug);
   if (!item) {
     notFound();
   }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { Container } from "@/components/layout/Container";
-import { getAllNews, getNewsCategoryLabel } from "@/lib/news";
+import { getNewsCategoryLabel } from "@/lib/news";
+import { getMergedNews } from "@/lib/newsAuto";
 import { siteConfig, absoluteUrl } from "@/lib/siteConfig";
 
 export const metadata: Metadata = {
@@ -12,8 +13,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "/news" },
 };
 
-export default function NewsPage() {
-  const news = getAllNews();
+// 自動生成ニュースを反映するため ISR（1時間）で再検証する。
+export const revalidate = 3600;
+
+export default async function NewsPage() {
+  const news = await getMergedNews();
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
@@ -57,6 +61,12 @@ export default function NewsPage() {
           className="mt-4 inline-flex items-center gap-1 rounded-full bg-white/15 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-white/25"
         >
           ニューステンプレート集を見る →
+        </Link>
+        <Link
+          href="/changes"
+          className="mt-4 ml-2 inline-flex items-center gap-1 rounded-full bg-white/15 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-white/25"
+        >
+          最近の変更点を見る →
         </Link>
       </section>
 
