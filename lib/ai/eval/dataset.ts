@@ -20,6 +20,14 @@ export type EvalCase = {
   risk: RiskLevel;
   /** 参考: 関連しそうな記事カテゴリ/slug（retrieval 評価用ヒント）。 */
   relevantHints?: string[];
+  /** 期待する構造化ケイパビリティ（ルーティング検証用、あれば）。 */
+  expectedCapability?: string;
+  /** 認証必須のケイパビリティか（未ログイン拒否テスト用）。 */
+  requiresAuth?: boolean;
+  /** 期待する掲載サブ意図（job/housing/vehicle）。 */
+  expectedListingIntent?: "job" | "housing" | "vehicle" | "marketplace" | "unknown";
+  /** 期待する本人データ意図。 */
+  expectedPersonalIntent?: "applications" | "saved" | "notifications" | "eighty_eight";
 };
 
 export const evalCases: EvalCase[] = [
@@ -80,4 +88,29 @@ export const evalCases: EvalCase[] = [
   { question: "Pythonのバグを直して", expectedRoute: "OUT_OF_SCOPE", supported: false, risk: "low" },
   { question: "おすすめのアニメ映画は？", expectedRoute: "OUT_OF_SCOPE", supported: false, risk: "low" },
   { question: "ビットコインの価格予想して", expectedRoute: "OUT_OF_SCOPE", supported: false, risk: "low" },
+
+  // --- LISTING（ライブ掲載検索）---
+  { question: "Gattonで求人ある？", expectedRoute: "LISTING", supported: true, risk: "low", expectedCapability: "searchActiveJobs", expectedListingIntent: "job" },
+  { question: "Cairnsで仕事ある？", expectedRoute: "LISTING", supported: true, risk: "low", expectedCapability: "searchActiveJobs", expectedListingIntent: "job" },
+  { question: "Brisbaneで週250ドル以下の部屋ある？", expectedRoute: "LISTING", supported: true, risk: "low", expectedCapability: "searchActiveHousing", expectedListingIntent: "housing" },
+  { question: "QLDで6000ドル以下の車ある？", expectedRoute: "LISTING", supported: true, risk: "low", expectedCapability: "searchActiveVehicles", expectedListingIntent: "vehicle" },
+  { question: "オートマの車が売ってるか見たい", expectedRoute: "LISTING", supported: true, risk: "low", expectedCapability: "searchActiveVehicles", expectedListingIntent: "vehicle" },
+
+  // --- PERSONAL（認証必須）---
+  { question: "応募してる仕事どうなってる？", expectedRoute: "PERSONAL", supported: true, risk: "low", requiresAuth: true, expectedCapability: "getMyApplications", expectedPersonalIntent: "applications" },
+  { question: "保存してる求人見せて", expectedRoute: "PERSONAL", supported: true, risk: "low", requiresAuth: true, expectedCapability: "getMySavedItems", expectedPersonalIntent: "saved" },
+  { question: "何か新しいお知らせある？", expectedRoute: "PERSONAL", supported: true, risk: "low", requiresAuth: true, expectedCapability: "getMyNotifications", expectedPersonalIntent: "notifications" },
+
+  // --- CURRENT_UPDATE（直近の公式アップデート）---
+  { question: "最近ビザで何か変わった？", expectedRoute: "CURRENT_UPDATE", supported: true, risk: "high", expectedCapability: "getCurrentOfficialUpdates" },
+  { question: "最近417で変更あった？", expectedRoute: "CURRENT_UPDATE", supported: true, risk: "high", expectedCapability: "getCurrentOfficialUpdates" },
+  { question: "税金の最新の変更点は？", expectedRoute: "CURRENT_UPDATE", supported: true, risk: "high", expectedCapability: "getCurrentOfficialUpdates" },
+
+  // --- TOOL（ナビゲーション）---
+  { question: "88日カレンダーどこ？", expectedRoute: "TOOL", expectedToolSlug: "tool-88-day-calculator", supported: true, risk: "low" },
+  { question: "予算シミュレーターのページある？", expectedRoute: "TOOL", expectedToolSlug: "tool-weekly-budget-calculator", supported: true, risk: "low" },
+
+  // --- MIXED（記事＋掲載/ツール）---
+  { question: "Gattonの求人とファーム探しの注意点", expectedRoute: "MIXED", supported: true, risk: "medium", expectedListingIntent: "job", relevantHints: ["farm", "jobs"] },
+  { question: "この求人ならセカンドビザ取れる？", expectedRoute: "MIXED", supported: true, risk: "high", expectedListingIntent: "job", relevantHints: ["second-visa"] },
 ];

@@ -60,25 +60,24 @@ Version 1（セマンティックRAG）を土台に、**再設計なし**で品�
 
 ---
 
-## Phase 5 — ライブ・マーケットプレイス
+## Phase 5 — ライブ・マーケットプレイス ✅ 実装済み（構造化データ統合に統合）
 **目的**: 「Gattonで求人ある？」を記事ではなく**現在有効な掲載**で回答。
 
-1. `lib/ai/recommendations/listings.ts` の `searchListings` を実装:
-   ```ts
-   getAiAdminClient().from('listings')
-     .select('id,listing_type,title,location,details,created_at,expires_at')
-     .eq('status','active')
-     .or('expires_at.is.null,expires_at.gt.now()')
-     .eq('listing_type', q.listingType)     // 任意
-     .ilike('location', `%${q.location}%`)  // 任意
-   ```
-   古い掲載を埋め込んで「現在の空き」として扱わないこと（常に構造化クエリ）。
-2. `router.ts` の LISTING/MIXED 判定は実装済み（フラグで有効化）。`pipeline.ts` に listing 分岐を追加し、
-   結果を専用UIブロック（掲載カード）として返す。
-3. `AI_MARKETPLACE_SEARCH_ENABLED=true`。
-4. 掲載応答はグローバルキャッシュしない（個別・鮮度重視）。
+本フェーズは **Phase 7（構造化ライブデータ統合）** の一部として実装済み。詳細は
+`SITE_AI_STRUCTURED_DATA_INTEGRATION_REPORT.md` を参照。要点:
 
-**注意**: 個人・非公開の掲載データは返さない。RLS/権限を尊重（service-role でも公開相当のフィルタを適用）。
+1. ライブ掲載検索は `lib/ai/capabilities/listings.ts`（`searchActiveJobs` /
+   `searchActiveHousing` / `searchActiveVehicles`）が、既存の型付きデータアクセス
+   `lib/listings.ts` の `getListingsByType(type, ListingFilters)` を再利用して実装。
+   - anon サーバークライアント経由＝RLS により **公開・非隠蔽・非削除** のみ返り、
+   - `isPubliclyActive` が **status='active' かつ未期限切れ** を保証。
+   - 古い掲載を埋め込まず、常に構造化クエリ（数値/ロケーション/状態フィルタ）。
+2. `router.ts` の LISTING/MIXED 判定は実装済み（サブ意図 job/housing/vehicle）。
+   `pipeline.ts` に listing 分岐を追加し、結果を**掲載カード**として返す。
+3. `AI_MARKETPLACE_SEARCH_ENABLED` を既定 **true** に変更。
+4. 掲載応答はグローバルキャッシュしない（個別・鮮度重視）。価格は投稿者記載のみ・発明しない。
+
+**注意**: 個人・非公開の掲載データ（応募本文・連絡先・モデレーションメモ）は返さない。
 
 ---
 
@@ -113,3 +112,43 @@ Version 1（セマンティックRAG）を土台に、**再設計なし**で品�
 - 取得コンテンツは常に untrusted。プロンプトインジェクション防御を弱めない。
 - 出典URLは取得メタデータからのみ生成し、モデルに発明させない。
 - V1 の chat API・UI・型（`RetrievalCandidate` / `Reranker` / `AnswerVerifier`）を壊さない。
+
+---
+
+## Phase 7 — 構造化ライブデータ統合 ✅ 実装済み
+**目的**: 記事RAGに加え、**ライブ・マーケット掲載**・**本人の記録**・**直近の公式アップデート**を
+安全に扱う。RAG は再構築せず、Router / Retriever / Generator / ツール推薦 / 出典 / レート制限 /
+フィードバック / 分析を再利用する。
+
+詳細レポート: `SITE_AI_STRUCTURED_DATA_INTEGRATION_REPORT.md`。要点:
+
+- **中核原則**: 公開知識→記事RAG、ライブ・マーケット→構造化Supabaseクエリ、個人データ→
+  認証必須のサーバー側ケイパビリティ。**私的/ライブデータはベクトルDBに入れない**。
+- **ルート種別を拡張**: ARTICLE / TOOL / LISTING / PERSONAL / CURRENT_UPDATE / MIXED / OUT_OF_SCOPE（決定的）。
+- **型付きケイパビリティ**（任意SQLツールなし）: `searchActiveJobs` / `searchActiveHousing` /
+  `searchActiveVehicles` / `getMyApplications` / `getMySavedItems` / `getMyNotifications` /
+  `getMy88DayProgress` / `getCurrentOfficialUpdates` / `findRelevantSiteTools`。
+  最小化DTOのみを Gemini へ渡す。
+- **認証**: `userId` はサーバー側（Bearer検証）で導出。クライアント/モデルの任意 `userId` は使わない。
+- **共通エビデンスモデル**（`lib/ai/types.ts` の `Evidence`）: 種別・公開/非公開分類を持ち、
+  private は出典・分析へ出さない。
+- **信頼済みアクション**（`lib/ai/actions.ts`）: URLはレジストリ/DBメタデータからのみ生成。
+- **読み取り専用**: 応募/取り下げ/削除/ステータス変更/88日更新/売却/送信は不可。
+- フラグ: `AI_STRUCTURED_DATA_ENABLED` / `AI_PERSONAL_DATA_ENABLED` / `AI_CURRENT_UPDATES_ENABLED`
+  （既定 ON）、`AI_MARKETPLACE_SEARCH_ENABLED`（既定 ON）、`AI_MUTATIONS_ENABLED`（既定 OFF・未実装）。
+
+---
+
+## Phase 8（将来）— 安全なミューテーション（既定 OFF・未実装）
+**目的**: 「この求人に応募して」「保存して」等の**書き込み**を、明示的確認・サーバー認証・
+監査可能性を伴って安全に実行する。現状は設計のみ・機能は無効。
+
+必須要件（有効化前にすべて満たすこと）:
+1. **明示的なユーザー確認**（2段階）: AI は操作を提案するのみ。実行はユーザーが UI 上で
+   明示確認したときだけ、専用のミューテーションAPIを叩く。モデル出力だけでは実行しない。
+2. **サーバー側認証**: `userId` は Bearer 検証で導出。RLS＋既存トリガー
+   （`protect_application_fields` 等）に従い、本人権限のある操作のみ許可。
+3. **監査可能性**: すべての書き込みを追記型の監査ログ（誰が/いつ/何を/どのリクエスト由来か）に記録。
+4. **型付き・限定的**: 応募作成・取り下げ・保存/解除など、事前定義された最小の操作のみ。任意SQL不可。
+5. **冪等性・レート制限**: 二重送信防止、書き込みにも独立したレート制限。
+6. フラグ `AI_MUTATIONS_ENABLED=true` はこれらが揃うまで有効化しない。

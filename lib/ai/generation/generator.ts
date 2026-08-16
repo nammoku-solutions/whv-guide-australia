@@ -1,6 +1,11 @@
 import { aiConfig, getServerSecrets } from "../config";
-import type { EvidenceChunk, RiskLevel } from "../types";
-import { SYSTEM_PROMPT, buildUserPrompt } from "./prompts";
+import type { Evidence, EvidenceChunk, RiskLevel, RouteType } from "../types";
+import {
+  SYSTEM_PROMPT,
+  SYSTEM_PROMPT_STRUCTURED,
+  buildStructuredUserPrompt,
+  buildUserPrompt,
+} from "./prompts";
 
 /**
  * 生成プロバイダの実装（Gemini REST）。プロバイダ固有の詳細をここに隔離する。
@@ -18,6 +23,11 @@ export type GenerateArgs = {
   complex?: boolean;
   /** 直近の会話履歴（最小限）。 */
   history?: { role: "user" | "assistant"; content: string }[];
+  /**
+   * 構造化データ（記事＋掲載＋公式＋本人＋ツール）で回答する場合に指定。
+   * 指定時は構造化システムプロンプト＋種別ラベル付きコンテキストを使う。
+   */
+  structured?: { evidence: Evidence[]; route: RouteType };
 };
 
 export type GenerateResult = {
@@ -50,6 +60,17 @@ export async function generateAnswer(args: GenerateArgs): Promise<GenerateResult
 
   // 直近履歴（最小限）＋今回の質問。履歴は user/model ロールに整形する。
   const history = (args.history ?? []).slice(-aiConfig.limits.maxHistoryTurns);
+  const isStructured = Boolean(args.structured);
+  const systemPrompt = isStructured ? SYSTEM_PROMPT_STRUCTURED : SYSTEM_PROMPT;
+  const userText = isStructured
+    ? buildStructuredUserPrompt(
+        args.question,
+        args.structured!.evidence,
+        args.overallRisk,
+        args.structured!.route,
+      )
+    : buildUserPrompt(args.question, args.evidence, args.overallRisk);
+
   const contents = [
     ...history.map((h) => ({
       role: h.role === "assistant" ? "model" : "user",
@@ -57,15 +78,13 @@ export async function generateAnswer(args: GenerateArgs): Promise<GenerateResult
     })),
     {
       role: "user",
-      parts: [
-        { text: buildUserPrompt(args.question, args.evidence, args.overallRisk) },
-      ],
+      parts: [{ text: userText }],
     },
   ];
 
   const url = `${API_BASE}/models/${model}:generateContent?key=${geminiApiKey}`;
   const body = {
-    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+    systemInstruction: { parts: [{ text: systemPrompt }] },
     contents,
     generationConfig: {
       temperature: aiConfig.generation.temperature,

@@ -6,7 +6,14 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import {
   trackAiEvent,
   aiQuestionParams,
+  aiAnswerParams,
 } from "@/lib/ai/analytics/events";
+import {
+  AiCards,
+  AiActions,
+  type StructuredCard,
+  type TrustedAction,
+} from "@/components/ai/AiCards";
 
 type SourceLink = { title: string; url: string };
 type ToolRec = { id: string; name: string; url: string; description: string };
@@ -17,6 +24,8 @@ type AssistantMessage = {
   supported: boolean;
   sources: SourceLink[];
   tools: ToolRec[];
+  cards: StructuredCard[];
+  actions: TrustedAction[];
   riskLevel: "low" | "medium" | "high";
   error?: boolean;
   feedback?: "up" | "down" | null;
@@ -113,6 +122,8 @@ export function AiAssistant() {
               supported: false,
               sources: [],
               tools: [],
+              cards: [],
+              actions: [],
               riskLevel: "low",
               error: true,
               feedback: null,
@@ -121,9 +132,18 @@ export function AiAssistant() {
           return;
         }
 
-        trackAiEvent(data.supported ? "ai_answer" : "ai_no_answer", {
-          route: data.route ?? "unknown",
-        });
+        const cards: StructuredCard[] = Array.isArray(data.cards) ? data.cards : [];
+        const actions: TrustedAction[] = Array.isArray(data.actions) ? data.actions : [];
+        trackAiEvent(
+          data.supported ? "ai_answer" : "ai_no_answer",
+          aiAnswerParams({
+            route: data.route ?? "unknown",
+            cardKinds: cards.map((c) => c.kind),
+            cardCount: cards.length,
+            noResult: cards.length === 0 && Boolean(data.supported) && !data.answer,
+            authRequired: Boolean(data.authRequired),
+          }),
+        );
 
         setMessages((prev) => [
           ...prev,
@@ -133,6 +153,8 @@ export function AiAssistant() {
             supported: Boolean(data.supported),
             sources: Array.isArray(data.sources) ? data.sources : [],
             tools: Array.isArray(data.tools) ? data.tools : [],
+            cards,
+            actions,
             riskLevel: data.riskLevel ?? "low",
             feedback: null,
           },
@@ -146,6 +168,8 @@ export function AiAssistant() {
             supported: false,
             sources: [],
             tools: [],
+            cards: [],
+            actions: [],
             riskLevel: "low",
             error: true,
             feedback: null,
@@ -269,6 +293,10 @@ export function AiAssistant() {
                       </span>
                     ) : null}
                   </div>
+
+                  {m.cards.length > 0 ? <AiCards cards={m.cards} /> : null}
+
+                  {m.actions.length > 0 ? <AiActions actions={m.actions} /> : null}
 
                   {m.sources.length > 0 ? (
                     <div className="w-full">

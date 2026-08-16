@@ -127,6 +127,8 @@ export async function POST(request: Request) {
     const result = await runChatPipeline({
       question: parsed.data.question,
       history: parsed.data.history,
+      // 認証コンテキストはサーバー側でのみ導出（クライアント/モデルの userId は使わない）。
+      auth: { userId, isAuthenticated: userId != null, isModerator },
       // 診断はモデレーターが明示要求した場合のみ。
       includeDiagnostics: Boolean(parsed.data.debug) && isModerator,
     });

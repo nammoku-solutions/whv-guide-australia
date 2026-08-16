@@ -17,6 +17,17 @@ import {
 import { rankFusion } from "../lib/ai/retrieval/hybrid";
 import { evalCases } from "../lib/ai/eval/dataset";
 import type { RetrievalCandidate } from "../lib/ai/types";
+import { parseListingQuery, detectListingIntent } from "../lib/ai/capabilities/filters";
+import {
+  getMyApplications,
+  getMySavedItems,
+  getMyNotifications,
+  getMy88DayProgress,
+  findRelevantSiteTools,
+} from "../lib/ai/capabilities";
+import type { AuthContext } from "../lib/ai/types";
+import { buildStructuredContextBlock } from "../lib/ai/generation/prompts";
+import { dedupeActions, actions as trustedActions } from "../lib/ai/actions";
 
 test("router: out-of-scope questions are classified OUT_OF_SCOPE", () => {
   for (const c of evalCases.filter((e) => e.expectedRoute === "OUT_OF_SCOPE")) {
@@ -181,3 +192,178 @@ test("hybrid: RRF fuses ranks and dedupes shared chunks", () => {
   assert.equal(ids[0], "c::0", "chunk present in both lists ranks first");
   assert.ok(ids.includes("d::0"), "keyword-only chunk is included");
 });
+
+// =====================================================================
+// Phase 6: 構造化ライブデータ統合（ルーティング・フィルタ・ケイパビリティ・認可）
+// =====================================================================
+
+const ANON: AuthContext = { userId: null, isAuthenticated: false, isModerator: false };
+const USER_A: AuthContext = { userId: "user-a", isAuthenticated: true, isModerator: false };
+
+test("router: extended route types are classified deterministically", () => {
+  const cases: Array<[string, string]> = [
+    ["Bondって何？", "ARTICLE"],
+    ["88日カレンダーどこ？", "TOOL"],
+    ["Gattonで求人ある？", "LISTING"],
+    ["Brisbaneで週250ドル以下の部屋ある？", "LISTING"],
+    ["QLDで6000ドル以下の車ある？", "LISTING"],
+    ["応募してる仕事どうなってる？", "PERSONAL"],
+    ["保存してる求人見せて", "PERSONAL"],
+    ["何か新しいお知らせある？", "PERSONAL"],
+    ["最近417で変更あった？", "CURRENT_UPDATE"],
+    ["Gattonの求人とファーム探しの注意点", "MIXED"],
+    ["今日の日本株は？", "OUT_OF_SCOPE"],
+  ];
+  for (const [q, expected] of cases) {
+    assert.equal(routeQuestion(q).route, expected, `route for "${q}"`);
+  }
+});
+
+test("router: listing sub-intent detection", () => {
+  assert.equal(routeQuestion("Gattonで求人ある？").listingIntent, "job");
+  assert.equal(routeQuestion("Brisbaneで部屋ある？").listingIntent, "housing");
+  assert.equal(routeQuestion("QLDで車ある？").listingIntent, "vehicle");
+});
+
+test("router: personal-intent detection maps to the right capability intent", () => {
+  assert.equal(routeQuestion("応募してる仕事どうなってる？").personalIntent, "applications");
+  assert.equal(routeQuestion("保存してる求人見せて").personalIntent, "saved");
+  assert.equal(routeQuestion("何か新しいお知らせある？").personalIntent, "notifications");
+});
+
+test("router: eval dataset routes match expected (extended types)", () => {
+  // 決定的ルーターが厳密に生成する構造化ルートのみを対象にする（レガシーの
+  // ツール推薦系 MIXED はルート=ARTICLE でもツールを返す設計のため対象外）。
+  const strict = evalCases.filter(
+    (c) =>
+      c.expectedCapability != null ||
+      c.expectedListingIntent != null ||
+      c.expectedPersonalIntent != null ||
+      ["LISTING", "PERSONAL", "CURRENT_UPDATE", "TOOL"].includes(c.expectedRoute),
+  );
+  for (const c of strict) {
+    const decision = routeQuestion(c.question);
+    assert.equal(
+      decision.route,
+      c.expectedRoute,
+      `expected ${c.expectedRoute} for "${c.question}" (got ${decision.route})`,
+    );
+    if (c.expectedListingIntent) {
+      assert.equal(decision.listingIntent, c.expectedListingIntent, `listingIntent for "${c.question}"`);
+    }
+    if (c.expectedPersonalIntent) {
+      assert.equal(decision.personalIntent, c.expectedPersonalIntent, `personalIntent for "${c.question}"`);
+    }
+  }
+});
+
+test("filters: parse location / state / amount / transmission from NL", () => {
+  const a = parseListingQuery("Gattonで求人ある？");
+  assert.equal(a.location, "Gatton");
+
+  const b = parseListingQuery("Brisbaneで週250ドル以下の部屋ある？");
+  assert.equal(b.location, "Brisbane");
+  assert.equal(b.maxAmount, 250);
+
+  const c = parseListingQuery("QLDで6000ドル以下の車ある？");
+  assert.equal(c.state, "QLD");
+  assert.equal(c.maxAmount, 6000);
+
+  const d = parseListingQuery("オートマの車が欲しい");
+  assert.equal(d.transmission, "automatic");
+  const e = parseListingQuery("マニュアル車ある？");
+  assert.equal(e.transmission, "manual");
+});
+
+test("filters: detectListingIntent classifies job/housing/vehicle", () => {
+  assert.equal(detectListingIntent("Gattonで求人ある？"), "job");
+  assert.equal(detectListingIntent("部屋を探してる"), "housing");
+  assert.equal(detectListingIntent("中古車が欲しい"), "vehicle");
+});
+
+test("security: personal capabilities deny anonymous callers (authRequired)", async () => {
+  const apps = await getMyApplications(ANON);
+  assert.equal(apps.authRequired, true, "applications require auth");
+  assert.equal(apps.count, 0);
+  assert.equal(apps.cards.length, 0, "no cards leaked to anon");
+  assert.equal(apps.evidence.length, 0, "no evidence leaked to anon");
+
+  const saved = await getMySavedItems(ANON);
+  assert.equal(saved.authRequired, true, "saved require auth");
+  assert.equal(saved.evidence.length, 0);
+
+  const notes = await getMyNotifications(ANON);
+  assert.equal(notes.authRequired, true, "notifications require auth");
+  assert.equal(notes.evidence.length, 0);
+});
+
+test("security: personal evidence is always marked private (never citable)", async () => {
+  const progress = await getMy88DayProgress(USER_A);
+  assert.ok(progress.evidence.length > 0);
+  for (const e of progress.evidence) {
+    assert.equal(e.visibility, "private", "88-day evidence must be private");
+    assert.equal(e.url, null, "private evidence has no citable URL");
+  }
+  // 88-day server data is unavailable (localStorage only) -> links to the tool.
+  assert.equal(progress.count, 0);
+  assert.ok(
+    progress.actions.some((a) => a.url === "/tools/88-day-calculator"),
+    "88-day progress must link to the calendar tool",
+  );
+  const meta = progress.evidence[0].metadata ?? {};
+  assert.equal(meta.serverDataAvailable, false);
+});
+
+test("tools: findRelevantSiteTools only emits real internal routes", () => {
+  const res = findRelevantSiteTools("88日を計算したい");
+  assert.ok(res.count > 0);
+  for (const c of res.cards) {
+    if (c.kind !== "tool") continue;
+    assert.ok(c.url.startsWith("/"), "tool card url must be internal");
+  }
+  for (const a of res.actions) {
+    assert.ok(a.url.startsWith("/"), "tool action url must be internal");
+  }
+});
+
+test("actions: trusted URLs are fixed and dedupe by URL", () => {
+  assert.equal(trustedActions.eightyEightCalendar().url, "/tools/88-day-calculator");
+  assert.equal(trustedActions.viewJobs().url, "/community/market/job");
+  assert.equal(trustedActions.login().url, "/login");
+  const deduped = dedupeActions([
+    trustedActions.viewJobs(),
+    trustedActions.viewJobs(),
+    trustedActions.notifications(),
+  ]);
+  assert.equal(deduped.length, 2, "duplicate action urls removed");
+});
+
+test("prompts: structured context labels evidence by kind and never invents URLs", () => {
+  const block = buildStructuredContextBlock([
+    {
+      kind: "listing",
+      visibility: "public",
+      title: "Farm hand wanted",
+      content: "職種: Farm hand / 勤務地: Gatton",
+      url: "/community/market/listing/abc",
+      sourceId: "listing:abc",
+      freshness: "2026-08-01",
+      riskLevel: "low",
+    },
+    {
+      kind: "personal",
+      visibility: "private",
+      title: "あなたの応募状況",
+      content: "合計 2 件",
+      url: null,
+      sourceId: "capability:getMyApplications",
+      freshness: "live",
+      riskLevel: "low",
+    },
+  ]);
+  assert.ok(block.includes("[ライブ掲載]"), "listing label present");
+  assert.ok(block.includes("[あなたの記録]"), "personal label present");
+  // Raw URLs must not be embedded in the model context block.
+  assert.ok(!block.includes("/community/market/listing/abc"), "URLs stay out of context");
+});
+

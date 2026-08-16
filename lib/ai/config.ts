@@ -88,10 +88,35 @@ export const aiConfig = {
     rerankEnabled: envBool("AI_RERANK_ENABLED", false),
     verifyEnabled: envBool("AI_VERIFY_ENABLED", false),
     complexRoutingEnabled: envBool("AI_COMPLEX_ROUTING_ENABLED", false),
-    marketplaceSearchEnabled: envBool("AI_MARKETPLACE_SEARCH_ENABLED", false),
+    // ライブ・マーケット検索（求人/住居/車）。構造化データ統合に伴い既定 ON。
+    // 掲載は RLS により公開・非隠蔽・非削除・非期限切れのみ返る。
+    marketplaceSearchEnabled: envBool("AI_MARKETPLACE_SEARCH_ENABLED", true),
     // Phase 2: セマンティック＋キーワードのハイブリッド検索（既定 ON）。
     // キーワードRPC未適用でも keywordSearch は空を返し、セマンティック相当に自動縮退する。
     hybridSearchEnabled: envBool("AI_HYBRID_SEARCH_ENABLED", true),
+    // Phase 6: 構造化ライブデータ統合（求人/住居/車のライブ検索・本人の記録・最新情報）。
+    // マーケット検索は marketplaceSearchEnabled と併せて有効化する。
+    structuredDataEnabled: envBool("AI_STRUCTURED_DATA_ENABLED", true),
+    // 本人データ（応募/保存/通知/88日）ケイパビリティ（認証必須）。
+    personalDataEnabled: envBool("AI_PERSONAL_DATA_ENABLED", true),
+    // 直近の公式アップデート（公開ニュース＋監視状態）。
+    currentUpdatesEnabled: envBool("AI_CURRENT_UPDATES_ENABLED", true),
+    // 将来の書き込み（応募/取り下げ等）。既定 OFF・実装は無効のまま（読み取り専用）。
+    mutationsEnabled: envBool("AI_MUTATIONS_ENABLED", false),
+  },
+
+  /** 構造化ケイパビリティがモデルへ渡す最大件数（コスト/遅延/情報漏えい抑制）。 */
+  structured: {
+    /** ライブ掲載検索でモデルに渡す最大件数。 */
+    maxListingResults: envInt("AI_MAX_LISTING_RESULTS", 5),
+    /** 本人の応募でモデルに渡す最近件数。 */
+    maxApplications: envInt("AI_MAX_APPLICATIONS", 5),
+    /** 本人の保存アイテムでモデルに渡す最大件数。 */
+    maxSavedItems: envInt("AI_MAX_SAVED_ITEMS", 8),
+    /** 本人の通知でモデルに渡す最大件数。 */
+    maxNotifications: envInt("AI_MAX_NOTIFICATIONS", 8),
+    /** 最新アップデートでモデルに渡す最大ニュース件数。 */
+    maxNewsUpdates: envInt("AI_MAX_NEWS_UPDATES", 5),
   },
 
   limits: {
