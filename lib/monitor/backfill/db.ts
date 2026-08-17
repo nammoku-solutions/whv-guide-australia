@@ -35,7 +35,7 @@ export async function originColumnReady(admin: SupabaseClient): Promise<boolean>
   return !cols.error;
 }
 
-export type BackfillOrigin = "archive" | "manual_seed";
+export type BackfillOrigin = "archive" | "manual_seed" | "external";
 
 /** 実行レコードを作成し id を返す。 */
 export async function createRun(
@@ -138,8 +138,10 @@ export async function insertBackfillNews(
     status: "published" | "review_required";
     runId: string | null;
     importedAt: string;
-    /** 0013 適用済みのときのみ設定（archive | manual_seed）。 */
+    /** 0013 適用済みのときのみ設定（archive | manual_seed | external）。 */
     origin?: BackfillOrigin;
+    /** 外部候補由来のとき、その external_news_candidates.id（0014 適用済みのみ）。 */
+    externalCandidateId?: string | null;
   },
 ): Promise<string | null> {
   const c = args.candidate;
@@ -182,6 +184,8 @@ export async function insertBackfillNews(
   };
   // backfill_origin 列は 0013 でのみ存在。存在確認済みのときだけ含める。
   if (args.origin) payload.backfill_origin = args.origin;
+  // external_candidate_id 列は 0014 でのみ存在。外部候補処理で確認済みのときだけ含める。
+  if (args.externalCandidateId) payload.external_candidate_id = args.externalCandidateId;
 
   const { data, error } = await admin
     .from("news_items")

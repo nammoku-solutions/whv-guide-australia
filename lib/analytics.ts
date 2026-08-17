@@ -28,8 +28,17 @@ export type PersonalisationEvent =
   | "notification_target_click"
   | "saved_search_create";
 
+/**
+ * 外部ニュース候補（管理）のイベント。生のエビデンス・管理者識別子・秘匿値は絶対に送らない
+ * （区分値・ステータス・リスクレベルなどの非個人的な値のみ）。
+ */
+export type AdminNewsEvent =
+  | "admin_news_candidate_submit"
+  | "admin_news_candidate_review"
+  | "admin_news_candidate_publish";
+
 export function trackEvent(
-  name: MarketplaceEvent | DocumentEvent | PersonalisationEvent,
+  name: MarketplaceEvent | DocumentEvent | PersonalisationEvent | AdminNewsEvent,
   params: Record<string, string | number | boolean> = {},
 ): void {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;

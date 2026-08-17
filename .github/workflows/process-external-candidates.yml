@@ -1,0 +1,54 @@
+# 外部ニュース候補の処理（External News Candidate Inbox）。
+#
+# pending の external_news_candidates を処理する。外部エビデンスが供給されているため
+# 公式ページの取得（fetch）は行わない。pending が 0 件なら Gemini を呼ばない。
+# 主経路はモバイル取り込みの即時（Vercel）処理であり、本ジョブは retry/fallback。
+#
+# 必要なリポジトリ Secrets（既存の監視ジョブと同じものを流用）:
+#   GEMINI_API_KEY
+#   NEXT_PUBLIC_SUPABASE_URL
+#   SUPABASE_SERVICE_ROLE_KEY
+#   AI_EMBEDDING_VERSION            (任意)
+# 任意の設定変数（Variables）:
+#   NEWS_AUTO_PUBLISH_LOW_RISK      (既定 true)
+#   NEWS_AUTO_PUBLISH_HIGH_RISK     (既定 false)
+#   EXTERNAL_NEWS_BATCH             (任意。既定 10)
+# シークレットはログに出力しない。
+name: Process External News Candidates
+
+on:
+  schedule:
+    # 6 時間ごと（fallback）。即時処理が主のため軽量。
+    - cron: "30 */6 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: process-external-candidates
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Process pending external candidates
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AI_EMBEDDING_VERSION: ${{ secrets.AI_EMBEDDING_VERSION }}
+          NEWS_AUTO_PUBLISH_LOW_RISK: ${{ vars.NEWS_AUTO_PUBLISH_LOW_RISK }}
+          NEWS_AUTO_PUBLISH_HIGH_RISK: ${{ vars.NEWS_AUTO_PUBLISH_HIGH_RISK }}
+          EXTERNAL_NEWS_BATCH: ${{ vars.EXTERNAL_NEWS_BATCH }}
+        run: npm run news:candidates

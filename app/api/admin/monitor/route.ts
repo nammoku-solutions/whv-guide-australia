@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const [changes, news, impacts, states] = await Promise.all([
+  const [changes, news, impacts, states, external] = await Promise.all([
     admin
       .from("monitor_changes")
       .select(
@@ -53,6 +53,14 @@ export async function GET(request: Request) {
     admin
       .from("monitor_source_state")
       .select("source_id, content_hash, last_checked, last_changed, last_status, consecutive_failures"),
+    // 外部候補（存在しない環境でもエラーにしない）。
+    admin
+      .from("external_news_candidates")
+      .select(
+        "id, source_organisation, source_url, source_title, source_published_at, evidence_origin, origin, status, processing_attempts, last_error_code, news_item_id, submitted_at, processed_at",
+      )
+      .order("submitted_at", { ascending: false })
+      .limit(100),
   ]);
 
   // ソースヘルスは既存の監視状態から導出（追加 DB 列なし）。
@@ -66,6 +74,7 @@ export async function GET(request: Request) {
     news: news.data ?? [],
     impacts: impacts.data ?? [],
     health: health.rows,
+    external: external.error ? [] : external.data ?? [],
     healthSummary: {
       total: health.total,
       healthy: health.healthy,

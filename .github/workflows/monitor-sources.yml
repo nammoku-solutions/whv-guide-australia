@@ -57,6 +57,20 @@ jobs:
         # システム的障害の場合のみ、monitor スクリプトが非ゼロ終了しジョブを失敗させる。
         run: npm run monitor
 
+      - name: Process pending external candidates (shared pipeline, no fetch)
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AI_EMBEDDING_VERSION: ${{ secrets.AI_EMBEDDING_VERSION }}
+          NEWS_AUTO_PUBLISH_LOW_RISK: ${{ vars.NEWS_AUTO_PUBLISH_LOW_RISK }}
+          NEWS_AUTO_PUBLISH_HIGH_RISK: ${{ vars.NEWS_AUTO_PUBLISH_HIGH_RISK }}
+          EXTERNAL_NEWS_BATCH: ${{ vars.EXTERNAL_NEWS_BATCH }}
+        # 外部エビデンスは供給済みのため取得はしない。pending が 0 件なら Gemini を呼ばない。
+        # 原子的 claim により即時（Vercel）処理との二重処理は起きない。
+        run: npm run news:candidates
+
       - name: Source health (read-only summary)
         if: always()
         env:

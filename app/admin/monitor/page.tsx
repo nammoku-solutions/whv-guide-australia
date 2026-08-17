@@ -66,7 +66,23 @@ type HealthRow = {
   hasBaseline: boolean;
 };
 
-type Payload = { changes: ChangeRow[]; news: NewsRow[]; impacts: ImpactRow[]; health: HealthRow[] };
+type Payload = { changes: ChangeRow[]; news: NewsRow[]; impacts: ImpactRow[]; health: HealthRow[]; external: ExternalRow[] };
+
+type ExternalRow = {
+  id: string;
+  source_organisation: string | null;
+  source_url: string;
+  source_title: string;
+  source_published_at: string | null;
+  evidence_origin: string;
+  origin: string;
+  status: string;
+  processing_attempts: number;
+  last_error_code: string | null;
+  news_item_id: string | null;
+  submitted_at: string;
+  processed_at: string | null;
+};
 
 const RISK_BADGE: Record<string, string> = {
   high: "bg-rose-50 text-rose-700",
@@ -79,6 +95,25 @@ const HEALTH_BADGE: Record<string, string> = {
   degraded: "bg-amber-50 text-amber-700",
   failing: "bg-rose-50 text-rose-700",
   never_succeeded: "bg-slate-100 text-slate-600",
+};
+
+const EXTERNAL_STATUS_BADGE: Record<string, string> = {
+  pending: "bg-slate-100 text-slate-600",
+  processing: "bg-sky-50 text-sky-700",
+  published: "bg-emerald-50 text-emerald-700",
+  review_required: "bg-amber-50 text-amber-700",
+  duplicate: "bg-slate-100 text-slate-500",
+  irrelevant: "bg-slate-100 text-slate-500",
+  skipped: "bg-slate-100 text-slate-500",
+  failed: "bg-rose-50 text-rose-700",
+  rejected: "bg-rose-50 text-rose-700",
+};
+
+const EXTERNAL_ORIGIN_LABEL: Record<string, string> = {
+  chatgpt_weekly: "ChatGPT 週次",
+  admin_mobile: "モバイル取り込み",
+  manual_seed_bridge: "手動シード橋渡し",
+  system: "システム",
 };
 
 function Panel() {
@@ -102,7 +137,7 @@ function Panel() {
     });
     const json = await res.json();
     if (!json.ok) throw new Error(json.error ?? "読み込みに失敗しました。");
-    return { changes: json.changes, news: json.news, impacts: json.impacts, health: json.health ?? [] };
+    return { changes: json.changes, news: json.news, impacts: json.impacts, health: json.health ?? [], external: json.external ?? [] };
   }, [getToken]);
 
   // setState は promise コールバック内でのみ行う（effect 内の同期 setState を避ける）。
@@ -167,6 +202,8 @@ function Panel() {
   const openImpacts = data.impacts.filter((i) => i.status === "open");
   const health = data.health ?? [];
   const unhealthy = health.filter((h) => h.health === "failing" || h.health === "never_succeeded");
+  const external = data.external ?? [];
+  const pendingExternal = external.filter((e) => e.status === "pending" || e.status === "processing");
 
   return (
     <div className="space-y-10">
@@ -176,6 +213,59 @@ function Panel() {
         <Stat label="検出された変更" value={data.changes.length} tone="text-sky-700" />
         <Stat label="要確認の記事影響" value={openImpacts.length} tone="text-rose-700" />
       </div>
+
+      {/* 外部ニュース候補（ChatGPT 週次 / モバイル取り込み） */}
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-xl font-bold">
+            外部ニュース候補
+            {pendingExternal.length > 0 ? (
+              <span className="ml-2 rounded-full bg-sky-50 px-2 py-0.5 text-xs font-semibold text-sky-700">
+                未処理 {pendingExternal.length}
+              </span>
+            ) : null}
+          </h2>
+          <Link
+            href="/admin/monitor/import"
+            className="rounded-lg bg-sky-600 px-3 py-1.5 text-xs font-semibold text-white"
+          >
+            ＋ スマホで公式候補を取り込む
+          </Link>
+        </div>
+        {external.length === 0 ? (
+          <p className="text-sm text-slate-500">外部候補はまだありません（取り込みページから投函できます）。</p>
+        ) : (
+          <ul className="space-y-2">
+            {external.slice(0, 30).map((e) => (
+              <li key={e.id} className="rounded-xl border border-slate-200 bg-white p-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className={`rounded-full px-2 py-0.5 font-semibold ${EXTERNAL_STATUS_BADGE[e.status] ?? "bg-slate-100 text-slate-600"}`}>
+                    {e.status}
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-600">
+                    {EXTERNAL_ORIGIN_LABEL[e.origin] ?? e.origin}
+                  </span>
+                  <span className="text-slate-500">
+                    {e.source_organisation ?? "-"}・公式日 {e.source_published_at?.slice(0, 10) ?? "?"}
+                  </span>
+                  {e.last_error_code ? (
+                    <span className="rounded-full bg-rose-50 px-2 py-0.5 font-semibold text-rose-700">{e.last_error_code}</span>
+                  ) : null}
+                </div>
+                <p className="mt-1 font-semibold text-slate-900">{e.source_title}</p>
+                <div className="mt-1 flex flex-wrap gap-3 text-xs">
+                  <a href={e.source_url} target="_blank" rel="noopener noreferrer" className="text-slate-500 underline">
+                    公式ソースを開く
+                  </a>
+                  {e.news_item_id ? (
+                    <span className="font-semibold text-emerald-700">ニュース生成済み</span>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {/* ソースヘルス（取得健全性の可視化） */}
       <section className="space-y-3">
@@ -249,7 +339,12 @@ function Panel() {
                   </span>
                   {n.is_backfill ? (
                     <span className="rounded-full bg-indigo-50 px-2 py-0.5 font-semibold text-indigo-700">
-                      {n.backfill_origin === "manual_seed" ? "手動シード" : "歴史バックフィル"}・公式日 {n.source_published_at?.slice(0, 10) ?? "?"}・取込 {n.detected_at?.slice(0, 10)}
+                      {n.backfill_origin === "external"
+                        ? "外部候補"
+                        : n.backfill_origin === "manual_seed"
+                          ? "手動シード"
+                          : "歴史バックフィル"}
+                      ・公式日 {n.source_published_at?.slice(0, 10) ?? "?"}・取込 {n.detected_at?.slice(0, 10)}
                     </span>
                   ) : null}
                 </div>

@@ -110,6 +110,8 @@ export type ProcessContext = {
   generateCaller?: ModelCaller;
   /** 0013 適用済みのときのみ設定（news_items.backfill_origin へ）。 */
   origin?: BackfillOrigin;
+  /** 外部候補処理のとき、その external_news_candidates.id（news_items へリンク）。 */
+  externalCandidateId?: string | null;
 };
 
 /**
@@ -121,7 +123,16 @@ export async function processCandidate(
   source: SourceDefinition,
   c: HistoricalCandidate,
   ctx: ProcessContext,
-): Promise<{ row: CandidateReportRow; relevant: boolean }> {
+): Promise<{
+  row: CandidateReportRow;
+  relevant: boolean;
+  /** 生成された構造化ニュース（プレビュー用。生成前に終了した場合は undefined）。 */
+  generated?: GeneratedNews;
+  /** grounding チェック結果（生成できた場合のみ）。 */
+  groundingOk?: boolean;
+  /** 挿入された news_items.id（apply かつ保存した場合のみ）。 */
+  newsId?: string | null;
+}> {
   const baseRow: CandidateReportRow = {
     officialDate: c.officialPublishedAt,
     organisation: c.sourceOrganisation,
@@ -219,9 +230,10 @@ export async function processCandidate(
 
   let indexed = false;
   let impactCount = impacts.filter((i) => i.impactLevel !== "unaffected").length;
+  let newsId: string | null = null;
 
   if (ctx.willWrite && ctx.admin) {
-    const newsId = await insertBackfillNews(ctx.admin, {
+    newsId = await insertBackfillNews(ctx.admin, {
       slug, news, source, candidate: c,
       riskLevel: source.riskLevel,
       contentHash: newsHash, eventKey,
@@ -229,6 +241,7 @@ export async function processCandidate(
       publicationMode: decision.mode, status: decision.status,
       runId: ctx.runId, importedAt: ctx.importedAt,
       origin: ctx.origin,
+      externalCandidateId: ctx.externalCandidateId,
     });
     impactCount = await insertBackfillImpacts(ctx.admin, newsId, impacts);
     // 公開分のみ AI インデックス（変更コンテンツだけ）。review は索引しない。
@@ -251,11 +264,17 @@ export async function processCandidate(
     return {
       row: { ...baseRow, result: "published", detail: "自動公開（低/中リスク・全条件合格）。", slug, impacts: impactCount, indexed },
       relevant: true,
+      generated: news,
+      groundingOk,
+      newsId,
     };
   }
   return {
     row: { ...baseRow, result: "review_required", detail: `レビュー要求: ${decision.reasons.join(" / ")}`, slug, impacts: impactCount },
     relevant: true,
+    generated: news,
+    groundingOk,
+    newsId,
   };
 }
 
