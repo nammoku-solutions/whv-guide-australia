@@ -7,7 +7,7 @@ import { ListingDetailActions } from "@/components/market/ListingDetailActions";
 import { PostingIdentity, StatusBadge, TypeBadge } from "@/components/market/ListingBadges";
 import { AdBanner } from "@/components/ads/AdBanner";
 import { getListingById } from "@/lib/listings";
-import { getListingTypeConfig } from "@/lib/listingConfig";
+import { getListingTypeConfig, getPrimaryCategoryConfig, LISTING_TYPE_TO_CATEGORY } from "@/lib/listingConfig";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -31,15 +31,16 @@ export default async function ListingDetailPage({ params }: PageProps) {
   const { id } = await params;
   const listing = await getListingById(id);
   if (!listing) notFound();
-  const config = getListingTypeConfig(listing.listingType);
+  const category = LISTING_TYPE_TO_CATEGORY[listing.listingType];
+  const categoryConfig = getPrimaryCategoryConfig(category);
 
   return (
     <Container className="py-10">
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
           <div>
-            <Link href={`/community/market/${listing.listingType}`} className="text-sm text-sky-700 underline">
-              ← {config.label}一覧
+            <Link href={`/community/market/${category}`} className="text-sm text-sky-700 underline">
+              ← {categoryConfig.label}一覧
             </Link>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <TypeBadge type={listing.listingType} />

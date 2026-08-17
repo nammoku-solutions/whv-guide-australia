@@ -112,6 +112,231 @@ export function getListingTypeConfig(type: ListingType): ListingTypeConfig {
   return LISTING_TYPES[type];
 }
 
+// =====================================================================
+// 公開カテゴリ（Information Architecture）
+// -------------------------------------------------------------------
+// 公開の入口は 3 つ（求人 / 家 / 売買）に統合する。内部の listing_type は
+// 構造化サブタイプとして温存し、AI検索・フィルタ・保存検索・応募・車両項目・
+// 画像順などのデータを一切破壊しない。
+//   category=job        ← listing_type in (job, farm_job)
+//   category=housing    ← listing_type in (housing, roommate)
+//   category=marketplace← listing_type in (vehicle, marketplace)
+// =====================================================================
+
+export type PrimaryCategory = "job" | "housing" | "marketplace";
+
+/** 売買（marketplace）アイテムの正規サブ種別（details.category に保存）。 */
+export type MarketplaceItemKind = "furniture" | "daily" | "other";
+
+export type SubcategoryDef = {
+  /** URL クエリ ?subcategory= に使う正規キー。 */
+  value: string;
+  /** 公開ラベル。 */
+  label: string;
+  /** 作成時に使う内部 listing_type。 */
+  listingType: ListingType;
+  /** 売買アイテム種別の判別（details.category）。 */
+  itemKind?: MarketplaceItemKind;
+  /** 家カテゴリの wanted/offered 判別（details.roomWantedOrOffered）。 */
+  roomIntent?: "wanted" | "offered";
+  createCta: string;
+  emptyState: string;
+};
+
+export type PrimaryCategoryConfig = {
+  category: PrimaryCategory;
+  label: string;
+  emoji: string;
+  description: string;
+  createCta: string;
+  /** このカテゴリに含まれる内部 listing_type。 */
+  listingTypes: ListingType[];
+  subcategories: SubcategoryDef[];
+};
+
+export const PRIMARY_CATEGORY_ORDER: PrimaryCategory[] = ["job", "housing", "marketplace"];
+
+export const PRIMARY_CATEGORIES: Record<PrimaryCategory, PrimaryCategoryConfig> = {
+  job: {
+    category: "job",
+    label: "求人",
+    emoji: "💼",
+    description: "一般求人・ファーム求人のローカルジョブ。",
+    createCta: "求人を掲載する",
+    listingTypes: ["job", "farm_job"],
+    subcategories: [
+      {
+        value: "general",
+        label: "一般求人",
+        listingType: "job",
+        createCta: "一般求人を掲載する",
+        emptyState: "現在募集中の一般求人はまだありません。最初の求人を無料で掲載できます。",
+      },
+      {
+        value: "farm",
+        label: "ファーム",
+        listingType: "farm_job",
+        createCta: "ファーム求人を掲載する",
+        emptyState: "現在募集中のファーム求人はまだありません。最初の求人を無料で掲載できます。",
+      },
+    ],
+  },
+  housing: {
+    category: "housing",
+    label: "家",
+    emoji: "🏠",
+    description: "部屋・シェアハウス・シェアメイト募集。",
+    createCta: "家の募集を掲載する",
+    listingTypes: ["housing", "roommate"],
+    subcategories: [
+      {
+        value: "room",
+        label: "部屋・シェアハウス",
+        listingType: "housing",
+        createCta: "部屋・シェアハウスを掲載する",
+        emptyState: "まだ部屋・シェアハウスの募集はありません。募集を掲載しましょう。",
+      },
+      {
+        value: "wanted",
+        label: "部屋を探している",
+        listingType: "roommate",
+        roomIntent: "wanted",
+        createCta: "「部屋を探している」を掲載する",
+        emptyState: "まだ「部屋を探している」募集はありません。最初の募集を掲載できます。",
+      },
+      {
+        value: "sharemate",
+        label: "シェアメイト募集",
+        listingType: "roommate",
+        roomIntent: "offered",
+        createCta: "シェアメイト募集を掲載する",
+        emptyState: "まだシェアメイト募集はありません。最初の募集を掲載できます。",
+      },
+    ],
+  },
+  marketplace: {
+    category: "marketplace",
+    label: "売買",
+    emoji: "🛒",
+    description: "車・家具・家電・日用品などの売買。",
+    createCta: "出品する",
+    listingTypes: ["vehicle", "marketplace"],
+    subcategories: [
+      {
+        value: "vehicle",
+        label: "車",
+        listingType: "vehicle",
+        createCta: "車を掲載する",
+        emptyState: "まだ出品されている車はありません。最初の1台を掲載できます。",
+      },
+      {
+        value: "furniture",
+        label: "家具・家電",
+        listingType: "marketplace",
+        itemKind: "furniture",
+        createCta: "家具・家電を出品する",
+        emptyState: "まだ家具・家電の出品はありません。最初のアイテムを掲載できます。",
+      },
+      {
+        value: "daily",
+        label: "日用品",
+        listingType: "marketplace",
+        itemKind: "daily",
+        createCta: "日用品を出品する",
+        emptyState: "まだ日用品の出品はありません。最初のアイテムを掲載できます。",
+      },
+      {
+        value: "other",
+        label: "その他",
+        listingType: "marketplace",
+        itemKind: "other",
+        createCta: "出品する",
+        emptyState: "まだ出品はありません。最初のアイテムを掲載できます。",
+      },
+    ],
+  },
+};
+
+/** 内部 listing_type → 公開カテゴリ。 */
+export const LISTING_TYPE_TO_CATEGORY: Record<ListingType, PrimaryCategory> = {
+  job: "job",
+  farm_job: "job",
+  housing: "housing",
+  roommate: "housing",
+  vehicle: "marketplace",
+  marketplace: "marketplace",
+};
+
+/** 旧サブタイプ・ルート → 統合先（恒久リダイレクト用）。 */
+export const LEGACY_TYPE_REDIRECTS: Record<string, { category: PrimaryCategory; subcategory: string }> = {
+  farm_job: { category: "job", subcategory: "farm" },
+  roommate: { category: "housing", subcategory: "sharemate" },
+  vehicle: { category: "marketplace", subcategory: "vehicle" },
+};
+
+/** 売買アイテムの選択肢（フォーム用）。 */
+export const MARKETPLACE_ITEM_KINDS: { value: MarketplaceItemKind; label: string }[] = [
+  { value: "furniture", label: "家具・家電" },
+  { value: "daily", label: "日用品" },
+  { value: "other", label: "その他" },
+];
+
+export function isPrimaryCategory(value: string): value is PrimaryCategory {
+  return value === "job" || value === "housing" || value === "marketplace";
+}
+
+export function getPrimaryCategoryConfig(category: PrimaryCategory): PrimaryCategoryConfig {
+  return PRIMARY_CATEGORIES[category];
+}
+
+/** 自由記述の details.category を正規のアイテム種別へ丸める（不明はその他）。 */
+export function normalizeItemKind(raw: string | undefined | null): MarketplaceItemKind {
+  const v = (raw ?? "").toLowerCase();
+  if (!v) return "other";
+  if (v === "furniture" || v.includes("家具") || v.includes("家電") || v.includes("appliance"))
+    return "furniture";
+  if (v === "daily" || v.includes("日用") || v.includes("生活") || v.includes("goods"))
+    return "daily";
+  if (v === "other" || v.includes("その他")) return "other";
+  return "other";
+}
+
+/** 掲載が指定サブカテゴリに合致するか（純粋関数・テスト可能）。 */
+export function matchesSubcategory(
+  listingType: ListingType,
+  details: { category?: string; roomWantedOrOffered?: string },
+  category: PrimaryCategory,
+  subcategory: string,
+): boolean {
+  const cfg = PRIMARY_CATEGORIES[category];
+  const sub = cfg.subcategories.find((s) => s.value === subcategory);
+  if (!sub) return true;
+  if (listingType !== sub.listingType) return false;
+  if (sub.itemKind) {
+    return normalizeItemKind(details.category) === sub.itemKind;
+  }
+  if (sub.roomIntent) {
+    const intent = details.roomWantedOrOffered;
+    if (sub.roomIntent === "wanted") return intent === "wanted";
+    // offered（シェアメイト募集）: offered もしくは未指定を含める。
+    return intent !== "wanted";
+  }
+  return true;
+}
+
+/** 掲載の内部 listing_type/details から公開カテゴリ・サブカテゴリを解決する。 */
+export function resolveListingTaxonomy(
+  listingType: ListingType,
+  details: { category?: string; roomWantedOrOffered?: string } = {},
+): { category: PrimaryCategory; subcategory: string; label: string } {
+  const category = LISTING_TYPE_TO_CATEGORY[listingType];
+  const cfg = PRIMARY_CATEGORIES[category];
+  const sub =
+    cfg.subcategories.find((s) => matchesSubcategory(listingType, details, category, s.value)) ??
+    cfg.subcategories[0];
+  return { category, subcategory: sub.value, label: sub.label };
+}
+
 export function computeExpiryDate(type: ListingType, from: Date = new Date()): string | null {
   const days = LISTING_TYPES[type].expiryDays;
   if (!days) return null;

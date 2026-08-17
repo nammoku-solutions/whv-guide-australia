@@ -9,9 +9,23 @@ import type { TrustedAction } from "./types";
  * ここに定義されていない静的ルートをAIから作らせないための単一の窓口。
  */
 
-/** マーケットのタイプ別一覧ページ。 */
+/** マーケットのタイプ別一覧ページ。旧サブタイプ型は統合カテゴリ＋サブカテゴリへ。 */
 export function marketTypeUrl(type: ListingType): string {
-  return `/community/market/${type}`;
+  switch (type) {
+    case "job":
+      return "/community/market/job";
+    case "farm_job":
+      return "/community/market/job?subcategory=farm";
+    case "housing":
+    case "roommate":
+      return "/community/market/housing";
+    case "vehicle":
+      return "/community/market/marketplace?subcategory=vehicle";
+    case "marketplace":
+      return "/community/market/marketplace";
+    default:
+      return "/community/market";
+  }
 }
 
 /** 掲載詳細ページ（DBの listing.id からのみ生成）。 */

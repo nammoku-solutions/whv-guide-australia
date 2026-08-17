@@ -14,11 +14,13 @@ import {
   EMPLOYMENT_TYPES,
   getListingTypeConfig,
   JOB_INDUSTRIES,
+  MARKETPLACE_ITEM_KINDS,
   PAY_TYPES,
   ROOM_TYPES,
   SAFETY_NOTICES,
   TRANSMISSION_TYPES,
 } from "@/lib/listingConfig";
+import { normalizePhotoOrder } from "@/lib/photoOrder";
 import type {
   ContactMethod,
   Listing,
@@ -31,12 +33,31 @@ const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
 const labelClass = "block text-sm font-medium text-slate-700";
 
 type Props = {
-  // 新規作成時は type、編集時は listing を渡す。
+  // 新規作成時は type（＋任意の subcategory）、編集時は listing を渡す。
   type?: ListingType;
+  subcategory?: string;
   listing?: Listing;
 };
 
-export function ListingForm({ type, listing }: Props) {
+/** 新規作成時、サブカテゴリに応じた details の初期値。 */
+function presetDetails(subcategory?: string): ListingDetails {
+  switch (subcategory) {
+    case "wanted":
+      return { roomWantedOrOffered: "wanted" };
+    case "sharemate":
+      return { roomWantedOrOffered: "offered" };
+    case "furniture":
+      return { category: "furniture" };
+    case "daily":
+      return { category: "daily" };
+    case "other":
+      return { category: "other" };
+    default:
+      return {};
+  }
+}
+
+export function ListingForm({ type, subcategory, listing }: Props) {
   const { profile, canAct, isLoggedIn } = useAuth();
   const router = useRouter();
   const isEdit = Boolean(listing);
@@ -55,7 +76,9 @@ export function ListingForm({ type, listing }: Props) {
   const [postingMode, setPostingMode] = useState<PostingMode>(listing?.postingMode ?? "self");
   const [representedParty, setRepresentedParty] = useState(listing?.representedParty ?? "");
   const [images, setImages] = useState<string[]>(listing?.images ?? []);
-  const [details, setDetails] = useState<ListingDetails>(listing?.details ?? {});
+  const [details, setDetails] = useState<ListingDetails>(
+    listing?.details ?? presetDetails(subcategory),
+  );
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -102,7 +125,7 @@ export function ListingForm({ type, listing }: Props) {
       contact_value: showContactValue ? contactValue.trim() || null : null,
       posting_mode: isModerator ? postingMode : "self",
       represented_party: isModerator && postingMode === "delegated" ? representedParty.trim() : null,
-      images: config.supportsImages ? images : [],
+      images: config.supportsImages ? normalizePhotoOrder(images) : [],
       details,
     };
 
@@ -428,7 +451,14 @@ function renderTypeFields(type: ListingType, d: ListingDetails, set: SetFn, isJo
   // marketplace
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <Field label="カテゴリ"><input value={d.category ?? ""} onChange={(e) => set("category", e.target.value)} placeholder="家具・家電など" className={inputClass} /></Field>
+      <Field label="カテゴリ">
+        <select value={d.category ?? ""} onChange={(e) => set("category", e.target.value)} className={inputClass}>
+          <option value="">選択してください</option>
+          {MARKETPLACE_ITEM_KINDS.map((k) => (
+            <option key={k.value} value={k.value}>{k.label}</option>
+          ))}
+        </select>
+      </Field>
       <Field label="価格 ($)"><input value={d.price ?? ""} onChange={(e) => set("price", e.target.value)} inputMode="numeric" className={inputClass} /></Field>
     </div>
   );

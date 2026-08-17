@@ -46,10 +46,9 @@ export default async function CommunityPage() {
           </Link>
         </div>
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
-          <Link href="/community/market/job" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">💼 求人を探す</Link>
-          <Link href="/community/market/housing" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🏠 家を探す</Link>
-          <Link href="/community/market/roommate" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🤝 シェアメイトを探す</Link>
-          <Link href="/community/market/vehicle" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🚗 車を探す</Link>
+          <Link href="/community/market/job" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">💼 求人</Link>
+          <Link href="/community/market/housing" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🏠 家</Link>
+          <Link href="/community/market/marketplace" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">🛒 売買</Link>
           <Link href="/community/market/new" className="rounded-full border border-sky-300 bg-white px-3 py-1.5 font-medium text-sky-800">＋ 掲載する</Link>
         </div>
       </section>

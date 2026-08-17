@@ -3,12 +3,12 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { ListingCard } from "@/components/market/ListingCard";
 import { AdBanner } from "@/components/ads/AdBanner";
-import { countActiveListingsByType, getLatestListings } from "@/lib/listings";
-import { LISTING_TYPE_ORDER, LISTING_TYPES } from "@/lib/listingConfig";
+import { countActiveListings, getLatestListings } from "@/lib/listings";
+import { PRIMARY_CATEGORIES, PRIMARY_CATEGORY_ORDER } from "@/lib/listingConfig";
 
 export const metadata: Metadata = {
   title: "コミュニティマーケット",
-  description: "ワーホリ向けの求人・シェアハウス・シェアメイト・車の売買など、ユーザー投稿型の掲載板。",
+  description: "ワーホリ向けの求人・家（シェアハウス）・売買（車ほか）のユーザー投稿型の掲載板。",
   alternates: { canonical: "/community/market" },
 };
 
@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 export default async function MarketHubPage() {
   const [counts, latest] = await Promise.all([
-    countActiveListingsByType(),
+    countActiveListings(),
     getLatestListings(6),
   ]);
 
@@ -26,7 +26,7 @@ export default async function MarketHubPage() {
         <p className="text-sm text-slate-400">コミュニティ</p>
         <h1 className="mt-1 text-3xl font-extrabold">マーケット・募集</h1>
         <p className="mt-2 max-w-2xl text-slate-300">
-          求人・シェアハウス・シェアメイト・車の売買など、ワーホリ同士のユーザー投稿型の掲載です。掲示板（雑談・相談）とは分かれています。
+          求人・家（シェアハウス）・売買（車ほか）など、ワーホリ同士のユーザー投稿型の掲載です。掲示板（雑談・相談）とは分かれています。
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link href="/community/market/new" className="rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold text-white">
@@ -42,13 +42,13 @@ export default async function MarketHubPage() {
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {LISTING_TYPE_ORDER.map((type) => {
-          const config = LISTING_TYPES[type];
-          const count = counts[type];
+        {PRIMARY_CATEGORY_ORDER.map((category) => {
+          const config = PRIMARY_CATEGORIES[category];
+          const count = counts.byCategory[category];
           return (
             <Link
-              key={type}
-              href={`/community/market/${type}`}
+              key={category}
+              href={`/community/market/${category}`}
               className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-sky-300 hover:shadow-sm"
             >
               <div className="flex items-center justify-between">
@@ -59,6 +59,13 @@ export default async function MarketHubPage() {
               </div>
               <h2 className="mt-3 font-bold text-slate-900">{config.label}</h2>
               <p className="mt-1 text-sm text-slate-500">{config.description}</p>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {config.subcategories.map((sub) => (
+                  <span key={sub.value} className="rounded-full bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-500">
+                    {sub.label}
+                  </span>
+                ))}
+              </div>
             </Link>
           );
         })}

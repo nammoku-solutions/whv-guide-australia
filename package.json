@@ -16,6 +16,7 @@
     "test:content": "node --test scripts/content.test.mjs",
     "test:tools": "node --test scripts/tools.test.mjs",
     "test:notifications": "node --test scripts/notifications.test.mjs",
+    "test:marketplace": "tsx --test scripts/marketplace.test.mts",
     "test:ai": "tsx --test scripts/ai.test.mts",
     "test:monitor": "tsx --test scripts/monitor.test.mts",
     "test:backfill": "tsx --test scripts/backfill.test.mts",

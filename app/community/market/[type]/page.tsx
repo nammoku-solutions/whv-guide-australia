@@ -1,32 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Container } from "@/components/layout/Container";
 import { ListingCard } from "@/components/market/ListingCard";
 import { ListingFilters } from "@/components/market/ListingFilters";
 import { SaveSearchButton } from "@/components/market/SaveSearchButton";
 import { AdBanner } from "@/components/ads/AdBanner";
-import { getListingsByType, type ListingFilters as Filters } from "@/lib/listings";
-import { getListingTypeConfig, LISTING_TYPES } from "@/lib/listingConfig";
-import type { ListingType } from "@/types/listing";
+import { getListingsByCategory, type ListingFilters as Filters } from "@/lib/listings";
+import {
+  getPrimaryCategoryConfig,
+  isPrimaryCategory,
+  LEGACY_TYPE_REDIRECTS,
+  type PrimaryCategory,
+} from "@/lib/listingConfig";
 
 type PageProps = {
   params: Promise<{ type: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-function isListingType(value: string): value is ListingType {
-  return value in LISTING_TYPES;
-}
-
 function one(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
 }
 
+function activeSubcategory(category: PrimaryCategory, raw: string | undefined): string | undefined {
+  if (!raw) return undefined;
+  const cfg = getPrimaryCategoryConfig(category);
+  return cfg.subcategories.some((s) => s.value === raw) ? raw : undefined;
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { type } = await params;
-  if (!isListingType(type)) return { title: "マーケット" };
-  const config = getListingTypeConfig(type);
+  if (!isPrimaryCategory(type)) return { title: "マーケット" };
+  const config = getPrimaryCategoryConfig(type);
   return {
     title: `${config.label} | コミュニティマーケット`,
     description: config.description,
@@ -36,17 +42,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const dynamic = "force-dynamic";
 
-export default async function MarketTypePage({ params, searchParams }: PageProps) {
+export default async function MarketCategoryPage({ params, searchParams }: PageProps) {
   const { type } = await params;
-  if (!isListingType(type)) notFound();
-  const config = getListingTypeConfig(type);
+
+  // 旧サブタイプ・ルートは統合先へ恒久リダイレクト（チェーンなし）。
+  const legacy = LEGACY_TYPE_REDIRECTS[type];
+  if (legacy) {
+    permanentRedirect(`/community/market/${legacy.category}?subcategory=${legacy.subcategory}`);
+  }
+  if (!isPrimaryCategory(type)) notFound();
+
+  const config = getPrimaryCategoryConfig(type);
   const sp = await searchParams;
+  const subcategory = activeSubcategory(type, one(sp.subcategory));
 
   const filters: Filters = {
+    subcategory,
     location: one(sp.location),
     industry: one(sp.industry),
     employmentType: one(sp.employmentType),
-    farm: one(sp.farm) === "farm" ? "farm" : one(sp.farm) === "non_farm" ? "non_farm" : undefined,
     payType: one(sp.payType),
     roomType: one(sp.roomType),
     coupleAllowed: one(sp.coupleAllowed) === "1",
@@ -57,7 +71,15 @@ export default async function MarketTypePage({ params, searchParams }: PageProps
     maxPrice: one(sp.maxPrice) ? Number(one(sp.maxPrice)) : undefined,
   };
 
-  const listings = await getListingsByType(type, filters);
+  const listings = await getListingsByCategory(type, filters);
+  const activeSub = subcategory
+    ? config.subcategories.find((s) => s.value === subcategory)
+    : undefined;
+  const createHref = activeSub
+    ? `/community/market/new?category=${type}&subcategory=${activeSub.value}`
+    : `/community/market/new?category=${type}`;
+  const createCta = activeSub?.createCta ?? config.createCta;
+  const emptyState = activeSub?.emptyState ?? "この条件に合う掲載はまだありません。";
 
   return (
     <Container className="space-y-6 py-10">
@@ -68,22 +90,30 @@ export default async function MarketTypePage({ params, searchParams }: PageProps
             {config.emoji} {config.label}
           </h1>
         </div>
-        <Link href={`/community/market/new?type=${type}`} className="inline-flex rounded-full bg-sky-700 px-4 py-2 text-sm font-semibold text-white">
-          {config.createCta}
+        <Link href={createHref} className="inline-flex rounded-full bg-sky-700 px-4 py-2 text-sm font-semibold text-white">
+          {createCta}
         </Link>
       </div>
 
-      <ListingFilters type={type} />
+      {/* サブカテゴリのタブ（チップ）。トップレベルは増やさず、カテゴリ内で切替える。 */}
+      <nav className="-mx-1 flex flex-wrap gap-2 overflow-x-auto pb-1">
+        <SubTab category={type} value={undefined} current={subcategory} label="すべて" />
+        {config.subcategories.map((sub) => (
+          <SubTab key={sub.value} category={type} value={sub.value} current={subcategory} label={sub.label} />
+        ))}
+      </nav>
+
+      <ListingFilters category={type} />
 
       <div className="flex justify-end">
-        <SaveSearchButton type={type} />
+        <SaveSearchButton category={type} subcategory={subcategory} />
       </div>
 
       {listings.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <p className="text-sm text-slate-500">{config.emptyState}</p>
-          <Link href={`/community/market/new?type=${type}`} className="mt-4 inline-flex rounded-full bg-sky-700 px-5 py-2 text-sm font-semibold text-white">
-            {config.createCta}
+          <p className="text-sm text-slate-500">{emptyState}</p>
+          <Link href={createHref} className="mt-4 inline-flex rounded-full bg-sky-700 px-5 py-2 text-sm font-semibold text-white">
+            {createCta}
           </Link>
         </div>
       ) : (
@@ -94,5 +124,34 @@ export default async function MarketTypePage({ params, searchParams }: PageProps
 
       <AdBanner slotName={`マーケット_${type}_下部`} />
     </Container>
+  );
+}
+
+function SubTab({
+  category,
+  value,
+  current,
+  label,
+}: {
+  category: PrimaryCategory;
+  value: string | undefined;
+  current: string | undefined;
+  label: string;
+}) {
+  const active = (current ?? undefined) === (value ?? undefined);
+  const href = value
+    ? `/community/market/${category}?subcategory=${value}`
+    : `/community/market/${category}`;
+  return (
+    <Link
+      href={href}
+      className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition ${
+        active
+          ? "border-sky-600 bg-sky-600 text-white"
+          : "border-slate-300 bg-white text-slate-600 hover:border-sky-300"
+      }`}
+    >
+      {label}
+    </Link>
   );
 }

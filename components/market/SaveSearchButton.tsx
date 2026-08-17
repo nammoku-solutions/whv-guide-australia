@@ -7,10 +7,11 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { hasSupabaseEnv } from "@/lib/supabaseClient";
 import { createSavedSearch, type SavedSearchFilters } from "@/lib/savedSearches";
 import { trackEvent } from "@/lib/analytics";
-import type { ListingType } from "@/types/listing";
+import { PRIMARY_CATEGORIES, type PrimaryCategory } from "@/lib/listingConfig";
 
 const NUMERIC_KEYS = new Set(["minRent", "maxRent", "minPrice", "maxPrice"]);
 const ALLOWED_KEYS = new Set([
+  "subcategory",
   "location",
   "industry",
   "employmentType",
@@ -30,9 +31,20 @@ const ALLOWED_KEYS = new Set([
  * 現在の検索条件（URLクエリ）を保存する導線。マーケットの絞り込み結果から
  * 「この条件を保存」でき、マイページから再実行できる。ログアウト中はログイン導線。
  */
-export function SaveSearchButton({ type }: { type: ListingType }) {
+export function SaveSearchButton({
+  category,
+  subcategory,
+}: {
+  category: PrimaryCategory;
+  subcategory?: string;
+}) {
   const { isLoggedIn, profile } = useAuth();
   const searchParams = useSearchParams();
+  const cfg = PRIMARY_CATEGORIES[category];
+  // 保存検索の listing_type は選択サブカテゴリの内部型（未選択はカテゴリ代表型）。
+  const storedType =
+    (subcategory && cfg.subcategories.find((s) => s.value === subcategory)?.listingType) ||
+    cfg.listingTypes[0];
   const [label, setLabel] = useState("");
   const [open, setOpen] = useState(false);
   const [note, setNote] = useState("");
@@ -67,12 +79,12 @@ export function SaveSearchButton({ type }: { type: ListingType }) {
     const name = label.trim() || `保存した検索 (${new Date().toISOString().slice(0, 10)})`;
     setBusy(true);
     setNote("");
-    const res = await createSavedSearch(profile.id, name, type, filters);
+    const res = await createSavedSearch(profile.id, name, storedType, filters);
     setBusy(false);
     if (res.ok) {
       setSaved(true);
       setOpen(false);
-      trackEvent("saved_search_create", { listing_type: type });
+      trackEvent("saved_search_create", { listing_type: storedType });
     } else {
       setNote(res.error ?? "保存に失敗しました。");
     }

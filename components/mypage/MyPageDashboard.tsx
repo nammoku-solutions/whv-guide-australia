@@ -132,7 +132,7 @@ export function MyPageDashboard() {
 
   const savedJobs = savedListings.filter((l) => l.listingType === "job" || l.listingType === "farm_job");
   const savedHousing = savedListings.filter((l) => l.listingType === "housing" || l.listingType === "roommate");
-  const savedVehicles = savedListings.filter((l) => l.listingType === "vehicle");
+  const savedMarket = savedListings.filter((l) => l.listingType === "vehicle" || l.listingType === "marketplace");
   const savedArticles = savedItems.filter((i) => i.itemType === "article");
   const savedNews = savedItems.filter((i) => i.itemType === "news");
   const savedTools = savedItems.filter((i) => i.itemType === "tool");
@@ -222,9 +222,9 @@ export function MyPageDashboard() {
           <EmptyInline text="保存した掲載はありません。" href="/community/market" cta="マーケットを見る" />
         ) : (
           <div className="space-y-4">
-            <SavedListingGroup label="求人・ファーム" items={savedJobs} />
-            <SavedListingGroup label="住まい・ルームシェア" items={savedHousing} />
-            <SavedListingGroup label="車両" items={savedVehicles} />
+            <SavedListingGroup label="求人（一般・ファーム）" items={savedJobs} />
+            <SavedListingGroup label="家（部屋・シェアメイト）" items={savedHousing} />
+            <SavedListingGroup label="売買（車・その他）" items={savedMarket} />
           </div>
         )}
       </Section>

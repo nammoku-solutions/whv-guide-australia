@@ -1,8 +1,10 @@
 import { supabase } from "@/lib/supabaseClient";
+import { LISTING_TYPE_TO_CATEGORY, LEGACY_TYPE_REDIRECTS } from "@/lib/listingConfig";
 import type { ListingType } from "@/types/listing";
 
 /** Structured (SQL-matchable) marketplace filter payload. Mirrors ListingFilters. */
 export type SavedSearchFilters = {
+  subcategory?: string;
   location?: string;
   industry?: string;
   employmentType?: string;
@@ -54,9 +56,18 @@ export function savedSearchUrl(search: SavedSearch): string {
     if (value == null || value === "") continue;
     params.set(key, value === true ? "1" : String(value));
   }
-  const base = search.listingType
-    ? `/community/market/${search.listingType}`
-    : "/community/market";
+
+  // レガシー/新規どちらの listing_type も公開カテゴリのURLに正規化する。
+  let base = "/community/market";
+  if (search.listingType) {
+    const category = LISTING_TYPE_TO_CATEGORY[search.listingType];
+    base = `/community/market/${category}`;
+    // filters に subcategory が無ければ listing_type から補完する。
+    if (!params.get("subcategory")) {
+      const legacy = LEGACY_TYPE_REDIRECTS[search.listingType];
+      if (legacy) params.set("subcategory", legacy.subcategory);
+    }
+  }
   const qs = params.toString();
   return qs ? `${base}?${qs}` : base;
 }

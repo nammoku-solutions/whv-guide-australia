@@ -1,4 +1,10 @@
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
+import {
+  LISTING_TYPE_TO_CATEGORY,
+  PRIMARY_CATEGORIES,
+  matchesSubcategory,
+  type PrimaryCategory,
+} from "@/lib/listingConfig";
 import type {
   Listing,
   ListingApplication,
@@ -77,6 +83,8 @@ export type ListingFilters = {
   industry?: string;
   employmentType?: string;
   farm?: "farm" | "non_farm";
+  /** 公開カテゴリ内のサブカテゴリ（general/farm/room/wanted/sharemate/vehicle/furniture/daily/other）。 */
+  subcategory?: string;
   payType?: string;
   roomType?: string;
   coupleAllowed?: boolean;
@@ -146,6 +154,38 @@ export async function getListingsByType(
     .filter((listing) => matchesFilters(listing, filters));
 }
 
+/**
+ * 公開カテゴリ（求人/家/売買）単位で取得する。内部 listing_type を集約し、
+ * 任意の subcategory と構造化フィルタで絞り込む。
+ */
+export async function getListingsByCategory(
+  category: PrimaryCategory,
+  filters: ListingFilters = {},
+): Promise<Listing[]> {
+  const client = getSupabaseServerClient();
+  if (!client) return [];
+  const cfg = PRIMARY_CATEGORIES[category];
+
+  const { data, error } = await client
+    .from("listings")
+    .select(LISTING_PUBLIC_SELECT)
+    .in("listing_type", cfg.listingTypes)
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
+
+  if (error || !data) return [];
+
+  return (data as unknown as ListingRow[])
+    .map(mapListingRow)
+    .filter(isPubliclyActive)
+    .filter((listing) =>
+      filters.subcategory
+        ? matchesSubcategory(listing.listingType, listing.details, category, filters.subcategory)
+        : true,
+    )
+    .filter((listing) => matchesFilters(listing, filters));
+}
+
 export async function getListingById(id: string): Promise<Listing | undefined> {
   const client = getSupabaseServerClient();
   if (!client) return undefined;
@@ -207,6 +247,22 @@ export async function countActiveListingsByType(): Promise<Record<ListingType, n
     counts[row.listing_type] += 1;
   }
   return counts;
+}
+
+/**
+ * 公開カテゴリ別の件数と、内部 listing_type 別の件数を同時に返す。
+ * ドラフト・非公開・削除・期限切れは countActiveListingsByType 側で除外済み。
+ */
+export async function countActiveListings(): Promise<{
+  byType: Record<ListingType, number>;
+  byCategory: Record<PrimaryCategory, number>;
+}> {
+  const byType = await countActiveListingsByType();
+  const byCategory: Record<PrimaryCategory, number> = { job: 0, housing: 0, marketplace: 0 };
+  (Object.keys(byType) as ListingType[]).forEach((t) => {
+    byCategory[LISTING_TYPE_TO_CATEGORY[t]] += byType[t];
+  });
+  return { byType, byCategory };
 }
 
 /** applicant側の一覧マッピング（クライアントからも利用）。 */

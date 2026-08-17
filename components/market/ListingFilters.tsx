@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import type { ListingType } from "@/types/listing";
+import type { PrimaryCategory } from "@/lib/listingConfig";
 import {
   AU_STATES,
   EMPLOYMENT_TYPES,
@@ -15,7 +15,10 @@ import {
 const inputClass =
   "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm";
 
-export function ListingFilters({ type }: { type: ListingType }) {
+// サブカテゴリ選択はページ側のタブが担うため、フィルタでは維持だけする。
+const PRESERVED_KEYS = new Set(["subcategory"]);
+
+export function ListingFilters({ category }: { category: PrimaryCategory }) {
   const router = useRouter();
   const params = useSearchParams();
   const [values, setValues] = useState<Record<string, string>>(() => {
@@ -32,19 +35,33 @@ export function ListingFilters({ type }: { type: ListingType }) {
 
   function apply() {
     const next = new URLSearchParams();
+    // タブが持つ subcategory は必ず引き継ぐ。
+    for (const key of PRESERVED_KEYS) {
+      const v = params.get(key);
+      if (v) next.set(key, v);
+    }
     for (const [key, value] of Object.entries(values)) {
-      if (value) next.set(key, value);
+      if (value && !PRESERVED_KEYS.has(key)) next.set(key, value);
     }
     const qs = next.toString();
     router.push(qs ? `?${qs}` : "?");
   }
 
   function reset() {
-    setValues({});
-    router.push("?");
+    const next = new URLSearchParams();
+    for (const key of PRESERVED_KEYS) {
+      const v = params.get(key);
+      if (v) next.set(key, v);
+    }
+    const preserved: Record<string, string> = {};
+    for (const key of PRESERVED_KEYS) {
+      const v = values[key];
+      if (v) preserved[key] = v;
+    }
+    setValues(preserved);
+    const qs = next.toString();
+    router.push(qs ? `?${qs}` : "?");
   }
-
-  const isJob = type === "job" || type === "farm_job";
 
   return (
     <form
@@ -64,7 +81,7 @@ export function ListingFilters({ type }: { type: ListingType }) {
         />
       </label>
 
-      {isJob ? (
+      {category === "job" ? (
         <>
           <label className="text-xs font-medium text-slate-600">
             業種
@@ -93,20 +110,10 @@ export function ListingFilters({ type }: { type: ListingType }) {
               ))}
             </select>
           </label>
-          {type === "job" ? (
-            <label className="text-xs font-medium text-slate-600">
-              ファーム
-              <select value={values.farm ?? ""} onChange={(e) => set("farm", e.target.value)} className={inputClass}>
-                <option value="">すべて</option>
-                <option value="farm">ファームのみ</option>
-                <option value="non_farm">ファーム以外</option>
-              </select>
-            </label>
-          ) : null}
         </>
       ) : null}
 
-      {type === "housing" ? (
+      {category === "housing" ? (
         <>
           <label className="text-xs font-medium text-slate-600">
             部屋タイプ
@@ -128,10 +135,10 @@ export function ListingFilters({ type }: { type: ListingType }) {
         </>
       ) : null}
 
-      {type === "vehicle" ? (
+      {category === "marketplace" ? (
         <>
           <label className="text-xs font-medium text-slate-600">
-            州
+            州（車）
             <select value={values.state ?? ""} onChange={(e) => set("state", e.target.value)} className={inputClass}>
               <option value="">すべて</option>
               {AU_STATES.map((s) => (
@@ -140,11 +147,11 @@ export function ListingFilters({ type }: { type: ListingType }) {
             </select>
           </label>
           <label className="text-xs font-medium text-slate-600">
-            メーカー
+            メーカー（車）
             <input value={values.make ?? ""} onChange={(e) => set("make", e.target.value)} placeholder="Toyota..." className={inputClass} />
           </label>
           <label className="text-xs font-medium text-slate-600">
-            ミッション
+            ミッション（車）
             <select value={values.transmission ?? ""} onChange={(e) => set("transmission", e.target.value)} className={inputClass}>
               <option value="">すべて</option>
               {TRANSMISSION_TYPES.map((t) => (
