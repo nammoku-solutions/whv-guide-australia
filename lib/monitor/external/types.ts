@@ -14,6 +14,7 @@ import type { NewsCategory, RiskLevel, Relevance } from "../types";
 /** 投函元。 */
 export type ExternalOrigin =
   | "chatgpt_weekly"
+  | "gemini_weekly"
   | "admin_mobile"
   | "manual_seed_bridge"
   | "system";
