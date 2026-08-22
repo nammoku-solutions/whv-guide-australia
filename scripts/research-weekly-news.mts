@@ -13,7 +13,8 @@ import {
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta";
 // The research stage only discovers/extracts candidates. Existing backend validation,
 // relevance, grounding, risk and publication remain authoritative, so Flash-Lite is enough.
-const MODEL = process.env.WEEKLY_NEWS_RESEARCH_MODEL?.trim() || "gemini-2.5-flash-lite";
+// Google Search Grounding for Gemini 3.x requires a paid Gemini API project.
+const MODEL = process.env.WEEKLY_NEWS_RESEARCH_MODEL?.trim() || "gemini-3.5-flash-lite";
 const TIMEOUT_MS = Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_TIMEOUT_MS || "60000", 10);
 const BATCH_SIZE = Math.max(1, Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_BATCH_SIZE || "3", 10) || 3);
 const RETRIES = Math.max(0, Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_RETRIES || "1", 10) || 0);
@@ -54,10 +55,9 @@ async function callGeminiGroundedResearch(prompt: string): Promise<string> {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         tools: [{ googleSearch: {} }],
         generationConfig: {
-          temperature: 0.1,
           maxOutputTokens: 3500,
           thinkingConfig: {
-            thinkingBudget: 0,
+            thinkingLevel: "minimal",
           },
         },
       }),
