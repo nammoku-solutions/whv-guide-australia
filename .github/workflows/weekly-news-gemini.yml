@@ -3,9 +3,6 @@
 # Schedule is GitHub Actions UTC. Brisbane is UTC+10 year-round, so
 # Sunday 19:00 Australia/Brisbane = Sunday 09:00 UTC.
 #
-# TEMPORARY bootstrap trigger: push to main for this workflow's own files.
-# Remove after the first successful E2E run; normal operation is schedule + manual dispatch only.
-#
 # Required repository Secrets (already used by existing news workflows):
 #   GEMINI_API_KEY
 #   NEXT_PUBLIC_SUPABASE_URL
@@ -26,14 +23,6 @@ on:
   schedule:
     - cron: "0 9 * * 0"
   workflow_dispatch: {}
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/weekly-news-gemini.yml"
-      - "scripts/research-weekly-news.mts"
-      - "lib/monitor/external/weeklyResearch.ts"
-      - "package.json"
 
 concurrency:
   group: whv-weekly-news-gemini

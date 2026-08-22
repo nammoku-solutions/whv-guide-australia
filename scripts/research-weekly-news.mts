@@ -213,24 +213,13 @@ async function main(): Promise<void> {
       throw new Error(`All ${rejected.length} Gemini candidates were rejected by backend validation`);
     }
 
-    if (process.env.GITHUB_EVENT_NAME === "push") {
-      await notifyModerators({
-        title: "Gemini週次ニュースE2Eテスト成功",
-        body: `Research正常終了: model=${MODEL}, batches=${batches.length}, candidates=${candidates.length}, new=${inserted}, duplicate=${duplicates}, rejected=${rejected.length}`,
-        dedupeKey: `gemini_weekly_e2e:${runDate}:${process.env.GITHUB_RUN_ID || "unknown"}`,
-      });
-    }
-
     console.log(`Weekly research completed: ${inserted} new, ${duplicates} duplicate, ${rejected.length} rejected.`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    const isPush = process.env.GITHUB_EVENT_NAME === "push";
     await notifyModerators({
       title: "Gemini週次ニュース調査に失敗しました",
       body: message,
-      dedupeKey: isPush
-        ? `gemini_weekly_research:${runDate}:error:${process.env.GITHUB_RUN_ID || "unknown"}`
-        : `gemini_weekly_research:${runDate}:error`,
+      dedupeKey: `gemini_weekly_research:${runDate}:error`,
     });
     appendStepSummary(["## WHV Weekly News - Gemini Research", `- Status: FAILED`, `- Error: ${message}`]);
     throw error;
