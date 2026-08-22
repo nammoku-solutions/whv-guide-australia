@@ -160,6 +160,16 @@ async function main(): Promise<void> {
       throw new Error(`All ${rejected.length} Gemini candidates were rejected by backend validation`);
     }
 
+    // 初回 E2E 検証用。main push で起動したときだけ、候補 0 件でも成功を確認できる通知を残す。
+    // E2E 成功確認後に、このブロックと一時 push trigger は削除する。
+    if (process.env.GITHUB_EVENT_NAME === "push") {
+      await notifyModerators({
+        title: "Gemini週次ニュースE2Eテスト成功",
+        body: `Research正常終了: candidates=${candidates.length}, new=${inserted}, duplicate=${duplicates}, rejected=${rejected.length}`,
+        dedupeKey: `gemini_weekly_e2e:${runDate}:${process.env.GITHUB_RUN_ID || "unknown"}`,
+      });
+    }
+
     console.log(`Weekly research completed: ${inserted} new, ${duplicates} duplicate, ${rejected.length} rejected.`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
