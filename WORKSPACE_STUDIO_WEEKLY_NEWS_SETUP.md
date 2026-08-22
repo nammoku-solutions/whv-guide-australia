@@ -1,6 +1,10 @@
-# Workspace Studio Weekly News Setup
+# Workspace Studio Weekly News Setup — Legacy / Fallback Only
 
-Google Workspace Studio / Gemini へ `WHV Weekly News` を移行するための設定手順。
+> **Status: legacy fallback only.** The active production automation is `.github/workflows/weekly-news-gemini.yml`, which runs Gemini API + Google Search Grounding from GitHub Actions every Sunday at 19:00 Australia/Brisbane. The Workspace Studio webhook path below is retained only as a future fallback if `Send a webhook` becomes available for this Workspace tenant.
+>
+> Production migration to GitHub Actions was E2E-validated on 2026-08-22. Do not enable this Workspace Studio flow in parallel with the active GitHub Actions schedule, because doing so would create duplicate research runs.
+
+Google Workspace Studio / Gemini へ `WHV Weekly News` を移行するために検討した旧設定手順。
 
 既存サイト側のニュース処理は作り直さない。
 
@@ -208,10 +212,10 @@ Before disabling the ChatGPT task:
 
 ## 7. Rollback
 
-If the Workspace flow is unreliable:
+If the active GitHub Actions + Gemini API flow becomes unreliable and Workspace Studio webhook support is later available:
 
-- disable the Workspace Studio flow,
-- leave the existing direct government monitor and manual mobile import intact,
-- temporarily keep/re-enable the ChatGPT weekly task while troubleshooting.
+- disable the active GitHub Actions weekly schedule before enabling this fallback,
+- keep the existing direct government monitor and manual mobile import intact,
+- use this Workspace Studio path only after a fresh acceptance test.
 
-Do not remove the existing candidate inbox or shared publication pipeline.
+Do not run both weekly research schedulers in parallel. Do not remove the existing candidate inbox or shared publication pipeline.
