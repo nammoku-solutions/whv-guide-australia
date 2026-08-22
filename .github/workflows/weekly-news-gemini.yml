@@ -44,6 +44,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Verify weekly research parser and provenance
+        run: npm run test:weekly-research
+
       - name: Research official updates with Gemini + Google Search
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
