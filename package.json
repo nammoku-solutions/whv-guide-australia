@@ -28,6 +28,7 @@
     "monitor:health": "tsx scripts/monitor-health.mts",
     "news:backfill": "tsx scripts/news-backfill.mts",
     "news:backfill:seed": "tsx scripts/news-backfill-seed.mts",
+    "news:research": "tsx scripts/research-weekly-news.mts",
     "news:candidates": "tsx scripts/process-external-candidates.mts",
     "test:external": "tsx --test scripts/external-candidates.test.mts"
   },
