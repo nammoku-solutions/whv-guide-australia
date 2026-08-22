@@ -13,9 +13,9 @@
 #   AI_EMBEDDING_VERSION (optional)
 #
 # Optional repository Variables:
-#   WEEKLY_NEWS_RESEARCH_MODEL (default gemini-2.5-flash)
-#   WEEKLY_NEWS_RESEARCH_TIMEOUT_MS (default 90000 per batch)
-#   WEEKLY_NEWS_RESEARCH_BATCH_SIZE (default 4 sources)
+#   WEEKLY_NEWS_RESEARCH_MODEL (default gemini-2.5-flash-lite)
+#   WEEKLY_NEWS_RESEARCH_TIMEOUT_MS (default 60000 per batch)
+#   WEEKLY_NEWS_RESEARCH_BATCH_SIZE (default 3 sources)
 #   WEEKLY_NEWS_RESEARCH_RETRIES (default 1 retry per batch)
 #   NEWS_AUTO_PUBLISH_LOW_RISK (default true)
 #   NEWS_AUTO_PUBLISH_HIGH_RISK (default false)
@@ -37,7 +37,7 @@ on:
 
 concurrency:
   group: whv-weekly-news-gemini
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: read
