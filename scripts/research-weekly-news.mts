@@ -11,11 +11,11 @@ import {
 } from "../lib/monitor/external/weeklyResearch";
 
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta";
-// Gemini 2.5 Flash keeps Google Search Grounding available on the Gemini API free tier
-// and is sufficient here because downstream validation/relevance/risk remain authoritative.
-const MODEL = process.env.WEEKLY_NEWS_RESEARCH_MODEL?.trim() || "gemini-2.5-flash";
-const TIMEOUT_MS = Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_TIMEOUT_MS || "90000", 10);
-const BATCH_SIZE = Math.max(1, Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_BATCH_SIZE || "4", 10) || 4);
+// The research stage only discovers/extracts candidates. Existing backend validation,
+// relevance, grounding, risk and publication remain authoritative, so Flash-Lite is enough.
+const MODEL = process.env.WEEKLY_NEWS_RESEARCH_MODEL?.trim() || "gemini-2.5-flash-lite";
+const TIMEOUT_MS = Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_TIMEOUT_MS || "60000", 10);
+const BATCH_SIZE = Math.max(1, Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_BATCH_SIZE || "3", 10) || 3);
 const RETRIES = Math.max(0, Number.parseInt(process.env.WEEKLY_NEWS_RESEARCH_RETRIES || "1", 10) || 0);
 
 function sleep(ms: number): Promise<void> {
@@ -55,11 +55,14 @@ async function callGeminiGroundedResearch(prompt: string): Promise<string> {
         tools: [{ googleSearch: {} }],
         generationConfig: {
           temperature: 0.1,
-          maxOutputTokens: 4500,
+          maxOutputTokens: 3500,
+          thinkingConfig: {
+            thinkingBudget: 0,
+          },
         },
       }),
     },
-    Number.isFinite(TIMEOUT_MS) ? TIMEOUT_MS : 90000,
+    Number.isFinite(TIMEOUT_MS) ? TIMEOUT_MS : 60000,
   );
 
   if (!response.ok) {
@@ -96,7 +99,7 @@ async function researchBatch(prompt: string, label: string): Promise<WeeklyResea
       lastError = error;
       const message = error instanceof Error ? error.message : String(error);
       console.warn(`Research ${label} failed on attempt ${attempt + 1}: ${message}`);
-      if (attempt < RETRIES) await sleep(1500 * (attempt + 1));
+      if (attempt < RETRIES) await sleep(1000 * (attempt + 1));
     }
   }
   throw lastError instanceof Error ? lastError : new Error(String(lastError));
@@ -154,10 +157,9 @@ async function main(): Promise<void> {
       const found = await researchBatch(prompt, label);
       console.log(`${label}: ${found.length} candidate(s)`);
       allCandidates.push(...found);
-      if (i < batches.length - 1) await sleep(500);
+      if (i < batches.length - 1) await sleep(300);
     }
 
-    // 同一Run内の重複を先に落とす。最終的なcanonical URL/evidence dedupeは既存backendが権威。
     const unique = new Map<string, WeeklyResearchCandidate>();
     for (const candidate of allCandidates) {
       const key = `${candidate.sourceUrl}|${candidate.sourcePublishedAt}|${candidate.sourceUpdatedAt || ""}`;
@@ -211,12 +213,10 @@ async function main(): Promise<void> {
       throw new Error(`All ${rejected.length} Gemini candidates were rejected by backend validation`);
     }
 
-    // 初回 E2E 検証用。main push で起動したときだけ、候補 0 件でも成功を確認できる通知を残す。
-    // E2E 成功確認後に、このブロックと一時 push trigger は削除する。
     if (process.env.GITHUB_EVENT_NAME === "push") {
       await notifyModerators({
         title: "Gemini週次ニュースE2Eテスト成功",
-        body: `Research正常終了: batches=${batches.length}, candidates=${candidates.length}, new=${inserted}, duplicate=${duplicates}, rejected=${rejected.length}`,
+        body: `Research正常終了: model=${MODEL}, batches=${batches.length}, candidates=${candidates.length}, new=${inserted}, duplicate=${duplicates}, rejected=${rejected.length}`,
         dedupeKey: `gemini_weekly_e2e:${runDate}:${process.env.GITHUB_RUN_ID || "unknown"}`,
       });
     }
@@ -224,10 +224,13 @@ async function main(): Promise<void> {
     console.log(`Weekly research completed: ${inserted} new, ${duplicates} duplicate, ${rejected.length} rejected.`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    const isPush = process.env.GITHUB_EVENT_NAME === "push";
     await notifyModerators({
       title: "Gemini週次ニュース調査に失敗しました",
       body: message,
-      dedupeKey: `gemini_weekly_research:${runDate}:error`,
+      dedupeKey: isPush
+        ? `gemini_weekly_research:${runDate}:error:${process.env.GITHUB_RUN_ID || "unknown"}`
+        : `gemini_weekly_research:${runDate}:error`,
     });
     appendStepSummary(["## WHV Weekly News - Gemini Research", `- Status: FAILED`, `- Error: ${message}`]);
     throw error;
