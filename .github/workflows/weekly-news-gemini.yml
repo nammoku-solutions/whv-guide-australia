@@ -13,8 +13,10 @@
 #   AI_EMBEDDING_VERSION (optional)
 #
 # Optional repository Variables:
-#   WEEKLY_NEWS_RESEARCH_MODEL (default gemini-3.5-flash)
-#   WEEKLY_NEWS_RESEARCH_TIMEOUT_MS (default 120000)
+#   WEEKLY_NEWS_RESEARCH_MODEL (default gemini-2.5-flash)
+#   WEEKLY_NEWS_RESEARCH_TIMEOUT_MS (default 90000 per batch)
+#   WEEKLY_NEWS_RESEARCH_BATCH_SIZE (default 4 sources)
+#   WEEKLY_NEWS_RESEARCH_RETRIES (default 1 retry per batch)
 #   NEWS_AUTO_PUBLISH_LOW_RISK (default true)
 #   NEWS_AUTO_PUBLISH_HIGH_RISK (default false)
 #   EXTERNAL_NEWS_BATCH (default 10)
@@ -65,6 +67,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           WEEKLY_NEWS_RESEARCH_MODEL: ${{ vars.WEEKLY_NEWS_RESEARCH_MODEL }}
           WEEKLY_NEWS_RESEARCH_TIMEOUT_MS: ${{ vars.WEEKLY_NEWS_RESEARCH_TIMEOUT_MS }}
+          WEEKLY_NEWS_RESEARCH_BATCH_SIZE: ${{ vars.WEEKLY_NEWS_RESEARCH_BATCH_SIZE }}
+          WEEKLY_NEWS_RESEARCH_RETRIES: ${{ vars.WEEKLY_NEWS_RESEARCH_RETRIES }}
         run: npm run news:research
 
       - name: Process newly queued candidates through existing pipeline
