@@ -1,0 +1,65 @@
+# WHV Compass weekly official-news research using Gemini + Google Search Grounding.
+#
+# Schedule is GitHub Actions UTC. Brisbane is UTC+10 year-round, so
+# Sunday 19:00 Australia/Brisbane = Sunday 09:00 UTC.
+#
+# Required repository Secrets (already used by existing news workflows):
+#   GEMINI_API_KEY
+#   NEXT_PUBLIC_SUPABASE_URL
+#   SUPABASE_SERVICE_ROLE_KEY
+#   AI_EMBEDDING_VERSION (optional)
+#
+# Optional repository Variables:
+#   WEEKLY_NEWS_RESEARCH_MODEL (default gemini-3.5-flash)
+#   WEEKLY_NEWS_RESEARCH_TIMEOUT_MS (default 120000)
+#   NEWS_AUTO_PUBLISH_LOW_RISK (default true)
+#   NEWS_AUTO_PUBLISH_HIGH_RISK (default false)
+#   EXTERNAL_NEWS_BATCH (default 10)
+name: WHV Weekly News - Gemini Search
+
+on:
+  schedule:
+    - cron: "0 9 * * 0"
+  workflow_dispatch: {}
+
+concurrency:
+  group: whv-weekly-news-gemini
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  research-and-process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Research official updates with Gemini + Google Search
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          WEEKLY_NEWS_RESEARCH_MODEL: ${{ vars.WEEKLY_NEWS_RESEARCH_MODEL }}
+          WEEKLY_NEWS_RESEARCH_TIMEOUT_MS: ${{ vars.WEEKLY_NEWS_RESEARCH_TIMEOUT_MS }}
+        run: npm run news:research
+
+      - name: Process newly queued candidates through existing pipeline
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AI_EMBEDDING_VERSION: ${{ secrets.AI_EMBEDDING_VERSION }}
+          NEWS_AUTO_PUBLISH_LOW_RISK: ${{ vars.NEWS_AUTO_PUBLISH_LOW_RISK }}
+          NEWS_AUTO_PUBLISH_HIGH_RISK: ${{ vars.NEWS_AUTO_PUBLISH_HIGH_RISK }}
+          EXTERNAL_NEWS_BATCH: ${{ vars.EXTERNAL_NEWS_BATCH }}
+        run: npm run news:candidates
