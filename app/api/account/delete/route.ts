@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export const runtime = "nodejs";
 
@@ -7,10 +7,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const LISTING_IMAGES_BUCKET = "listing-images";
 
-async function deleteUserListingImages(
-  admin: ReturnType<typeof createClient>,
-  userId: string,
-) {
+async function deleteUserListingImages(admin: SupabaseClient, userId: string) {
   const bucket = admin.storage.from(LISTING_IMAGES_BUCKET);
 
   // Listing images are stored directly under `${userId}/...`.
