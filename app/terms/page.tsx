@@ -49,7 +49,7 @@ const sections = [
   {
     heading: "第6条（広告）",
     body: [
-      "当サイトは、第三者配信の広告サービス（Google AdSense 等）を利用しています。広告に関する詳細はプライバシーポリシーをご確認ください。",
+      "当サイトでは、現時点で第三者配信広告を配信していません。将来的に Google AdSense 等の広告サービスを利用する場合は、広告・Cookie等の取り扱いをプライバシーポリシーに反映したうえで運用します。",
     ],
   },
   {
@@ -66,7 +66,7 @@ export default function TermsPage() {
       <div className="mx-auto max-w-3xl space-y-6">
         <header className="space-y-2">
           <h1 className="text-3xl font-extrabold text-slate-900">利用規約</h1>
-          <p className="text-sm text-slate-500">最終更新日: 2026年6月26日</p>
+          <p className="text-sm text-slate-500">最終更新日: 2026年8月25日</p>
         </header>
         {sections.map((section) => (
           <section key={section.heading} className="space-y-2">
