@@ -21,6 +21,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const adsenseEnabled = Boolean(
+  process.env.NEXT_PUBLIC_ADSENSE_SLOT_BANNER || process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE,
+);
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -120,13 +124,15 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-sky-50/40 text-slate-900">
         <GoogleAnalytics />
-        <Script
-          id="adsbygoogle-init"
-          async
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5434162081070782"
-          crossOrigin="anonymous"
-        />
+        {adsenseEnabled ? (
+          <Script
+            id="adsbygoogle-init"
+            async
+            strategy="afterInteractive"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5434162081070782"
+            crossOrigin="anonymous"
+          />
+        ) : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
