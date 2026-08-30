@@ -1,14 +1,12 @@
 /**
- * 関連度のある公式変更から、構造化された日本語ニュースを生成する。
- * Gemini は「供給された公式コンテンツ」だけを根拠にする。日付・料率・閾値・
- * 資格要件・URL・政府ルールを創作してはならない。
+ * 関連度のある公式変更から、構造化された日本語ニュースを生成するための共有ロジック。
  *
- * grounding チェック: 生成結果が供給テキストに含まれない具体的な数値/URL を
- * 主張していないかを軽く検査し、自動公開の可否判断に使う。
+ * モデルは供給された公式コンテンツだけを根拠にする設計で、現在の本番モデル実行は停止中。
+ * テスト/将来実装では ModelCaller を注入できる。grounding チェックはプロバイダ非依存。
  */
 
 import type { SourceDefinition, GeneratedNews } from "./types";
-import { callGemini, parseJsonLoose, type ModelCaller } from "./gemini";
+import { callModel, parseJsonLoose, type ModelCaller } from "./model";
 
 const SYSTEM = `あなたはオーストラリアの WHV 情報サイトの日本語ニュース編集者です。
 オーストラリア政府の公式ページの変更内容を、日本人 WHV 利用者向けに分かりやすい日本語ニュースにします。
@@ -23,7 +21,7 @@ export async function generateNews(
   source: SourceDefinition,
   diffSummary: string,
   extractedText: string,
-  caller: ModelCaller = callGemini,
+  caller: ModelCaller = callModel,
 ): Promise<GeneratedNews | null> {
   const user = `【公式ソース】${source.organisation}｜${source.sourceName}
 【URL】${source.url}
@@ -71,18 +69,15 @@ ${extractedText.slice(0, 6000)}`;
 
 /**
  * 軽量 grounding チェック。生成文が供給テキストに存在しない「具体的な金額/率/URL」を
- * 主張していないか検査する。ヒットが多いほど幻覚リスクが高いとみなす。
- * @returns true = grounding OK（自動公開の候補になり得る）。
+ * 主張していないか検査する。true = grounding OK。
  */
 export function checkGrounding(news: GeneratedNews, sourceText: string): boolean {
   const haystack = sourceText.toLowerCase();
   const combined = `${news.summary} ${news.whatChanged} ${news.whoIsAffected} ${news.whatToDo}`;
 
-  // 生成文に出てくる金額/パーセント/URL を抽出。
   const claims: string[] = [];
   for (const m of combined.matchAll(/\$?\s?\d[\d,]*(?:\.\d+)?\s?(?:aud|ドル|%|％)?/gi)) {
     const token = m[0].replace(/\s/g, "");
-    // 単なる年号や短い数字は無視。
     if (token.replace(/[^\d]/g, "").length >= 3) claims.push(token);
   }
   for (const m of combined.matchAll(/https?:\/\/[^\s、。]+/gi)) {
@@ -90,7 +85,6 @@ export function checkGrounding(news: GeneratedNews, sourceText: string): boolean
   }
   if (claims.length === 0) return true;
 
-  // すべての具体的主張が供給テキストに（数字列として）現れるか。
   let grounded = 0;
   for (const c of claims) {
     const digits = c.replace(/[^\d]/g, "");
