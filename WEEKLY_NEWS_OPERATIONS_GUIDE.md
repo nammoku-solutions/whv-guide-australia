@@ -1,144 +1,93 @@
-# WEEKLY_NEWS_OPERATIONS_GUIDE.md
+# WHV Compass Weekly Official-Source Research Guide
 
-オーストラリアワーホリコンパスの **週次ニュース運用ガイド**。初期セットアップ後は、通常の週次ニュース運用に
-**PC は不要**。狙う運用フロー:
+WHV Compassの現行の週次公式情報調査・コンテンツ保守手順です。
 
-```
-週次 ChatGPT リサーチ → 候補インボックス → 自動処理 → 低リスク公開 → 高リスクはスマホでレビュー
-```
+## 1. Current operating model
 
-背景・設計・スキーマ・セキュリティの詳細は `EXTERNAL_NEWS_CANDIDATE_INBOX_REPORT.md` を参照。
+現在の週次調査は、アプリの外部モデルAPIやGitHub Actionsではなく、**ChatGPTのスケジュールタスク**で行います。
 
----
+- 実行: 毎週日曜 19:00 Australia/Brisbane
+- 対象期間: 原則として直近約14日
+- 優先ソース: Department of Home Affairs / Australian Taxation Office / Fair Work Ombudsman / その他関連するオーストラリア政府一次情報
+- 対象: 日本語話者のWorking Holiday subclass 417利用者・申請者に実質的な影響がある変更
+- 通知: 新しい重要変更または対応が必要な調査エラーがある場合のみ
 
-## 0. 初期セットアップ（1 回のみ・PC 使用）
+ChatGPTは、変更内容、公開日または適用日、影響対象、WHV Compassで更新候補となるページを整理します。
 
-### 0-1. Supabase マイグレーション
-Supabase SQL エディタで、既存の順序どおりに以下を適用（未適用のもののみ）:
-`0011 → 0012_official... / 0012_my_page... → 0012_news_backfill → 0013_news_backfill_origin →`
-**`0014_external_news_candidates.sql`**
+## 2. What is intentionally NOT automated
 
-適用後:
-- **セキュリティアドバイザ**を実行（Supabase Dashboard → Advisors）。`external_news_candidates` の RLS
-  有効・SECURITY DEFINER 関数の search_path 固定を確認。
-- RLS 確認: 匿名/通常ユーザーが `external_news_candidates` を読めないこと、モデレーターが読めること。
-- 制約/インデックス確認: `(source_url, source_evidence_hash)` UNIQUE、status/origin/evidence_origin の CHECK。
+現在、以下は自動化しません。
 
-### 0-2. GitHub Secrets / Variables（既存の監視ジョブと共用）
-Secrets: `GEMINI_API_KEY` / `NEXT_PUBLIC_SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY` /（任意）`AI_EMBEDDING_VERSION`。
-Variables（任意）: `NEWS_AUTO_PUBLISH_LOW_RISK`（既定 true）/ `NEWS_AUTO_PUBLISH_HIGH_RISK`（既定 false）/
-`EXTERNAL_NEWS_BATCH`（既定 10）。
+- 外部モデルAPIを使った公式ソース監視
+- `external_news_candidates` の自動AI処理
+- モデルによる関連度分類・日本語ニュース生成
+- AIによる低リスク自動公開
+- AI index / embedding更新
+- GitHub ActionsによるモデルAPI呼び出し
 
-### 0-3. （任意）機械取り込みエンドポイントを使う場合
-- Vercel 環境変数に **`EXTERNAL_NEWS_INGEST_SECRET`**（十分に長いランダム値）を設定。**service-role キーとは
-  別物**にすること。未設定なら `POST /api/news/candidates/ingest` は 503 で無効。
-- （任意）`EXTERNAL_NEWS_INGEST_RATE_MAX`（既定 30/分）。
+旧Gemini系workflowは廃止済みです。`AI_RUNTIME_ENABLED=false`、`NEWS_AI_AUTOMATION_ENABLED=false` が正式な本番状態です。
 
-> ChatGPT に「接続済み Supabase」から直接 `external_news_candidates` に insert させる運用を選ぶ場合、
-> この HTTP エンドポイントは不要（`EXTERNAL_NEWS_INGEST_SECRET` 未設定で無効のままにできる）。
+## 3. Weekly review procedure
 
----
+重要な更新が通知された場合は、次の順序で確認します。
 
-## 1. 週次 ChatGPT ワークフロー（PC 不要）
+1. 通知された一次公式ページを開く。
+2. タイトル、公開/更新日、適用日、金額、条件、対象者を公式本文と照合する。
+3. 既存のWHV Compass記事・ニュースと重複していないか確認する。
+4. 影響を受ける記事の `sources` / `officialSources` / `verifiedAt` / 本文を確認する。
+5. YMYL情報は、AI要約だけを根拠にせず一次公式情報で再確認する。
+6. コード変更後はcontent validation、関連テスト、buildを実行する。
+7. Preview/本番でモバイル表示、リンク、metadataを確認する。
 
-1. ChatGPT が**公式の公開ソースのみ**を週次で閲覧する（Home Affairs / ATO / Fair Work / Services Australia /
-   州政府など `*.gov.au`）。
-2. 新しい WHV 関連の更新を見つける。
-3. 既存の公開ニュース／候補インボックスと突き合わせ、**新規のみ**に絞る。
-4. 公式ソースから**構造化された事実**（要約・事実・数値・日付）を抽出する。
-5. 関連候補だけを投函する（下記いずれか）。
-6. サイト側パイプラインが生成/公開/レビューを行う。
+## 4. Candidate inbox / historical automation infrastructure
 
-### 投函の形（候補フィールドのみ）
-```json
-{
-  "sourceUrl": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers",
-  "sourceTitle": "Tax rates – working holiday makers (updated)",
-  "sourceOrganisation": "Australian Taxation Office",
-  "sourcePublishedAt": "2026-07-30",
-  "evidence": {
-    "summary": "公式ページから抽出した簡潔な事実。",
-    "facts": ["事実 1", "事実 2"],
-    "numbers": [{ "value": "15%", "context": "最初の所得区分の税率" }],
-    "dates": [{ "value": "2026-07-01", "context": "適用開始日" }]
-  },
-  "evidenceOrigin": "external_research"
-}
-```
+Supabaseの `external_news_candidates`、`news_items`、monitor/backfill関連migrationおよび一部の処理コードは、履歴・将来の再利用可能性のため保持しています。
 
-### 投函方法（2 択）
-- **A. 接続済み Supabase（推奨・キー不要のエージェント運用）**: `external_news_candidates` に上記フィールドで
-  insert。RLS により書き込みは service-role/接続権限のみ。**service キーは ChatGPT に渡さない。**
-- **B. 機械取り込み HTTP**: `POST /api/news/candidates/ingest`、ヘッダ `Authorization: Bearer <EXTERNAL_NEWS_INGEST_SECRET>`。
+これらが存在することは、現在自動処理が動いていることを意味しません。candidate ingest endpointも `EXTERNAL_NEWS_INGEST_SECRET` が空なら無効で、現在は下流のモデル処理を自動実行しません。
 
-ChatGPT は**リポジトリ書き込み・ZIP・npm CLI・ローカル PC・Supabase service キーを必要としない。**
+過去の候補を手動で確認する場合は、公式ソースを再確認し、現在の運用ポリシーに従って判断してください。
 
----
+## 5. Source and accuracy policy
 
-## 2. 週次チェックポイント方針（#18）
+- 政府・公式一次ソースを優先する。
+- ブログ、SNS、Reddit、移民エージェント、ニュース記事は制度変更の最終根拠にしない。
+- 金額・日付・税率・資格条件・指定労働要件等を推測しない。
+- 州差・時点差がある事項は明記する。
+- 更新が見つからない週は、不要なニュースを作らない。
+- 既存記事の言い換えだけで低価値ページを増やさない。
 
-- 各実行は**直近 10〜14 日**の公式更新を対象にスキャンする。
-- 既に見た事象は**下流 dedupe**（event_key / content_hash / タイトル×公式日）で除外されるため、
-  再送は安全。
-- 任意で小さな「週次リサーチ・チェックポイント」を持ってもよいが、**チェックポイントに強く依存しない**こと。
-  公式の**遅れて出る訂正・更新**を取りこぼさないため、重複は dedupe に任せて範囲を毎回スキャンする。
+## 6. Failure handling
 
----
+### ChatGPT scheduled research fails
 
-## 3. スマホ運用フロー（PC 不要）
+次回実行を待つだけで取りこぼす可能性がある重要期間は、運営者が同じ一次ソースを手動確認します。継続的なエラーがある場合はスケジュールタスク設定とアクセス可能な公式ソースを確認します。
 
-1. スマホで `/admin/monitor/import` を開く（モデレーター/管理者ログイン）。
-2. 公式ページを別タブで開き、**URL・タイトル・公開日・事実**を貼り付ける（全文コピー不要）。
-3. 「検証して取り込む」をタップ。
-4. 結果を確認: 関連度・重複・リスク・grounding・**生成ニュースのプレビュー**・記事影響・ステータス。
-   - **低/中リスクで全条件合格** → その場で**自動公開**。
-   - **高リスク/不確実/grounding 不合格** → `review_required`。承認/却下ボタンで判断（承認で公開＋AI 索引）。
-5. `review_required` になると**モデレーター全員にアプリ内通知**（「公式ニュース候補の確認が必要です」）が
-   届く。通知先リンクからレビューできる。
+### Official source blocked or unavailable
 
-`/admin/monitor` では外部候補の一覧（origin・ステータス・公式 URL・リンク済みニュース・エラー）と、
-レビュー要求ニュース・自動公開ニュース・記事影響が一望できる。
+別の第三者ソースを事実根拠として代用せず、同一政府機関の公式ページ・公式リリース等を確認します。確認できない情報は公開しません。
 
----
+### Existing content may be stale
 
-## 4. 公開ポリシー（要約）
+該当記事を更新するまで、必要に応じて警告・確認日を見直します。高リスク情報は特に優先します。
 
-- 低/中リスク + 全チェック合格 → 自動公開。
-- 高リスク（ビザ資格・417/462・規定労働・ビザ費用・税率/義務・最低賃金・雇用法・主要な法的/健康要件）
-  → 常に review。
-- grounding 失敗 → 自動公開しない。重複 → スキップ。無関係 → スキップ。
-- しきい値/フラグは `lib/monitor/config.ts`（＝環境変数）が唯一の権威。
+## 7. Reactivating runtime AI in the future
 
----
+サイトAIやニュースAI自動化を再開する場合は、単に環境変数を変更しないでください。少なくとも以下が必要です。
 
-## 5. スケジュール処理（retry/fallback）
+1. runtime API providerの選定
+2. 料金・rate limit・データ取扱いの確認
+3. generation / embedding / monitor model boundaryの実装
+4. Secret管理
+5. embedding互換性と必要な再index計画
+6. grounding・dedupe・risk policy・high-risk reviewのテスト
+7. CI / workflowの新規設計
+8. Google DriveのArchitecture / Runbook / Test Plan更新
+9. PreviewでのE2E検証
+10. 明示的な本番有効化
 
-- 即時（Vercel）処理が主。スケジュールは取りこぼし回収用。
-- `Process External News Candidates` ワークフロー（6 時間ごと + 手動）と、日次モニタ内の候補処理ステップ。
-- 手動実行: GitHub → Actions → 対象ワークフロー → *Run workflow*。
-- 外部エビデンス供給時は公式 fetch をしない。pending 0 件なら Gemini を呼ばない。
+旧プロバイダ固有コードや旧workflowをそのまま復活させる運用はしません。
 
----
+## 8. Source of truth
 
-## 6. 復旧・保持
-
-- **stale processing**: クラッシュ等で `processing` のまま 15 分以上経過した候補は次回実行で pending に戻る。
-- **再送**: 同一 (URL, エビデンスハッシュ) は冪等。下流 dedupe が重複公開を防ぐ。
-- **保持**: `prune_external_news_candidates(p_keep_days)`（既定 60 日）で `duplicate/irrelevant/skipped/failed`
-  を削除。`published/review_required` は provenance として保持。必要に応じて Supabase のスケジュール（cron）で
-  定期実行してよい（任意）。
-
----
-
-## 7. 直接モニタは維持
-
-直接モニタ（`npm run monitor` / 日次ワークフロー）は撤去していない。取得が degraded なソースは、この外部
-インボックス（または既存 Manual Seed）で公式事実を取り込む。両経路は公開前に同じパイプラインへ収束する。
-
----
-
-## 8. まとめ（初期セットアップ後は PC 不要）
-
-- 週次: ChatGPT が公式をリサーチ → 候補投函（接続済み Supabase or 取り込み HTTP）。
-- 自動: 低リスクは公開・高リスクは review + 通知。
-- スマホ: 通知からレビュー → 承認/却下。ZIP・JSON 手編集・ターミナル・PC は不要。
+現行運用については、`main`、このガイド、Google DriveのActiveなWHV Compass設計/運用文書を優先します。
+過去の `*_REPORT.md`、旧Migration Guide、旧Workspace Studio/Gem関連文書は歴史的記録として扱います。
