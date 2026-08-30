@@ -96,7 +96,10 @@ export const aiConfig = {
 export function getServerSecrets() {
   return {
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+    // Prefer Supabase's current secret-key format while retaining the legacy
+    // service_role variable during migration so existing deployments keep working.
+    supabaseServiceRoleKey:
+      process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
     rateLimitSalt: process.env.AI_RATE_LIMIT_SALT ?? "whv-ai-paused",
   };
 }
