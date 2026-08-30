@@ -1,11 +1,12 @@
 /**
  * 変更された公式情報の「日本人 WHV 利用者への関連度」を分類する。
- * Gemini は関連度の判断のみ。ページが変わったか否かは決定的処理が既に判定済み。
- * レイアウトのみの変更は unrelated に寄せる。
+ *
+ * 変更検知自体は決定的処理で行い、モデルは関連度判断だけを担当する設計。
+ * 現在の本番ではモデル実行は停止中で、テスト/将来実装では ModelCaller を注入できる。
  */
 
 import type { SourceDefinition, RelevanceResult, Relevance } from "./types";
-import { callGemini, parseJsonLoose, type ModelCaller } from "./gemini";
+import { callModel, parseJsonLoose, type ModelCaller } from "./model";
 
 const SYSTEM = `あなたはオーストラリアのワーキングホリデー（WHV）情報サイトの編集アシスタントです。
 オーストラリア政府の公式ページの「変更点」を読み、日本人 WHV 利用者にとっての関連度だけを判定します。
@@ -26,7 +27,7 @@ export async function classifyRelevance(
   source: SourceDefinition,
   diffSummary: string,
   extractedText: string,
-  caller: ModelCaller = callGemini,
+  caller: ModelCaller = callModel,
 ): Promise<RelevanceResult> {
   const user = `【ソース】${source.organisation}｜${source.sourceName}
 【カテゴリ】${source.category}
@@ -44,7 +45,6 @@ ${extractedText.slice(0, 4000)}`;
   }>(raw);
 
   if (!parsed || !parsed.relevance) {
-    // 解析不能 → 安全側（弱い関連・低信頼）に倒し、レビューに回す。
     return {
       relevance: "weakly_relevant",
       confidence: 0,
