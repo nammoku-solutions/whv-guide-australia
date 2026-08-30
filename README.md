@@ -8,6 +8,7 @@
 - Vercel
 - Supabase PostgreSQL / Auth / Storage
 - Google Analytics / optional AdSense
+- GitHub source: `nammoku-solutions/whv-guide-australia`（Vercel Git integration reconnected on 2026-08-30）
 
 ## Current operating model
 
