@@ -1,15 +1,14 @@
 /**
- * 信頼できる機械取り込み（例: 週次 ChatGPT 連携）向けの外部候補投函エンドポイント。
+ * 外部ニュース候補の機械取り込みエンドポイント（現在は任意・既定無効）。
  *
- * セキュリティ（#9）:
- *   - サーバー専用のスコープ付きシークレット EXTERNAL_NEWS_INGEST_SECRET（Bearer）で認証。
- *     Supabase service-role キーは使わない（それを webhook secret に流用しない）。
- *   - allow-list 検証・dedupe・下流の全安全処理は必須（submitExternalCandidate 経由）。
- *   - 軽量レート制限。narrow な契約（定義済み候補フィールドのみ）。
- *   - 秘匿値はログに出さない。ここでは同期処理しない（スケジューラが処理）。
+ * `EXTERNAL_NEWS_INGEST_SECRET` が未設定なら 503 で停止する。candidate inbox の
+ * スキーマ/API境界は将来の運用再設計に備えて保持しているが、現在の週次ChatGPT調査は
+ * このルートを必要とせず、投函後のモデル分類・生成・自動公開もスケジュール実行しない。
  *
- * ※ 接続済み Supabase から直接 insert する運用を選ぶ場合、本エンドポイントは不要
- *   （WEEKLY_NEWS_OPERATIONS_GUIDE.md 参照）。その場合はこのルートを無効化してよい。
+ * 有効化する場合のセキュリティ:
+ * - 専用 `EXTERNAL_NEWS_INGEST_SECRET`（Bearer）を使用し、service-role keyを流用しない。
+ * - allow-list検証とdedupeは `submitExternalCandidate` 経由で必須。
+ * - narrow payload、rate limit、秘匿値非ログ化を維持する。
  */
 
 import { NextResponse } from "next/server";
@@ -58,7 +57,6 @@ function constantTimeEqual(a: string, b: string): boolean {
   return timingSafeEqual(ab, bb);
 }
 
-// 軽量な固定ウィンドウ・レート制限（プロセス内・best-effort）。
 const RATE_WINDOW_MS = 60_000;
 const RATE_MAX = Number.parseInt(process.env.EXTERNAL_NEWS_INGEST_RATE_MAX ?? "30", 10);
 const hits: number[] = [];
@@ -73,7 +71,6 @@ function rateLimited(): boolean {
 export async function POST(request: Request) {
   const secret = process.env.EXTERNAL_NEWS_INGEST_SECRET ?? "";
   if (!secret) {
-    // 未設定なら機械取り込みは無効（接続済み Supabase 直接 insert 運用など）。
     return NextResponse.json({ ok: false, error: "ingestion disabled" }, { status: 503 });
   }
   const authHeader = request.headers.get("authorization") ?? "";
@@ -121,6 +118,6 @@ export async function POST(request: Request) {
     );
   }
 
-  // 同期処理はしない（スケジューラが pending をまとめて処理）。
+  // Inboxへの保存だけを行う。現在は下流のAI処理を自動起動しない。
   return NextResponse.json({ ok: true, id: submit.id, deduplicated: submit.deduplicated ?? false });
 }
