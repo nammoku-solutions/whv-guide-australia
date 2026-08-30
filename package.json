@@ -22,13 +22,7 @@
     "test:backfill": "tsx --test scripts/backfill.test.mts",
     "test:backfill:seed": "tsx --test scripts/backfill-seed.test.mts",
     "test:monitor:health": "tsx --test scripts/monitor-health.test.mts",
-    "ai:index": "tsx scripts/ai-index.mts",
-    "ai:reindex": "tsx scripts/ai-index.mts --reindex",
-    "monitor": "tsx scripts/monitor-sources.mts",
     "monitor:health": "tsx scripts/monitor-health.mts",
-    "news:backfill": "tsx scripts/news-backfill.mts",
-    "news:backfill:seed": "tsx scripts/news-backfill-seed.mts",
-    "news:candidates": "tsx scripts/process-external-candidates.mts",
     "test:external": "tsx --test scripts/external-candidates.test.mts"
   },
   "dependencies": {
