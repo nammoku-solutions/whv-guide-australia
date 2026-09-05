@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { FloatingFeedback } from "@/components/feedback/FloatingFeedback";
+import { AiAssistant } from "@/components/ai/AiAssistant";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { siteConfig } from "@/lib/siteConfig";
 import { ogImages, twitterImages } from "@/lib/socialImages";
@@ -145,6 +146,7 @@ export default function RootLayout({
           <main className="min-h-[70vh]">{children}</main>
           <Footer />
           <FloatingFeedback />
+          <AiAssistant />
         </AuthProvider>
       </body>
     </html>
