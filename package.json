@@ -23,7 +23,9 @@
     "test:backfill:seed": "tsx --test scripts/backfill-seed.test.mts",
     "test:monitor:health": "tsx --test scripts/monitor-health.test.mts",
     "monitor:health": "tsx scripts/monitor-health.mts",
-    "test:external": "tsx --test scripts/external-candidates.test.mts"
+    "test:external": "tsx --test scripts/external-candidates.test.mts",
+    "ai:index": "tsx scripts/ai-index.mts --changed",
+    "ai:reindex": "tsx scripts/ai-index.mts --reindex"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -40,15 +42,15 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "@types/ws": "^8.18.1",
     "eslint": "^9",
     "eslint-config-next": "^16.3.3",
     "png-to-ico": "^3.0.2",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
-    "typescript": "^6",
+    "typescript": "^6.0.3",
     "yaml": "^2.9.0"
   }
 }
