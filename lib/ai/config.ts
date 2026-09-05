@@ -1,9 +1,8 @@
 /**
- * サイト内 AI 機能の中央設定。
+ * サイト内AIアシスタントの中央設定。
  *
- * 現在の本番構成では外部モデル API を使用しない。RAG/生成系の実装境界は将来の
- * 再有効化に備えて保持するが、provider/model の既定値は disabled とし、環境変数
- * だけで誤って外部通信が有効にならないようにする。
+ * モデルIDやしきい値・機能フラグはここ（＝環境変数）を単一の窓口として参照する。
+ * プロバイダ固有の値をアプリ各所に散らばせず、将来のモデル差し替えを容易にする。
  */
 
 function envBool(name: string, fallback: boolean): boolean {
@@ -31,24 +30,36 @@ function envStr(name: string, fallback: string): string {
   return raw == null || raw === "" ? fallback : raw;
 }
 
-export const EMBEDDING_VERSION = envStr("AI_EMBEDDING_VERSION", "paused-v1");
+/**
+ * 既存の本番インデックスと互換の埋め込み世代。
+ * モデルを変更したらこの値を上げ、全件再インデックスする。
+ */
+export const EMBEDDING_VERSION = envStr("AI_EMBEDDING_VERSION", "v1");
+
+/**
+ * gemini-embedding-001 は可変次元に対応。768 は日本語品質と
+ * ストレージ/検索効率のバランスが良く、既存DBスキーマとも互換。
+ */
 export const EMBEDDING_DIMENSIONS = envInt("AI_EMBEDDING_DIMENSIONS", 768);
 
 export const aiConfig = {
-  runtimeEnabled: envBool("AI_RUNTIME_ENABLED", false),
-  provider: envStr("AI_PROVIDER", "disabled"),
+  // サイトAIのみを制御するフラグ。ニュース自動化とは独立。
+  runtimeEnabled: envBool("AI_RUNTIME_ENABLED", true),
+  provider: envStr("AI_PROVIDER", "gemini"),
 
   generation: {
-    model: envStr("AI_GENERATION_MODEL", "disabled"),
-    modelComplex: envStr("AI_GENERATION_MODEL_COMPLEX", "disabled"),
+    /** 高頻度Q&A向けの低コスト・低遅延モデル。 */
+    model: envStr("AI_GENERATION_MODEL", "gemini-3.5-flash-lite"),
+    /** 将来の複雑/高リスク質問向け。既定ではルーティングOFF。 */
+    modelComplex: envStr("AI_GENERATION_MODEL_COMPLEX", "gemini-3.5-flash"),
     maxOutputTokens: envInt("AI_GENERATION_MAX_TOKENS", 700),
     temperature: envFloat("AI_GENERATION_TEMPERATURE", 0.2),
     timeoutMs: envInt("AI_GENERATION_TIMEOUT_MS", 20000),
   },
 
   embedding: {
-    provider: envStr("AI_EMBEDDING_PROVIDER", "disabled"),
-    model: envStr("AI_EMBEDDING_MODEL", "disabled"),
+    provider: envStr("AI_EMBEDDING_PROVIDER", "gemini"),
+    model: envStr("AI_EMBEDDING_MODEL", "gemini-embedding-001"),
     dimensions: EMBEDDING_DIMENSIONS,
     version: EMBEDDING_VERSION,
     timeoutMs: envInt("AI_EMBEDDING_TIMEOUT_MS", 15000),
@@ -67,11 +78,11 @@ export const aiConfig = {
     rerankEnabled: envBool("AI_RERANK_ENABLED", false),
     verifyEnabled: envBool("AI_VERIFY_ENABLED", false),
     complexRoutingEnabled: envBool("AI_COMPLEX_ROUTING_ENABLED", false),
-    marketplaceSearchEnabled: envBool("AI_MARKETPLACE_SEARCH_ENABLED", false),
-    hybridSearchEnabled: envBool("AI_HYBRID_SEARCH_ENABLED", false),
-    structuredDataEnabled: envBool("AI_STRUCTURED_DATA_ENABLED", false),
-    personalDataEnabled: envBool("AI_PERSONAL_DATA_ENABLED", false),
-    currentUpdatesEnabled: envBool("AI_CURRENT_UPDATES_ENABLED", false),
+    marketplaceSearchEnabled: envBool("AI_MARKETPLACE_SEARCH_ENABLED", true),
+    hybridSearchEnabled: envBool("AI_HYBRID_SEARCH_ENABLED", true),
+    structuredDataEnabled: envBool("AI_STRUCTURED_DATA_ENABLED", true),
+    personalDataEnabled: envBool("AI_PERSONAL_DATA_ENABLED", true),
+    currentUpdatesEnabled: envBool("AI_CURRENT_UPDATES_ENABLED", true),
     mutationsEnabled: envBool("AI_MUTATIONS_ENABLED", false),
   },
 
@@ -92,15 +103,15 @@ export const aiConfig = {
   },
 } as const;
 
-/** サーバー側の共有秘匿値。外部モデル用キーは現在の契約に含めない。 */
+/** サーバー側でのみ参照する秘匿値。クライアントへ絶対に渡さない。 */
 export function getServerSecrets() {
   return {
+    geminiApiKey: process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY ?? "",
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-    // Prefer Supabase's current secret-key format while retaining the legacy
-    // service_role variable during migration so existing deployments keep working.
+    // Supabaseの新しいsecret keyを優先し、既存service_roleも互換維持。
     supabaseServiceRoleKey:
       process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
-    rateLimitSalt: process.env.AI_RATE_LIMIT_SALT ?? "whv-ai-paused",
+    rateLimitSalt: process.env.AI_RATE_LIMIT_SALT ?? "whv-ai-default-salt",
   };
 }
 
