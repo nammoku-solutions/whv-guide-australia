@@ -18,10 +18,44 @@ export const carsArticles: Article[] = [
       { label: "任意保険", value: "Third Party Property以上の加入を推奨" },
     ],
     steps: [
-      { title: "車を選ぶ", description: "走行距離・整備履歴・Rego残存期間を確認します。試乗もおすすめ。" },
-      { title: "売買書類を作成", description: "売主と売買契約・領収書を交わします。" },
-      { title: "Rego名義を変更", description: "州の運輸局で名義変更し、必要ならRoadworthyを取得します。" },
-      { title: "保険に加入", description: "CTPに加え、対物または車両保険を検討します。" },
+      {
+        title: "予算と必要な車種を絞る",
+        description: "通勤先、道路条件、走行距離、駐車場所から選び、維持・保険・登録の予算を確保します。",
+        links: [
+          {
+            label: "現車確認のチェックリスト",
+            url: "/guides/used-car-inspection-checklist"
+          }
+        ]
+      },
+      {
+        title: "車体番号・履歴・状態を確認する",
+        description: "VINを照合し、PPSRで担保などを確認します。整備履歴、州の登録状態、車両の状態は別に確認します。",
+        links: [
+          {
+            label: "PPSR公式照会",
+            url: "https://www.ppsr.gov.au/carcheck"
+          },
+          {
+            label: "照会結果の読み方",
+            url: "/guides/ppsr-check-guide"
+          }
+        ]
+      },
+      {
+        title: "州の名義変更と保険を確認して取引する",
+        description: "州の名義変更に必要な書類と期限を確認し、売買の控えを残し、必要な保険を有効にします。",
+        links: [
+          {
+            label: "州別の譲渡手続き",
+            url: "/guides/vehicle-transfer-by-state"
+          },
+          {
+            label: "保険の違いを確認",
+            url: "/guides/car-insurance-comparison"
+          }
+        ]
+      }
     ],
     tips: [
       "州によって名義変更の必要書類・期限が違います。購入する州の運輸局サイトを必ず確認しましょう。",
@@ -46,7 +80,19 @@ export const carsArticles: Article[] = [
       "roadside-assistance",
       "sell-car-before-leaving",
     ],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "購入前に用意",
+          items: [
+            "免許・翻訳書類、予算、住居・登録住所、必要な州の本人確認情報",
+            "購入額だけでなく、名義変更、登録、保険、維持費も計上"
+          ]
+        }
+      ],
+      completion: "購入後の州の名義変更・必要な保険・登録の有効性を確認し、書類と領収書を保存します。"
+    },
   },
 ];

@@ -11,15 +11,30 @@ export const healthArticles: Article[] = [
       "オーストラリアの医療は高額。ワーホリが病院にかかる流れ、GP（かかりつけ医）の仕組み、海外保険の使い方を解説します。",
     content: [
       "オーストラリアの医療制度は日本と大きく異なります。まず『GP（General Practitioner：かかりつけ医）』を受診し、必要に応じて専門医や病院を紹介してもらうのが基本の流れです。緊急時を除き、いきなり大病院には行きません。",
-      "ワーホリは公的医療保険（Medicare）の対象外のため、民間の海外保険でカバーします。受診時は一旦自己負担で支払い、保険会社に請求して払い戻すケースが一般的です。キャッシュレス対応の提携クリニックもあります。",
-      "薬は処方薬（処方箋が必要）と市販薬（Chemist/Pharmacyで購入）に分かれます。風邪薬や鎮痛剤などは薬局で買えます。",
+      "日本からの通常の短期滞在者は、日本との相互医療協定を根拠に豪州のMedicareを利用できません。ワーホリビザだけで一律に加入可否が決まるわけではないため、別の加入資格がある方はServices Australiaで確認してください。加入資格がない場合は医療・救急搬送を含む保険の補償を確認しましょう。",
+      "薬は処方薬（処方箋が必要）と市販薬（Chemist/Pharmacyで購入）に分かれます。風邪薬や鎮痛剤などは薬局で買えます。"
     ],
     keyFacts: [
-      { label: "最初の窓口", value: "GP（かかりつけ医）。予約制が多い" },
-      { label: "Medicare", value: "ワーホリは対象外（民間保険が必須）" },
-      { label: "支払い", value: "一旦自己負担→保険請求が一般的" },
-      { label: "薬", value: "処方薬はGP経由、市販薬は薬局で購入" },
-      { label: "緊急番号", value: "000（救急・警察・消防）" },
+      {
+        label: "最初の窓口",
+        "value": "GP（かかりつけ医）。予約制が多い"
+      },
+      {
+        label: "Medicare",
+        "value": "日本は相互医療協定の対象国ではない。別の加入資格がある場合は要確認"
+      },
+      {
+        label: "支払い",
+        "value": "一旦自己負担→保険請求が一般的"
+      },
+      {
+        label: "薬",
+        "value": "処方薬はGP経由、市販薬は薬局で購入"
+      },
+      {
+        label: "緊急番号",
+        "value": "000（救急・警察・消防）"
+      }
     ],
     steps: [
       { title: "保険証券を手元に", description: "英文の保険証券PDFと緊急連絡先をスマホに保存しておきます。" },
@@ -67,8 +82,14 @@ export const healthArticles: Article[] = [
       "safety-emergency",
       "preparation-checklist",
     ],
-    updatedAt: "2026-07-27",
+    updatedAt: "2026-11-18",
     published: true,
+    sources: [
+      {
+        label: "Services Australia｜相互医療協定",
+        url: "https://www.servicesaustralia.gov.au/about-reciprocal-health-care-agreements?context=22481"
+      },
+    ],
   },
 
   {
@@ -323,11 +344,30 @@ export const healthArticles: Article[] = [
       { label: "注意", value: "自己負担額（excess）と請求期限を証券で確認" },
     ],
     steps: [
-      { title: "証券情報を保存", description: "保険証券番号・緊急連絡先・請求方法（アプリ/オンライン）をスマホに保存します。" },
-      { title: "受診前に連絡", description: "高額になりそうなときは受診前に保険会社へ連絡し、指示・事前承認を得ます。" },
-      { title: "保険利用を伝える", description: "受付で海外保険がある旨を伝え、キャッシュレス対応か立替かを確認します。" },
-      { title: "英文の書類を受け取る", description: "明細付き領収書（tax invoice）と診断書（medical certificate）を必ずもらいます。" },
-      { title: "期限内に請求", description: "書類を撮影して保管し、保険会社の指定方法で請求期限内に払い戻しを申請します。" },
+      {
+        title: "緊急時は治療を優先する",
+        description: "緊急時は保険会社の事前連絡を待たず、救急や医療の現地窓口へ。緊急でなければ保険会社に連絡し、提携先や事前承認を確認します。",
+        links: [
+          {
+            label: "救急と緊急でない場合の公的案内",
+            url: "https://www.healthdirect.gov.au/healthcare-and-services/emergency-and-urgent-care"
+          }
+        ]
+      },
+      {
+        title: "支払いと受診の証拠を集める",
+        description: "明細、領収書、診断や受診日の資料を受け取り、何を提出するかは保険証券と保険会社の案内を確認します。"
+      },
+      {
+        title: "契約先の公式窓口へ提出する",
+        description: "契約先が指定したフォームから申請し、補償の上限、免責、提出期限、返金連絡を確認します。",
+        links: [
+          {
+            label: "補償の選び方",
+            url: "/guides/insurance-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "領収書は『itemised（明細付き）』でもらうのが鉄則。金額だけの領収書だと請求で追加資料を求められます。",
@@ -383,8 +423,20 @@ export const healthArticles: Article[] = [
       "pharmacy-guide",
       "dental-care-australia",
     ],
-    updatedAt: "2026-07-27",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "保険請求の準備",
+          items: [
+            "証券・契約番号、保険会社の緊急連絡先、利用した医療機関の明細と領収書",
+            "けが・病気の日時と経緯、診断書やレポートなど保険会社が求める資料"
+          ]
+        }
+      ],
+      completion: "申請控えと受付番号を保管し、審査結果・不足書類・自己負担額を確認します。"
+    },
   },
 
   {

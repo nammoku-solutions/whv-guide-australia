@@ -209,11 +209,26 @@ export const returnHomeArticles: Article[] = [
       "注意点として、Super口座を出国前に自分で解約したり、ファンドを勝手に統合しすぎたりすると、かえって手続きが複雑になることがあります。また、ファンドは一定期間手続きがないと残高をATOに移管することがあり、その場合はATO経由での請求になります。いずれにせよ受け取り自体は可能ですが、ファンド情報とmyGov連携を整えておくと帰国後の申請がスムーズです。DASPはタックスリターン（税金の還付）とは別の手続きなので、混同しないようにしましょう。",
     ],
     keyFacts: [
-      { label: "申請できる時期", value: "出国後＋ビザ失効後（在豪中は不可）" },
-      { label: "申請方法", value: "ATOのDASPオンラインシステム" },
-      { label: "必要情報", value: "パスポート・ビザ・TFN・各ファンド情報" },
-      { label: "源泉税", value: "WHM向けの高めの税率が適用（ATOで確認）" },
-      { label: "税金の還付とは別", value: "タックスリターンとDASPは別手続き" },
+      {
+        label: "申請できる時期",
+        "value": "出国後＋ビザ失効後（在豪中は不可）"
+      },
+      {
+        label: "申請方法",
+        "value": "ATOのDASPオンラインシステム"
+      },
+      {
+        label: "必要情報",
+        "value": "パスポート・ビザ・各ファンド情報（TFNの入力は任意）"
+      },
+      {
+        label: "源泉税",
+        "value": "WHM向けの高めの税率が適用（ATOで確認）"
+      },
+      {
+        label: "税金の還付とは別",
+        "value": "タックスリターンとDASPは別手続き"
+      }
     ],
     steps: [
       { title: "在豪中：ファンドを把握", description: "働いた職場ごとのSuperファンド名・メンバー番号を控えます。" },
@@ -249,7 +264,7 @@ export const returnHomeArticles: Article[] = [
       { label: "ATO｜Leaving Australia（離豪時の手続き）", url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/leaving-australia", accessedAt: "2026-08-02" },
     ],
     relatedSlugs: ["leaving-australia-checklist", "dasp-refund", "super-guide", "superannuation-basics", "early-tax-return-departing", "send-money-to-japan"],
-    updatedAt: "2026-08-02",
+    updatedAt: "2026-11-18",
     published: true,
   },
 

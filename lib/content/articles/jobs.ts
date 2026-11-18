@@ -22,10 +22,79 @@ export const jobsArticles: Article[] = [
       { label: "資格", value: "飲食はRSA、建設はWhite Cardが必要な場合あり" },
     ],
     steps: [
-      { title: "レジュメを作る", description: "英文1枚で、連絡先・職歴・スキル・滞在可能期間を明記します。" },
-      { title: "求人を探す/応募", description: "求人サイトと店頭を併用。気になる店は直接訪問します。" },
-      { title: "トライアル/面接", description: "短い実技トライアルや面接に臨みます。自己紹介を練習しておきます。" },
-      { title: "TFNを提出して勤務開始", description: "採用後、TFNと銀行口座を提出して給与を受け取ります。" },
+      {
+        title: "応募する職種を決めてレジュメを作る",
+        description: "職種を1〜2種類に絞り、担当した業務と応募先に合う経験を1枚にまとめます。",
+        links: [
+          {
+            label: "英文レジュメの作り方",
+            url: "/guides/resume-guide"
+          },
+          {
+            label: "必要資格の確認",
+            url: "/guides/certifications"
+          }
+        ]
+      },
+      {
+        title: "求人を探し、その場で応募する",
+        description: "求人サイトで職種・場所を絞り、求人票を保存。店頭応募するなら混雑時間を避け、担当者・日付・返信先を控えます。",
+        links: [
+          {
+            label: "SEEKで求人を探す",
+            url: "https://www.seek.com.au/"
+          },
+          {
+            label: "Workforce Australiaで求人を探す",
+            url: "https://www.workforceaustralia.gov.au/individuals/jobs/search"
+          },
+          {
+            label: "店頭での渡し方",
+            url: "/guides/walk-in-resume"
+          }
+        ]
+      },
+      {
+        title: "面接とトライアルの条件を確認する",
+        description: "開始前に、所要時間・何を任されるか・有給かを確認します。無給は監督下で技能を示すために合理的に必要な範囲に限られ、通常の仕事を続けさせる時間まで無料にはできません。",
+        checklist: [
+          "使える一言「How long is the trial, and is it paid?」"
+        ],
+        links: [
+          {
+            label: "Fair Work 無給トライアルのルール",
+            url: "https://www.fairwork.gov.au/starting-employment/unpaid-work/unpaid-trials"
+          },
+          {
+            label: "面接の準備",
+            url: "/guides/interview-guide"
+          }
+        ]
+      },
+      {
+        title: "採用条件を確認し、安全に情報を渡す",
+        description: "契約区分、適用Award、時給と割増、給料日を確認します。採用後、相手が正規の雇用主だと確認してからTFN申告・振込先などを提出します。",
+        links: [
+          {
+            label: "Fair Work 時給・割増を計算",
+            url: "https://calculate.fairwork.gov.au/"
+          },
+          {
+            label: "雇用契約のチェックリスト",
+            url: "/guides/employment-contract-checklist"
+          }
+        ]
+      },
+      {
+        title: "最初の給与を照合する",
+        description: "給与明細に載る勤務時間・単価・控除と、控えたシフトを比較。差があれば、記録を残した状態で雇用主に確認します。",
+        links: [
+          {
+            label: "給与が合わない場合の公式案内",
+            url: "https://www.fairwork.gov.au/workplace-problems/common-workplace-problems/my-pay-doesnt-seem-right"
+          }
+        ]
+      }
     ],
     tips: [
       "カフェ等の飲食はRSA（responsible service of alcohol）、建設現場はWhite Cardがあると採用に有利です。",
@@ -45,8 +114,80 @@ export const jobsArticles: Article[] = [
       { label: "SEEK（求人サイト）", url: "https://www.seek.com.au/" },
     ],
     relatedSlugs: ["farm-second-visa", "tfn-guide", "whv-complete-guide", "first-30-days-roadmap"],
-    updatedAt: "2026-06-10",
+    examples: {
+      title: "求人探しから応募までの具体例",
+      items: [
+        {
+          title: "カフェの仕事に初めて応募する",
+          summary: "平日の朝に働ける人が、通える範囲のカフェを探して応募する例です。",
+          details: [
+            "求人に記載された朝の開始時刻と交通手段を確認し、レジュメ冒頭に働ける曜日を記載します。",
+            "店頭なら混雑しない時間を選び「Hi, are you hiring at the moment? May I leave my résumé?」と聞き、日時と担当者を控えます。"
+          ],
+          facts: [
+            {
+              label: "検索語の例",
+              value: "cafe all rounder、cafe assistant、FOH ＋ 駅・地域名"
+            }
+          ],
+          links: [
+            {
+              label: "店頭応募の時間帯・英語フレーズ",
+              url: "/guides/walk-in-resume"
+            },
+            {
+              label: "SEEKで求人を検索",
+              url: "https://www.seek.com.au/"
+            }
+          ]
+        },
+        {
+          title: "倉庫の求人にオンラインで応募する",
+          summary: "朝のカフェ以外も視野に入れて、実際の勤務地と通勤時間から探す例です。",
+          details: [
+            "夜勤・早朝勤務の時間帯には公共交通がないこともあるので、シフト予定で通勤経路を調べます。",
+            "募集にフォークリフトや安全靴の指定があるか確認し、未取得の資格は取得済みと書きません。応募後に契約区分と適用される賃金を照合します。"
+          ],
+          facts: [
+            {
+              label: "検索語の例",
+              value: "pick packer、warehouse assistant ＋ 地域名"
+            }
+          ],
+          links: [
+            {
+              label: "倉庫の仕事の探し方",
+              url: "/guides/warehouse-jobs-guide"
+            },
+            {
+              label: "Fair Work｜賃金計算",
+              url: "https://calculate.fairwork.gov.au/"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "応募のセット",
+          items: [
+            "英文レジュメ（PDF）、連絡先、働ける曜日・開始日",
+            "必要な職種だけRSAなどの資格。就労資格を求められたときに確認できる許可情報"
+          ]
+        },
+        {
+          title: "採用後に必要",
+          items: [
+            "TFN申告に必要な情報、給与振込先、Superの情報",
+            "応募時点でTFN・口座番号・パスポート全体を一般公開しない"
+          ]
+        }
+      ],
+      completion: "勤務条件と初回シフトを書面で確認し、初回給与日に給与明細と実働時間を照合します。"
+    },
   },
 
   {
@@ -67,10 +208,34 @@ export const jobsArticles: Article[] = [
       { label: "形式", value: "PDFで用意。印刷して手渡しも有効" },
     ],
     steps: [
-      { title: "ヘッダーを作る", description: "氏名・電話番号・メール・現在地・ビザ種別と滞在可能期間を冒頭に書きます。" },
-      { title: "職歴を逆時系列で", description: "新しい順に、職種・期間・主な業務/成果を箇条書きで簡潔に書きます。" },
-      { title: "スキル・資格を明記", description: "英語レベル、RSA/White Card、運転免許、PCスキルなどを記載します。" },
-      { title: "Reference（推薦者）", description: "前職の上司などの連絡先、または『Available on request』と記載します。" },
+      {
+        title: "求人票から条件を拾う",
+        description: "必須・歓迎の経験を分け、自分が説明できる業務や成果を選びます。",
+        links: [
+          {
+            label: "仕事の探し方",
+            url: "/guides/jobs-guide"
+          }
+        ]
+      },
+      {
+        title: "1ページ程度にまとめる",
+        description: "名前と連絡先、応募先に合う経験、該当資格と勤務可能日を配置。未取得の資格は取得済みと書かないでください。"
+      },
+      {
+        title: "PDFにして応募する",
+        description: "例として、カフェなら接客・在庫・清掃など担当した仕事を短く記載し、レジュメと求人票をセットで保存します。",
+        links: [
+          {
+            label: "応募先に合うカバーレター",
+            url: "/guides/cover-letter-guide"
+          },
+          {
+            label: "店頭で渡す方法",
+            url: "/guides/walk-in-resume"
+          }
+        ]
+      }
     ],
     tips: [
       "在豪期間（あと何か月働けるか）は採用判断に重要。必ず明記しましょう。",
@@ -85,8 +250,54 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["interview-guide", "certifications", "jobs-guide"],
-    updatedAt: "2026-06-20",
+    examples: {
+      title: "英文レジュメの書き方の例",
+      items: [
+        {
+          title: "飲食経験をカフェ向けに書く",
+          summary: "「接客しました」を、採用担当者が具体的に想像できる担当業務に置き換えます。",
+          details: [
+            "接客、カード決済、補充を実際に担当した場合の文です。数字を入れるなら、自分で説明できる事実だけを追加します。",
+            "baristaが必須の求人なら、担当したことのないコーヒーマシンの経験を足さず、接客や衛生管理を示します。"
+          ],
+          facts: [
+            {
+              label: "英文例",
+              value: "Served customers, processed card payments and restocked the counter during busy shifts."
+            }
+          ]
+        },
+        {
+          title: "未経験で倉庫に応募する",
+          summary: "別業種の経験から、応募職種に関係する正確さや勤務可能時間を示す例です。",
+          details: [
+            "在庫を伝票と照合した経験がある場合に使えます。フォークリフト免許などの資格欄とは別に書きます。",
+            "応募用PDFにパスポート番号やTFNは入れず、電話、メール、勤務可能日が正しいか確認します。"
+          ],
+          facts: [
+            {
+              label: "英文例",
+              value: "Checked stock against order sheets and reported discrepancies to the supervisor."
+            }
+          ]
+        }
+      ],
+      intro: "例文は実際に経験した業務だけを使い、自分の職歴と勤務可能日に置き換えます。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "先に用意",
+          items: [
+            "応募先の求人票、連絡先、働ける時間・開始日",
+            "実際の職歴、資格、紹介者の同意。不要な本人確認番号は載せない"
+          ]
+        }
+      ],
+      completion: "職種に合う英文レジュメをPDFで保存し、スマホでの表示、電話・メール、ファイル名を確認します。"
+    },
   },
 
   {
@@ -95,10 +306,10 @@ export const jobsArticles: Article[] = [
     slug: "interview-guide",
     category: "jobs",
     description:
-      "ローカルの仕事は短い面接や実技トライアルで決まることが多いです。頻出質問、答え方、トライアルでの立ち振る舞いを解説します。",
+      "応募先に合う回答の準備から、トライアルの時間・有給条件の確認、面接後の連絡まで。飲食・小売などの仕事探しに使えます。",
     content: [
-      "オーストラリアの飲食・小売の採用は、形式ばった面接よりも『短い会話＋実技トライアル（試し勤務）』で決まることが多いです。トライアルは数時間〜1日、実際に働いてみて相性を見るものです。",
-      "完璧な英語より、笑顔・素直さ・テキパキ動く姿勢が評価されます。『いつから働けるか』『何曜日・何時間入れるか』は必ず聞かれるので即答できるようにしておきましょう。",
+      "飲食などの採用では面接や技能を試すトライアルが行われることがあります。時間、内容、直接監督者、報酬を事前に確認しましょう。無給が認められるのは、監督下で必要な技能を示すのに合理的な範囲だけです。これを超えて働く時間には、適用される賃金が必要です。",
+      "完璧な英語より、笑顔・素直さ・テキパキ動く姿勢が評価されます。『いつから働けるか』『何曜日・何時間入れるか』は必ず聞かれるので即答できるようにしておきましょう。"
     ],
     keyFacts: [
       { label: "選考形式", value: "短い面接 + 実技トライアル(試し勤務)" },
@@ -107,10 +318,40 @@ export const jobsArticles: Article[] = [
       { label: "服装", value: "清潔感重視。職種に合わせた服装で" },
     ],
     steps: [
-      { title: "頻出質問に答えを用意", description: "在豪期間・シフト可否・経験・志望理由を英語で言えるようにします。" },
-      { title: "身だしなみを整える", description: "清潔感のある服装。飲食なら髪をまとめ爪を短く。" },
-      { title: "トライアルは積極的に", description: "分からなければ質問し、指示を素早く実行。掃除や片付けも進んで行います。" },
-      { title: "お礼と次の確認", description: "終わりに感謝を伝え、結果の連絡時期を確認します。" },
+      {
+        title: "求人票と役割を読む",
+        description: "求人の要件を確認し、役割ごとに自分の経験を1〜2例準備します。勤務開始日、通勤方法、入れる曜日もメモ。"
+      },
+      {
+        title: "仕事内容・有給かを聞く",
+        description: "「Is this trial paid or unpaid?」「How long will it take, and who will supervise me?」と聞き、答えを控えます。",
+        links: [
+          {
+            label: "Fair Work 無給トライアルの公式ルール",
+            url: "https://www.fairwork.gov.au/starting-employment/unpaid-work/unpaid-trials"
+          }
+        ]
+      },
+      {
+        title: "技能の実演と通常の勤務を区別する",
+        description: "無給は、直接監督のもとで技能を示すのに合理的に必要な時間に限ります。それを超えて通常の仕事を頼まれたら、賃金と記録の扱いを確認します。",
+        links: [
+          {
+            label: "賃金が払われないとき",
+            url: "/guides/underpayment-unpaid-wages"
+          }
+        ]
+      },
+      {
+        title: "お礼を伝え、次の連絡を確認する",
+        description: "いつ結果が届くかを確認し、採用の場合は契約形態、時給、初回勤務の時間を書面で確認します。",
+        links: [
+          {
+            label: "採用条件のチェックリスト",
+            url: "/guides/employment-contract-checklist"
+          }
+        ]
+      }
     ],
     tips: [
       "『Smile, be on time, work hard』が基本。技術より姿勢が見られています。",
@@ -126,8 +367,33 @@ export const jobsArticles: Article[] = [
       { en: "Sorry, could you say that again?", ja: "すみません、もう一度言ってもらえますか？" },
     ],
     relatedSlugs: ["resume-guide", "certifications", "jobs-guide"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "面接の準備",
+          items: [
+            "求人票と自分のレジュメの控え",
+            "自己紹介、開始可能日、週の稼働可能日、応募先への質問"
+          ]
+        },
+        {
+          title: "トライアルの確認",
+          items: [
+            "業務内容、予定時間、有給か、当日の担当者",
+            "必要な服・靴と、現場で保護具を誰が提供するか"
+          ]
+        }
+      ],
+      completion: "結果連絡の時期と相手を確認し、トライアルに入った場合は実働・指示・報酬の説明を記録します。"
+    },
+    sources: [
+      {
+        label: "Fair Work｜無給トライアル",
+        url: "https://www.fairwork.gov.au/starting-employment/unpaid-work/unpaid-trials"
+      },
+    ],
   },
 
   {
@@ -789,10 +1055,30 @@ export const jobsArticles: Article[] = [
       { label: "超過分", value: "最低賃金での支払いが必要" },
     ],
     steps: [
-      { title: "内容を事前確認", description: "無給/有給・時間・業務内容をトライアル前に確認します。" },
-      { title: "記録を取る", description: "日時・実働時間・やらされた業務をメモします。" },
-      { title: "範囲を超えたら申告", description: "実演を超える労働をさせられたら支払いを求めます。" },
-      { title: "解決しなければ相談", description: "支払われない場合はFair Workに無料相談します。" },
+      {
+        title: "事前に時間と賃金を聞く",
+        description: "「How long will it take?」「Is this trial paid?」と聞き、回答を保存します。"
+      },
+      {
+        title: "実演と勤務を判別する",
+        description: "直接監督下で技能を示す合理的な時間を超える場合、適用される最低賃金での支払いが必要です。",
+        links: [
+          {
+            label: "Fair Workの判定基準・例",
+            url: "https://www.fairwork.gov.au/starting-employment/unpaid-work/unpaid-trials"
+          }
+        ]
+      },
+      {
+        title: "記録して相談する",
+        description: "日時・仕事内容・会話・求人情報を保存。賃金に疑問がある場合に相談ページを開きます。",
+        links: [
+          {
+            label: "Fair Work 給与の相談",
+            url: "https://www.fairwork.gov.au/workplace-problems/common-workplace-problems/my-pay-doesnt-seem-right"
+          }
+        ]
+      }
     ],
     tips: [
       "『トライアル』の名でシフトに入れられ売上に貢献していれば、それは労働＝支払い対象です。",
@@ -821,8 +1107,20 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["interview-guide", "walk-in-resume", "underpayment-unpaid-wages", "working-rights", "cash-in-hand-jobs"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "面接前に聞くこと",
+          items: [
+            "担当者・仕事内容・予定時間・監督者",
+            "有給か、適用Awardと予定時給、業務に必要な服装"
+          ]
+        }
+      ],
+      completion: "トライアルの条件を確認でき、実際の勤務があれば日時・内容・報酬の扱いを記録できたら完了です。"
+    },
   },
 
   {
@@ -849,10 +1147,36 @@ export const jobsArticles: Article[] = [
       { label: "報復", value: "相談・申告を理由にした解雇は違法" },
     ],
     steps: [
-      { title: "証拠を集める", description: "Payslip・労働時間の記録・契約・メッセージ・入金履歴を保存します。" },
-      { title: "正しい賃金を計算", description: "Pay Calculatorで最低時給・割増を確認し差額を算出します。" },
-      { title: "雇用主に書面で請求", description: "未払い額を具体的に示し、支払いをメール等で求めます。" },
-      { title: "Fair Workに相談", description: "解決しなければ無料・多言語で相談し回収支援を受けます。" },
+      {
+        title: "正しい賃金の基準を調べる",
+        description: "業種、Award・区分、年齢、雇用区分、勤務日・時間を確認し、シフトごとに比較します。",
+        links: [
+          {
+            label: "Fair Work 給与・割増計算",
+            url: "https://calculate.fairwork.gov.au/"
+          }
+        ]
+      },
+      {
+        title: "資料をまとめて書面で確認する",
+        description: "実働、適用単価、支払済額の差を整理。安全に連絡できる場合は、明細の修正や支払期日を雇用主に確認します。",
+        links: [
+          {
+            label: "Fair Work 給与が合わないとき",
+            url: "https://www.fairwork.gov.au/workplace-problems/common-workplace-problems/my-pay-doesnt-seem-right"
+          }
+        ]
+      },
+      {
+        title: "解決しなければ相談する",
+        description: "直接連絡が難しい場合や解決しない場合は、Fair Workの案内から相談します。",
+        links: [
+          {
+            label: "Fair Work 職場問題の相談",
+            url: "https://www.fairwork.gov.au/workplace-problems/common-workplace-problems/my-pay-doesnt-seem-right"
+          }
+        ]
+      }
     ],
     tips: [
       "日頃からFair Workの『Record My Hours』アプリで労働時間を記録しておくと立証が容易です。",
@@ -888,8 +1212,20 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["working-rights", "award-rates-penalty-rates", "cash-in-hand-jobs", "payslip-guide", "termination-final-pay"],
-    updatedAt: "2026-11-15",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "用意する記録",
+          items: [
+            "契約、Awardや職位、時給、シフト・実働・明細、振込記録",
+            "連絡した記録と、希望する解決方法"
+          ]
+        }
+      ],
+      completion: "不足額を確認し、安全な方法で雇用主またはFair Workに相談。手元に相談と請求の記録を残します。"
+    },
   },
 
   {
@@ -1819,25 +2155,55 @@ export const jobsArticles: Article[] = [
     priority: "P1",
     searchIntent: "RSAの取り方",
     description:
-      "バー・レストラン・ボトルショップで働くのに必須のRSA（Responsible Service of Alcohol）を、州ごとの取得方法・有効期限・費用の考え方とあわせて解説します。",
+      "酒類を提供・販売する仕事のRSAについて、州による講習・本人確認・カード申請の違いを説明。NSWで初取得、他州からVICへ移る例も掲載。",
     content: [
-      "結論から言うと、RSA（Responsible Service of Alcohol＝責任あるアルコール提供）は、アルコールを提供・販売する仕事に就くための必須資格で、取得方法・有効期限・扱いが州ごとに異なります。まず自分が働く州のRSAを取るのが基本です。飲食・バー・ボトルショップで働きたいなら最初に取っておくと応募の幅が大きく広がります。",
-      "RSAは、認定された研修機関（RTO）のコースを受けて取得します。多くの州でオンライン受講が可能ですが、州によって発行元・様式・オンライン可否が異なります。特にNSW（ニューサウスウェールズ州）とVIC（ビクトリア州）では、対面要素やコンピテンシーカードの発行など独自の手続きがあるため、州の酒類規制当局の案内を必ず確認しましょう。",
-      "州ごとの管轄の例として、NSWはLiquor & Gaming NSW、VICはVictorian Gambling and Casino Control Commission（VGCCC）系、QLD（クイーンズランド州）はOffice of Liquor and Gaming Regulation（OLGR）が所管です。州によってはRSAが全国的に相互承認されない場合があり、別の州で働くなら取り直しが必要なこともあります。",
-      "有効期限も州で異なります。QLDのように有効期限のある州、更新（refresher）が必要な州などがあるため、取得時に有効期限と更新条件を確認しましょう。RSAはワーホリの間だけでなく、複数州を移動して働く人には特に『どの州のRSAが要るか』の把握が重要です。",
-      "費用は数十ドル程度が目安で、オンラインコースなら1日程度で修了できることが多いです。修了後に発行される証明書やカードは、応募時にレジュメへ明記し、面接に持参できるよう準備しておきましょう。",
+      "RSAはResponsible Service of Alcoholの略です。酒類を提供・販売する仕事では、働く州・職務の要件に従います。受講料を払う前に、州当局が認めている講習と、受講後に必要なカードや証明書を確認します。",
+      "すでに州外資格を持っていれば、フルコースを買う前に移行手続きの有無を確認。たとえばVICでは条件を満たす場合に無料の移行研修があります。",
+      "費用と日程は認定提供者ごとに異なります。受講料にカードなどの費用が含まれるか、評価・本人確認を含めた完了時期はいつかを確認してから申し込みます。"
     ],
     keyFacts: [
-      { label: "何の資格", value: "アルコール提供・販売に必須の資格" },
-      { label: "取得方法", value: "認定RTOのコース（多くはオンライン可）" },
-      { label: "州で違う", value: "発行元・様式・有効期限・相互承認が州ごとに異なる" },
-      { label: "主な所管", value: "NSW: L&GNSW／VIC: VGCCC系／QLD: OLGR" },
+      {
+        label: "先に決めること",
+        value: "働く州と、酒類の提供・販売など担当する職務"
+      },
+      {
+        label: "申込先",
+        value: "州当局が案内する認定提供者"
+      },
+      {
+        label: "取得後",
+        value: "必要に応じて州のカードを申請。州外に移るときは認定・移行を確認"
+      }
     ],
     steps: [
-      { title: "働く州を決める", description: "まず就労予定の州を確認します。RSAは州ごとに異なります。" },
-      { title: "州のルールを確認", description: "州の酒類規制当局でオンライン可否・様式を確認します。" },
-      { title: "認定コースを受講", description: "認定RTOのRSAコースを受け、修了証/カードを取得します。" },
-      { title: "有効期限を管理", description: "有効期限・更新条件を確認し、応募時に提示します。" },
+      {
+        title: "働く州の要件を開く",
+        description: "州によって認定講習、既存資格の扱い、カードや更新の規則が違います。受講料を払う前に州の当局を確認します。",
+        links: [
+          {
+            label: "NSW州 RSA研修案内",
+            url: "https://www.nsw.gov.au/business-and-economy/liquor-and-gaming/training/rsa"
+          },
+          {
+            label: "VIC州 RSA研修案内",
+            url: "https://www.vic.gov.au/rsa-training"
+          }
+        ]
+      },
+      {
+        title: "認定された受講先を選び、修了する",
+        description: "公式案内に従って認定提供者を選び、講習・評価を受けます。別の州の資格がある場合は再受講の前に移行手続きを確認。"
+      },
+      {
+        title: "必要なカード・登録を済ませる",
+        description: "たとえばNSWでは取得した修了書類等を確認して、必要なコンピテンシーカードの申請を進めます。",
+        links: [
+          {
+            label: "Service NSW RSAカードの申請",
+            url: "https://www.service.nsw.gov.au/transaction/apply-for-an-rsa-or-rcg-competency-card"
+          }
+        ]
+      }
     ],
     tips: [
       "州をまたいで働く予定なら、その州で有効なRSAが要るか事前に確認を。",
@@ -1865,8 +2231,73 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["rcg-rsa-gaming", "hospitality-jobs-guide", "barista-job-guide", "certifications", "food-safety-certificate"],
-    updatedAt: "2026-07-18",
+    examples: {
+      title: "働く州が変わるときのRSAの例",
+      items: [
+        {
+          title: "シドニーで初めてRSAを取る｜NSW",
+          summary: "NSWの酒類提供の仕事に応募するために、ゼロから取る例です。",
+          details: [
+            "NSW州の公式案内から認定提供者を確認し、講習・評価を修了。Interim Certificateを受け取ります。",
+            "期限切れになる前に、仮証明書と100ポイント分の本人確認書類を揃え、Service NSWセンターでCompetency Cardを申請します。"
+          ],
+          facts: [
+            {
+              label: "仮証明書",
+              value: "対象のInterim Certificateで働ける期間は90日"
+            }
+          ],
+          links: [
+            {
+              label: "NSW州公式｜RSA研修と認定提供者",
+              url: "https://www.nsw.gov.au/business-and-economy/liquor-and-gaming/training/rsa"
+            },
+            {
+              label: "Service NSW｜カード申請と必要な書類",
+              url: "https://www.service.nsw.gov.au/transaction/apply-for-an-rsa-or-rcg-competency-card"
+            }
+          ]
+        },
+        {
+          title: "州外のRSAを持ってメルボルンで働く｜VIC",
+          summary: "別の州でRSAを取得済みの人が、VICで酒類を提供する仕事に移る例です。",
+          details: [
+            "州外資格だけで働けると決めつけず、既存証明書と修了した研修単位をVIC州の移行条件と照合します。",
+            "対象ならRSA RefresherでVICの証明書を取得。対象外で新たに研修が必要なら、州の認定提供者を選びます。"
+          ],
+          facts: [
+            {
+              label: "移行費用の例",
+              value: "受講資格を満たす場合、VICのRSA Refresherは無料"
+            }
+          ],
+          links: [
+            {
+              label: "VIC州公式｜州外資格からの移行条件",
+              url: "https://www.vic.gov.au/rsa-training"
+            },
+            {
+              label: "VIC州公式｜認定提供者を探す",
+              url: "https://www.vic.gov.au/approved-rsa-course-providers"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申込前に確認",
+          items: [
+            "働く州・準州と職種。今持っている資格・受講証明があればその原本",
+            "受講機関が求める身分証、受講費、登録時に求められる情報"
+          ]
+        }
+      ],
+      completion: "働く州で有効な証明書・カードを取得し、採用先に提示できるよう保管します。"
+    },
   },
 
   {
@@ -1893,10 +2324,32 @@ export const jobsArticles: Article[] = [
       { label: "注意", value: "オンライン可否は州で異なる（NSW等は独自ルール）" },
     ],
     steps: [
-      { title: "働く州を確認", description: "州のWHS当局で受講形式(オンライン/対面)を確認します。" },
-      { title: "認定RTOを選ぶ", description: "州が認定したRTOのコースを選びます。" },
-      { title: "コースを修了", description: "一般安全教育を受講し、White Cardを取得します。" },
-      { title: "現場に持参", description: "カード/修了証を用意し、応募・就業時に提示します。" },
+      {
+        title: "働く州の安全当局を確認する",
+        description: "受講資格、本人確認、受講形式、他州カードの認定を公式窓口で先に確認します。",
+        links: [
+          {
+            label: "NSW州 White Card",
+            url: "https://www.service.nsw.gov.au/transaction/apply-for-a-general-construction-induction-card-white-card"
+          },
+          {
+            label: "VIC州 White Card",
+            url: "https://www.worksafe.vic.gov.au/construction-induction-training-white-card"
+          },
+          {
+            label: "QLD州 White Card",
+            url: "https://www.business.qld.gov.au/running-business/whs/licences/construction-induction"
+          }
+        ]
+      },
+      {
+        title: "公式案内にある提供者で講習を受ける",
+        description: "認定提供者を選び、受講前に身分証・費用・言語・安全装備の要否を確認し、講習と評価を完了します。"
+      },
+      {
+        title: "カード・証明を受け取り現場で見せる",
+        description: "州と提供者の案内に従ってカードを受け取り、紛失や他州で使う場合の確認先を控えます。"
+      }
     ],
     tips: [
       "『全部オンラインで即発行』の業者は州ルールに合わないことも。当局認定を確認。",
@@ -1927,8 +2380,20 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["construction-jobs-guide", "warehouse-jobs-guide", "forklift-licence-guide", "certifications", "first-aid-cpr-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "受講前に確認",
+          items: [
+            "働く州、既存のWhite Cardの有無、本人確認として使える資料",
+            "講習の提供者、受講形式、受講費とカード交付方法"
+          ]
+        }
+      ],
+      completion: "対象州で有効なWhite Card・証明を入手し、現場で提示できる状態にします。現場固有の安全説明は別です。"
+    },
   },
 
   {

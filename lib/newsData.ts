@@ -82,21 +82,20 @@ export const newsItems: NewsItem[] = [
   {
     id: "n3",
     slug: "whv-visa-fee-840",
-    title: "ワーホリビザ申請料が840 AUDに値上げ（2025年7月〜）",
+    title: "ワーホリビザ申請料の改定｜2025年・2026年の変更",
     date: "2025-07-01",
     category: "cost",
     summary:
-      "ファーストワーキングホリデービザ（サブクラス417）の申請料が650 AUDから840 AUDに改定されました。セカンド・サードビザは各1,000 AUDです。",
+      "2025年7月1日の一般枠の改定はA$650からA$670でした。2026年7月1日以降の一般枠は初回A$840、セカンド・サード各A$1,000です。",
     body: [
-      "オーストラリア政府は2025年7月1日より、ワーキングホリデービザ（サブクラス417）の申請料（Visa Application Charge）を改定しました。ファースト（1年目）ビザは従来の650 AUDから840 AUDへ値上げされています。",
-      "セカンド（2年目）・サード（3年目）ビザの申請料はそれぞれ1,000 AUDです。今後も申請料は改定される可能性があるため、申請前に必ず公式サイトで最新の金額を確認してください。",
-      "本サイトのビザ関連記事も最新の金額に更新済みです。予算計画の際は、申請料に加えて海外保険・航空券・当面の生活費（5,000 AUD以上が目安）も見込んでおきましょう。",
+      "訂正：当初の掲載ではA$840・A$1,000を2025年7月の改定額としていました。2025年7月1日の規則で一般枠のサブクラス417の基本申請料はA$650からA$670に変更されました。",
+      "2026年7月1日の規則改定後は、一般枠のファーストの基本申請料はA$840、セカンド・サードは各A$1,000です。例外や手数料、今後の改定があるため、支払い前にHome Affairsの最新の見積もりを確認してください。",
     ],
     source: {
-      label: "Department of Home Affairs｜Working Holiday visa (417)",
-      url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
+      label: "豪州連邦法令登録簿｜2025年の申請料改定",
+      url: "https://www.legislation.gov.au/F2025L00796/latest",
     },
-    relatedGuide: "visa-application",
+    relatedGuide: "visa-cost-processing-time",
     published: true,
   },
   {

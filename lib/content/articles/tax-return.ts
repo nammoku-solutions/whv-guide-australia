@@ -8,24 +8,70 @@ export const taxReturnArticles: Article[] = [
     category: "tax-return",
     description: "会計年度・申告期限・必要書類・myGov連携まで、ワーホリの確定申告に必要な知識を整理します。",
     content: [
-      "自分で申告する場合、期限は原則10月31日で、週末に当たる年は次の営業日です。ATOが2026年10月19日に案内した2025–26年度の自己申告期限は、2026年11月2日午後11時59分（現地時間）でした。申告が必要で期限を過ぎた場合は、できるだけ早く申告してください。",
+      "豪州の会計年度は7月1日〜翌6月30日です。ワーホリの収入・控除などによって提出の要否が異なり、働いた全員に提出義務があるわけではありません。ATOのワーホリ向け案内と申告要否のツールで確認してください。",
       "オーストラリアの会計年度は7月1日〜翌年6月30日。自己申告はその後の7月1日から原則10月31日までに行います。多くのワーホリは源泉徴収された税金の一部が還付されます。",
       "myGovアカウントを作成してATOと連携すれば、雇用主が報告したIncome Statementが自動で反映され、オンラインで簡単に申告できます。",
       "ワーホリには「Working Holiday Maker（WHM）税率」という専用の税率が適用されます。課税所得の最初の45,000 AUDまでは15%で課税され、それを超える部分は通常の累進税率になります。給与から源泉徴収された金額が実際の税額より多ければ差額が還付され、少なければ追加で納税する形になります。多くの短期就労のワーホリは、還付を受けられるケースが一般的です。",
       "申告に必要なものは、TFN、myGovとATOの連携、そして各雇用主からのIncome Statement（かつてのPayment Summary）です。Income Statementは通常、会計年度終了後にATO側で自動的に「Tax ready」の状態になり、申告画面に反映されます。銀行の利子や、ギグワーク（ABNでの収入）がある場合はそれらも申告に含める必要があります。",
-      "帰国後に申告する場合や、複数の雇用主で働いた場合など、状況が複雑なときは税理士（登録Tax Agent）に依頼する選択肢もあります。手数料はかかりますが、控除できる経費（仕事用の道具・交通費など）を正しく計上してもらえるため、結果的に手取りが増えることもあります。自分で申告する場合も、仕事関連の領収書は会計年度を通して保管しておくと控除に役立ちます。",
+      "帰国後に申告する場合や、複数の雇用主で働いた場合など、状況が複雑なときは税理士（登録Tax Agent）に依頼する選択肢もあります。手数料はかかりますが、控除できる経費（仕事用の道具・交通費など）を正しく計上してもらえるため、結果的に手取りが増えることもあります。自分で申告する場合も、仕事関連の領収書は会計年度を通して保管しておくと控除に役立ちます。"
     ],
     keyFacts: [
-      { label: "会計年度", value: "7月1日〜翌6月30日" },
-      { label: "申告期間", value: "7月1日から原則10月31日。週末は次の営業日" },
-      { label: "申告方法", value: "myGov連携でATOオンライン、または税理士（Tax Agent）" },
-      { label: "WH税率", value: "課税所得の最初の45,000 AUDまで15%（Working Holiday Maker税率）" },
+      {
+        label: "会計年度",
+        "value": "7月1日〜翌6月30日"
+      },
+      {
+        label: "申告期間",
+        "value": "自己申告の期限は原則10月31日。年度ごとの案内と登録税理士の期限を別に確認"
+      },
+      {
+        label: "申告方法",
+        "value": "myGov連携でATOオンライン、または税理士（Tax Agent）"
+      },
+      {
+        label: "WH税率",
+        "value": "課税所得の最初の45,000 AUDまで15%（Working Holiday Maker税率）"
+      }
     ],
     steps: [
-      { title: "myGovを作成しATOと連携", description: "オンライン申告の準備をします。" },
-      { title: "Income Statementを確認", description: "雇用主が報告した年間収入・源泉徴収額を確認します。" },
-      { title: "控除・経費を入力", description: "仕事関連経費などがあれば入力します。" },
-      { title: "申告して還付を待つ", description: "口座情報を登録し、還付金の入金を待ちます（通常2週間程度）。" },
+      {
+        title: "申告が必要かを判定する",
+        description: "ワーホリの給与だけか、ほかの収入や控除があるかで扱いが異なります。ATOの公式判定を使います。",
+        links: [
+          {
+            label: "ATOの申告要否ツール",
+            url: "https://www.ato.gov.au/calculators-and-tools/tax-return-do-i-need-to-lodge"
+          },
+          {
+            label: "ATO ワーホリの申告条件",
+            url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+          }
+        ]
+      },
+      {
+        title: "自分で申告するか、依頼するかを決める",
+        description: "自分で提出するなら公式myTax、依頼するなら登録税理士の資格を確認します。",
+        links: [
+          {
+            label: "myTaxを開く手順",
+            url: "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-online-with-mytax"
+          },
+          {
+            label: "税理士を選ぶ",
+            url: "/guides/tax-agent-guide"
+          }
+        ]
+      },
+      {
+        title: "所得明細・入金・控除を照合して提出する",
+        description: "給与のTax readyを確認し、ほかの収入も入力します。控除は要件と証拠を確認してから申告します。",
+        links: [
+          {
+            label: "画面を進める手順",
+            url: "/guides/tax-return-howto"
+          }
+        ]
+      }
     ],
     tips: [
       "出国後でも申告は可能ですが、myGovとATOの連携・銀行口座の維持をしておくと還付がスムーズです。",
@@ -33,15 +79,32 @@ export const taxReturnArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "途中帰国でも還付は受けられますか？",
-        answer:
-          "受けられます。会計年度の途中で帰国する場合でも、翌会計年度の申告期間に確定申告すれば還付対象になります。豪ドルを受け取れる口座を残しておくと便利です。",
-      },
+        "question": "途中帰国でも還付は受けられますか？",
+        "answer": "海外からも申告できます。還付・追加納税は年間の所得と源泉徴収額によって異なります。恒久的に出国した場合の早期申告はATOの条件を確認してください。"
+      }
     ],
     sources: [
-      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now" },
-      { label: "ATO - Lodging your tax return", url: "https://www.ato.gov.au/individuals-and-families/your-tax-return" },
-      { label: "myGov", url: "https://my.gov.au/" },
+      {
+        label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）",
+        url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now"
+      },
+      {
+        label: "ATO - Lodging your tax return",
+        url: "https://www.ato.gov.au/individuals-and-families/your-tax-return"
+      },
+      {
+        label: "myGov",
+        url: "https://my.gov.au/"
+      },
+      {
+        label: "ATO｜ワーホリの申告・税務",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+      },
+      {
+        label: "ATO｜税務上の豪州居住者のNDA例外",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries"
+      },
+      
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
@@ -59,8 +122,20 @@ export const taxReturnArticles: Article[] = [
     ],
     searchIntent: "タックスリターンの基本と税率",
     relatedSlugs: ["super-guide", "tfn-guide", "abn-guide", "whm-tax-rates"],
-    updatedAt: "2026-10-25",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "準備するもの",
+          items: [
+            "TFN、myGovとATOの連携、対象年度の全収入の記録",
+            "銀行口座情報、控除の証拠、配達などの事業所得や海外所得を確認できる資料"
+          ]
+        }
+      ],
+      completion: "提出が必要な場合は期限内に提出し、提出番号とNotice of assessmentを保存します。"
+    },
   },
 
   {
@@ -71,21 +146,82 @@ export const taxReturnArticles: Article[] = [
     description:
       "毎年7〜10月の確定申告（タックスリターン）を自分で行う手順。myGovとATOの連携、必要書類、還付の受け取りまでを実践的に解説します。",
     content: [
-      "自分で申告する場合、期限は原則10月31日で、週末に当たる年は次の営業日です。ATOが2026年10月19日に案内した2025–26年度の自己申告期限は、2026年11月2日午後11時59分（現地時間）でした。申告が必要で期限を過ぎた場合は、できるだけ早く申告してください。",
+      "豪州の会計年度は7月1日〜翌6月30日です。ワーホリの収入・控除などによって提出の要否が異なり、働いた全員に提出義務があるわけではありません。ATOのワーホリ向け案内と申告要否のツールで確認してください。",
       "オーストラリアの会計年度は7月1日〜翌6月30日。働いた人は原則として翌年度の確定申告（タックスリターン）が必要です。申告期間は通常7月〜10月末で、払い過ぎた税金が還付されることが多いため、忘れずに行いましょう。",
-      "申告は『myGov』アカウントを作り『ATO（税務署）』と連携すれば、オンラインで自分で完結できます。多くの収入情報（給与・源泉徴収）は自動で取り込まれるため、内容を確認して提出するだけのケースも増えています。複雑な場合は会計士（tax agent）に依頼する選択肢もあります。",
+      "申告は『myGov』アカウントを作り『ATO（税務署）』と連携すれば、オンラインで自分で完結できます。多くの収入情報（給与・源泉徴収）は自動で取り込まれるため、内容を確認して提出するだけのケースも増えています。複雑な場合は会計士（tax agent）に依頼する選択肢もあります。"
     ],
     keyFacts: [
-      { label: "会計年度", value: "7/1〜翌6/30" },
-      { label: "申告期間", value: "7月から原則10月31日。週末は次の営業日" },
-      { label: "方法", value: "myGov + ATO連携でオンライン申告" },
-      { label: "必要書類", value: "TFN・各職場の収入情報・銀行口座" },
+      {
+        label: "会計年度",
+        "value": "7/1〜翌6/30"
+      },
+      {
+        label: "申告期間",
+        "value": "自己申告の期限は原則10月31日。年度ごとの案内と登録税理士の期限を別に確認"
+      },
+      {
+        label: "方法",
+        "value": "myGov + ATO連携でオンライン申告"
+      },
+      {
+        label: "必要書類",
+        "value": "TFN・各職場の収入情報・銀行口座"
+      }
     ],
     steps: [
-      { title: "myGovを作成", description: "myGovアカウントを作り、ATO(税務署)サービスと連携します。" },
-      { title: "収入情報を確認", description: "各職場の給与・源泉徴収が自動で取り込まれているか確認します。" },
-      { title: "控除を入力", description: "仕事に必要な経費(制服・道具等)があれば控除として申告します。" },
-      { title: "提出して還付を受領", description: "内容を確認して提出。還付金は指定口座に振り込まれます。" },
+      {
+        title: "対象年度と申告の要否を確認する",
+        description: "働いた人全員が同じ方法で提出するわけではありません。WHM所得、ほかの収入、控除の状況をATOで確認します。",
+        links: [
+          {
+            label: "ATO ワーホリの申告条件",
+            url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+          },
+          {
+            label: "申告が必要か確認する",
+            url: "https://www.ato.gov.au/calculators-and-tools/tax-return-do-i-need-to-lodge"
+          }
+        ]
+      },
+      {
+        title: "myGovからATOとmyTaxを開く",
+        description: "ATOへリンクできていなければ先に連携し、対象年度の申告を選びます。",
+        links: [
+          {
+            label: "myGovにログイン",
+            url: "https://my.gov.au/"
+          },
+          {
+            label: "myTaxの公式手順",
+            url: "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodge-your-tax-return-online-with-mytax"
+          },
+          {
+            label: "ATO連携の手順",
+            url: "/guides/mygov-ato-linking"
+          }
+        ]
+      },
+      {
+        title: "給与とその他の収入・経費を確認する",
+        description: "Income StatementがTax readyか、全職場分があるか、自動入力以外の収入もあるかを確認します。",
+        checklist: [
+          "個人事業の帳簿、対象年度の源泉徴収、申告する控除の証拠を照らし合わせる。"
+        ]
+      },
+      {
+        title: "提出後に評価通知を確認する",
+        description: "氏名、振込先、申告内容を確認して提出し、受付番号と通知を保存します。提出後の還付を前提にしないでください。",
+        links: [
+          {
+            label: "初回申告で迷ったときのATO案内",
+            url: "https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return/lodging-your-first-tax-return"
+          },
+          {
+            label: "登録税理士を探す方法",
+            url: "/guides/tax-agent-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "源泉徴収のもとになる各職場のincome statementは、年度末にATO上で確認できます。",
@@ -94,12 +230,39 @@ export const taxReturnArticles: Article[] = [
     ],
     warnings: ["税率・控除のルールは毎年変わります。申告前にATOの最新情報を確認してください。"],
     sources: [
-      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now" },
-      { label: "ATO（オーストラリア税務署）", url: "https://www.ato.gov.au/" },
+      {
+        label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）",
+        url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now"
+      },
+      {
+        label: "ATO（オーストラリア税務署）",
+        url: "https://www.ato.gov.au/"
+      },
+      {
+        label: "ATO｜ワーホリの申告・税務",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+      },
+      {
+        label: "ATO｜税務上の豪州居住者のNDA例外",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries"
+      },
+      
     ],
     relatedSlugs: ["tax-return-guide", "tfn-guide", "dasp-refund"],
-    updatedAt: "2026-10-25",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "ログイン・提出先",
+          items: [
+            "ATOと連携済みのmyGov、TFN、振込口座",
+            "該当会計年度の全雇用主の所得明細、配達など別収入の記録、控除の証拠"
+          ]
+        }
+      ],
+      completion: "提出番号を保存し、ATOからのNotice of assessmentを確認。還付・納付・追加確認のどれかは提出後の通知で判断します。"
+    },
   },
 
   {
@@ -113,12 +276,12 @@ export const taxReturnArticles: Article[] = [
     description:
       "ワーホリ（417/462）に適用されるWorking Holiday Maker税率を、2025–26年度のATO公式の税額表で解説。15%が適用される範囲、TFN未提出時の45%源泉、確認方法までまとめます。",
     content: [
-      "自分で申告する場合、期限は原則10月31日で、週末に当たる年は次の営業日です。ATOが2026年10月19日に案内した2025–26年度の自己申告期限は、2026年11月2日午後11時59分（現地時間）でした。申告が必要で期限を過ぎた場合は、できるだけ早く申告してください。",
+      "オーストラリアの通常のWHM税率では、2026–27年度も最初の課税所得A$45,000まで15%です。ただし一定の豪州居住者にはNDAに基づく例外があるため、国籍と居住性もATOで確認してください。以下は申告年度に対応する通常税率の読み方です。",
       "結論から言うと、ワーホリ（サブクラス417・462）には「Working Holiday Maker（WHM）税率」という専用の所得税率が適用され、課税所得の0〜45,000 AUDの部分は1ドルあたり15セント（15%）で課税されます。これは全国共通の連邦（国）税で、州や準州によって変わるものではありません。以下は2025–26年度のATO公式の税額表です。",
-      "【2025–26年度 WHM税率（課税所得に対する税額）】 0〜45,000 AUD：1ドルにつき15セント／ 45,001〜135,000 AUD：6,750 AUD ＋ 45,000超の1ドルにつき30セント／ 135,001〜190,000 AUD：33,750 AUD ＋ 135,000超の1ドルにつき37セント／ 190,001 AUD以上：54,100 AUD ＋ 190,000超の1ドルにつき45セント。（出典：ATO Tax rates – working holiday maker）",
+      "【2026–27年度 WHM税率（課税所得に対する税額）】 0〜45,000 AUD：1ドルにつき15セント／ 45,001〜135,000 AUD：6,750 AUD ＋ 45,000超の1ドルにつき30セント／ 135,001〜190,000 AUD：33,750 AUD ＋ 135,000超の1ドルにつき37セント／ 190,001 AUD以上：54,100 AUD ＋ 190,000超の1ドルにつき45セント。（出典：ATO Tax rates – working holiday maker）",
       "給与からの源泉徴収の仕組みも知っておきましょう。雇用主がATOに「WHM雇用主」として登録している場合、あなたに支払う額が年間45,000 AUDに達するまでは一律15%で源泉徴収されます。45,000 AUDを超えた分からは上の表に沿った高い率が適用されます。登録していない雇用主は外国居住者向けの税率で源泉徴収します。",
-      "TFN（納税者番号）を雇用主に提出していないと、支払額に対して45%という高い率で源泉徴収されます。仕事を始める前にTFNを取得・提出しておくことが、手取りを守るうえで非常に重要です。TFN未提出のまま働くと、後から取り戻すには確定申告（タックスリターン）が必要になります。",
-      "実際の年間の税額や、還付になるか追加納税になるかは、1年間の総所得と源泉徴収額によって決まります。会計年度（7月1日〜翌6月30日）の終了後、7月1日から始まる申告期間にmyGov経由でタックスリターンを行うと、源泉徴収が多すぎた分は還付されます。正確な自分の税額はATOの計算ツールで試算できます。",
+      "TFNがないままでも就労資格があれば働けます。通常より高い率で源泉徴収されることがあるため、TFN申請中なら雇用主にその旨を申告し、適用期限はATOで確認してください。",
+      "実際の年間の税額や、還付になるか追加納税になるかは、1年間の総所得と源泉徴収額によって決まります。会計年度（7月1日〜翌6月30日）の終了後、7月1日から始まる申告期間にmyGov経由でタックスリターンを行うと、源泉徴収が多すぎた分は還付されます。正確な自分の税額はATOの計算ツールで試算できます。"
     ],
     keyFacts: [
       { label: "適用対象", value: "サブクラス417・462のワーホリ（全国共通の連邦税）" },
@@ -155,8 +318,23 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now" },
-      { label: "ATO｜Tax rates – working holiday maker", url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers" },
+      {
+        label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）",
+        url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now"
+      },
+      {
+        label: "ATO｜Tax rates – working holiday maker",
+        url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers"
+      },
+      {
+        label: "ATO｜ワーホリの申告・税務",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+      },
+      {
+        label: "ATO｜税務上の豪州居住者のNDA例外",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries"
+      },
+      
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
@@ -173,7 +351,7 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["tax-return-guide", "tfn-guide", "super-guide", "abn-guide"],
-    updatedAt: "2026-10-25",
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -188,18 +366,33 @@ export const taxReturnArticles: Article[] = [
     description:
       "ワーホリが『オーストラリアの税務上の居住者』かを判定する考え方を解説。居住性（residency for tax purposes）とWorking Holiday Maker税率は別概念であることを整理し、判定に使うテストと確認方法をまとめます。",
     content: [
-      "結論から言うと、ワーホリ（サブクラス417・462）の所得には、税務上の居住者か非居住者かに関わらず『Working Holiday Maker（WHM）税率』が適用されます。つまり『居住者だから15%』ではなく、ワーホリという区分ゆえに最初の45,000 AUDまで15%が適用されるのです。この2つ（居住性とWHM税率）を混同しないことが最大のポイントです。",
-      "では税務上の居住性（residency for tax purposes）は何に関係するのでしょうか。居住性は、ビザの種類や入国管理上の在留資格とは別の、税法上の概念です。居住者か非居住者かは、Medicare Levy（メディケア税）の対象になるか、WHM収入以外の所得（銀行利子など）の扱い、そして海外所得の申告義務などに影響します。WHMの給与そのものの税率には影響しませんが、周辺の扱いが変わります。",
+      "多くのワーホリ滞在者にはWorking Holiday Maker（WHM）税率が適用されます。ただし、税務上豪州居住者で、対象となる差別禁止条項（NDA）協定国の国籍などATOの条件を満たす場合は扱いが異なります。居住性と国籍を確認してください。",
+      "税務上の居住性はビザとは別の概念です。海外所得や銀行利子、Medicare Levyの扱いに影響し、対象のNDA協定国の豪州居住者の場合はWHM所得の課税にも影響します。",
       "居住性の判定：ATOは複数のテストで総合的に判定します。代表的なのは、①resides test（生活の本拠が実際にオーストラリアにあるか）、②domicile test（住所・恒久的居所）、③183日テスト（その年度に半年以上滞在したか）、④superannuation test。長期に1か所へ腰を据えて生活・就労する人は居住者と判定されやすく、短期間で各地を転々とする典型的なワーホリは非居住者と判定されることもあります。滞在の実態によって結論が変わるため、一律には決まりません。",
       "実務上の注意：多くのワーホリは、給与についてはWHM税率で源泉徴収され、年度末のタックスリターンで精算します。自分が居住者か非居住者かで、Medicare Levyの要否や海外所得の申告要否が変わるため、複雑なケース（日本に副業収入がある、投資がある、長期滞在で生活実態がある等）では自己判断せず、ATOの判定ツールや税理士に確認するのが安全です。",
-      "確認方法：ATOには『Work out your tax residency』という判定ツールがあり、質問に答えると自分の居住区分の目安が分かります。TFN Declaration提出時の居住区分の選択にも関わるため、就労開始前に一度確認しておくと、源泉徴収や年度末の申告での行き違いを防げます。",
+      "確認方法：ATOには『Work out your tax residency』という判定ツールがあり、質問に答えると自分の居住区分の目安が分かります。TFN Declaration提出時の居住区分の選択にも関わるため、就労開始前に一度確認しておくと、源泉徴収や年度末の申告での行き違いを防げます。"
     ],
     keyFacts: [
-      { label: "WHM税率", value: "居住性に関わらず適用（最初の45,000 AUDまで15%）" },
-      { label: "居住性とは", value: "税法上の概念。ビザ・在留資格とは別物" },
-      { label: "居住性が影響する例", value: "Medicare Levy、海外所得の申告、WHM以外の所得の扱い" },
-      { label: "判定テスト", value: "resides / domicile / 183日 / superannuation" },
-      { label: "確認", value: "ATOの税務居住性判定ツール／税理士" },
+      {
+        label: "WHM税率",
+        "value": "通常は最初のA$45,000まで15%。一定の豪州居住者にはNDAの例外あり"
+      },
+      {
+        label: "居住性とは",
+        "value": "税法上の概念。ビザ・在留資格とは別物"
+      },
+      {
+        label: "居住性が影響する例",
+        "value": "Medicare Levy、海外所得の申告、WHM以外の所得の扱い"
+      },
+      {
+        label: "判定テスト",
+        "value": "resides / domicile / 183日 / superannuation"
+      },
+      {
+        label: "確認",
+        "value": "ATOの税務居住性判定ツール／税理士"
+      }
     ],
     steps: [
       { title: "WHM税率を理解", description: "給与はWHM税率で課税されると押さえます（居住性と別）。" },
@@ -217,13 +410,24 @@ export const taxReturnArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "税務上の居住者になると税率が15%より下がりますか？",
-        answer:
-          "ワーホリの給与にはWHM税率が適用されるため、居住者になっても『通常の免税枠（tax-free threshold）』が適用されるわけではありません。居住性は主にMedicare Levyや海外所得の扱いに影響します。",
-      },
+        "question": "税務上の居住者になると税率が15%より下がりますか？",
+        "answer": "最初から通常の居住者税率になるとは限りません。豪州居住性と対象国籍などATOのNDA条件を満たす場合、通常のWHM税率とは異なる扱いを受ける場合があります。"
+      }
     ],
     sources: [
-      { label: "ATO - Your tax residency", url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/your-tax-residency" },
+      {
+        label: "ATO - Your tax residency",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/your-tax-residency"
+      },
+      {
+        label: "ATO｜ワーホリの申告・税務",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+      },
+      {
+        label: "ATO｜税務上の豪州居住者のNDA例外",
+        url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries"
+      },
+      
     ],
     verifiedAt: "2026-07-18",
     officialSources: [
@@ -239,7 +443,7 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["whm-tax-rates", "tax-return-guide", "tax-return-overseas-income", "tfn-declaration-form"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -393,10 +597,43 @@ export const taxReturnArticles: Article[] = [
       { label: "linking code", value: "発行後およそ24時間で失効" },
     ],
     steps: [
-      { title: "myGovを作成", description: "メール・携帯番号でアカウントを作ります。" },
-      { title: "Link a serviceでATOを選択", description: "サービス一覧からATOを選びます。" },
-      { title: "本人確認", description: "2つの情報、またはlinking codeで本人確認します。" },
-      { title: "連携完了を確認", description: "トップにATOが表示されれば完了です。" },
+      {
+        title: "myGovに入りATOを選ぶ",
+        description: "myGovでサービスの連携画面を開いてAustralian Taxation Officeを選びます。",
+        links: [
+          {
+            label: "myGovにログイン",
+            url: "https://my.gov.au/"
+          },
+          {
+            label: "ATOの公式連携手順",
+            url: "https://www.ato.gov.au/online-services/online-services-for-individuals-and-sole-traders/ato-online-services-and-mygov/create-a-mygov-account-and-link-it-to-the-ato"
+          }
+        ]
+      },
+      {
+        title: "本人情報を照合する",
+        description: "入力した情報とATOに登録された内容が一致するか確認します。入力に使う資料は画面が求める形式で用意。",
+        links: [
+          {
+            label: "ATOが求める本人確認情報",
+            url: "https://www.ato.gov.au/online-services/online-services-for-individuals-and-sole-traders/ato-online-services-and-mygov/create-a-mygov-account-and-link-it-to-the-ato/information-you-need-to-link-mygov-to-the-ato"
+          }
+        ]
+      },
+      {
+        title: "照合できないときはリンクコードを相談する",
+        description: "以前の税通知がないなど、画面の質問に答えられない場合はATOの案内に従って連絡します。",
+        checklist: [
+          "TFNやパスワードを、不審な連絡先・代行サイトに入力しない。"
+        ],
+        links: [
+          {
+            label: "ATO公式問い合わせ",
+            url: "https://www.ato.gov.au/about-ato/contact-us"
+          }
+        ]
+      }
     ],
     tips: [
       "申告歴の無いワーホリは、最初からATOに電話してlinking codeをもらう方が早いことが多いです。",
@@ -424,8 +661,20 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["income-statement-tax-ready", "tax-return-howto", "tax-return-guide", "mygov-account-guide", "tfn-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "照合に使う情報",
+          items: [
+            "自分のmyGov、TFN、ATOに登録済みの氏名・生年月日",
+            "ATOの画面が提示する照合情報。給与・口座・Super・過去の税通知など、使えるものを手元に置く"
+          ]
+        }
+      ],
+      completion: "myGovのリンク済みサービスにATOが表示され、ATO画面にアクセスできたら完了です。"
+    },
   },
 
   {

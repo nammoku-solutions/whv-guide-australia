@@ -8,20 +8,50 @@ export const superArticles: Article[] = [
     category: "super",
     description: "雇用主が積み立てたSuperを、ワーホリ終了後にDASPとして請求する手順と注意点を解説します。",
     content: [
-      "Superannuation（スーパー）は雇用主が給与とは別に積み立てる退職年金で、給与の11.5%（2024年時点、段階的に引き上げ）が拠出されます。ワーホリでも対象です。",
-      "ビザが失効し出国した後、DASP（Departing Australia Superannuation Payment）として請求できます。請求にはSuper口座情報とビザの失効が必要で、受取時に源泉課税（WHMは65%）が引かれます。",
+      "Superannuation（スーパー）は雇用主が積み立てる退職年金です。対象の従業員への法定最低率は12%で、2026年7月1日からのPayday Superでは対象となる支払い（qualifying earnings）を基に計算します。ワーホリビザでも対象条件を満たせば適用されます。",
+      "ビザが失効し出国した後、DASP（Departing Australia Superannuation Payment）として請求できます。請求にはSuper口座情報とビザの失効が必要で、WHM用DASP税率が適用される場合、課税部分に65%の源泉徴収があります。",
     ],
     keyFacts: [
-      { label: "拠出率", value: "給与の11.5%（雇用主負担、2024年時点）" },
-      { label: "対象", value: "週の労働時間に関わらず、対象賃金を得た従業員" },
+      { label: "拠出率", value: "対象となる支払いの12%（法定最低率）" },
+      { label: "対象", value: "対象となる従業員。年齢や雇用条件による例外はATOで確認" },
       { label: "請求条件", value: "出国済み＋ビザ失効" },
-      { label: "DASP課税（WHM）", value: "65%（受取額から源泉徴収）" },
+      { label: "DASP課税（WHM）", value: "WHM用DASP税率は課税部分に65%。税非課税部分は0%" },
     ],
     steps: [
-      { title: "Super口座を把握", description: "雇用主が拠出した口座（複数の場合あり）を確認します。" },
-      { title: "口座を統合（任意）", description: "複数あれば1つにまとめると請求が簡単です。" },
-      { title: "出国・ビザ失効を待つ", description: "DASPは出国後かつビザ失効後に申請できます。" },
-      { title: "DASPをオンライン申請", description: "ATOのDASPオンラインシステムから請求します。" },
+      {
+        title: "雇用主の書類と積立先を確認する",
+        description: "新しい職場から指定されたら、ファンドの詳細を提出します。すでに持っているファンドがあるか、ATO画面やファンドで確認します。",
+        links: [
+          {
+            label: "ATOとmyGovへ連携",
+            url: "/guides/mygov-ato-linking"
+          }
+        ]
+      },
+      {
+        title: "給与明細と入金を照合する",
+        description: "給与明細に記載されていても実際の着金とは別です。2026年7月以降のPayday Superでは、原則としてファンドが給与日から7営業日以内に受け取る必要があり、例外はATOを確認します。",
+        links: [
+          {
+            label: "ATO Payday Superの期限",
+            url: "https://www.ato.gov.au/businesses-and-organisations/super-for-employers/paying-super-on-payday/payment-deadlines-for-payday-super"
+          }
+        ]
+      },
+      {
+        title: "未納の疑いを確認する",
+        description: "明細、積立記録、勤務先の情報を集め、雇用主に確認。解決しなければATOの申告手順に進みます。",
+        links: [
+          {
+            label: "ATO Super未払いを報告",
+            url: "https://www.ato.gov.au/calculators-and-tools/super-report-unpaid-super-contributions-from-my-employer"
+          },
+          {
+            label: "帰国後のDASP",
+            url: "/guides/dasp-refund"
+          }
+        ]
+      }
     ],
     tips: [
       "勤務先が変わるたびに新しいSuper口座を作らず、最初の口座を使い回すと管理が楽です。",
@@ -35,11 +65,25 @@ export const superArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "ATO - DASP", url: "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/withdrawing-and-using-your-super/departing-australia-superannuation-payment-dasp" },
+      { label: "ATO｜Super Guaranteeの率", url: "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/super-guarantee" },
+      { label: "ATO｜Payday Superの対象となる支払い", url: "https://www.ato.gov.au/businesses-and-organisations/super-for-employers/paying-super-on-payday/what-payments-are-qualifying-earnings" },
+      { label: "ATO｜DASP", url: "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp" },
     ],
     relatedSlugs: ["tax-return-guide"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "勤務開始時",
+          items: [
+            "口座を指定するためのファンド名・会員情報。必要に応じて雇用主の選択フォーム",
+            "自分の給与明細、ファンドの入金を確認できるログイン"
+          ]
+        }
+      ],
+      completion: "給与明細にあるSuperと実際にファンドへ入った金額を、該当する納付期限を基に照合できたら完了です。"
+    },
   },
 
   {
@@ -60,10 +104,54 @@ export const superArticles: Article[] = [
       { label: "注意", value: "複数ファンドに積立がある場合は各社に申請" },
     ],
     steps: [
-      { title: "Superファンドを把握", description: "働いた職場ごとの積立先(ファンド名・会員番号)を確認します。" },
-      { title: "ビザ失効・出国", description: "DASPはビザが失効し出国した後に申請可能になります。" },
-      { title: "DASPオンライン申請", description: "ATOのシステムでパスポート・ビザ・ファンド情報を入力して申請します。" },
-      { title: "払い戻しを受領", description: "源泉税が引かれた額が指定口座(海外口座も可)に振り込まれます。" },
+      {
+        title: "出国前に残高・ファンドの連絡先を控える",
+        description: "myGovのATO画面やSuper明細で積立先を調べ、会員番号とログインの復旧手段を保存します。",
+        links: [
+          {
+            label: "Superの確認方法",
+            url: "/guides/super-guide"
+          }
+        ]
+      },
+      {
+        title: "出国後にビザ状態と申請資格を確認する",
+        description: "出国しただけでは申請できません。該当ビザが残っていないか確認し、要件を満たしてから提出します。",
+        links: [
+          {
+            label: "ATO DASPの申請資格",
+            url: "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+          },
+          {
+            label: "VEVOでビザを確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          }
+        ]
+      },
+      {
+        title: "ATOのオンライン申請に入力する",
+        description: "公式案内にあるDASP online application systemを開き、パスポート情報とファンドを入力します。ファンドから追加資料の依頼があれば、連絡先と提出先を確認します。",
+        links: [
+          {
+            label: "ATO DASPの申請画面へ",
+            url: "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+          },
+          {
+            label: "DASP入力・再開の公式ヘルプ",
+            url: "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp/help-with-the-dasp-online-application-system"
+          }
+        ]
+      },
+      {
+        title: "支払と源泉徴収を照合する",
+        description: "ファンドまたはATOからの連絡で処理状況と支払通知を確認します。ワーホリのDASPは税率の扱いが他の一時ビザと異なる場合があります。",
+        links: [
+          {
+            label: "ATO DASPの税金・確認先",
+            url: "https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/temporary-residents-and-superannuation/departing-australia-superannuation-payment-dasp"
+          }
+        ]
+      }
     ],
     tips: [
       "在豪中にmyGovとATOを連携しておくと、自分のSuper口座をまとめて確認できて便利です。",
@@ -74,8 +162,27 @@ export const superArticles: Article[] = [
       { label: "ATO｜DASP（退職年金の払い戻し）", url: "https://www.ato.gov.au/" },
     ],
     relatedSlugs: ["super-guide", "tax-return-guide", "tfn-guide"],
-    updatedAt: "2026-06-20",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申請の条件",
+          items: [
+            "豪州を出国済みで、該当する一時ビザが失効または取消済みか確認",
+            "豪州市民・永住者、ニュージーランド市民などの除外条件は公式ページで確認"
+          ]
+        },
+        {
+          title: "本人・積立情報",
+          items: [
+            "パスポート、氏名・生年月日、連絡先、各Superファンド名、会員番号やファンド情報",
+            "TFNは任意。ファンドから求められた場合の本人確認書類を用意"
+          ]
+        }
+      ],
+      completion: "申請控えをファンドごとに残し、受領額と源泉徴収の通知を確認します。未受領分がATOに移っている場合は公式案内に従います。"
+    },
   },
 
   {

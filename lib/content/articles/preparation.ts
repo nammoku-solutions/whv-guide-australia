@@ -22,30 +22,57 @@ export const preparationArticles: Article[] = [
     ],
     steps: [
       {
-        title: "【3か月前】ビザ・航空券・保険を確保",
-        description:
-          "ビザ許可を確認し、航空券（片道でも可だが復路や出国計画を聞かれることがある）と1年間の海外保険を手配します。保険は『持病・歯科・携行品・賠償責任』の補償範囲を必ず確認しましょう。",
+        title: "旅券とビザを準備する",
+        description: "旅券の状態を確認し、計画に合うビザを申請。渡航を確約する前に許可通知を確認します。",
+        links: [
+          {
+            label: "ワーホリ初回申請へ",
+            url: "/guides/visa-application"
+          }
+        ]
       },
       {
-        title: "【2か月前】お金まわりの準備",
-        description:
-          "Wiseのマルチカレンシー口座を開設してデビットカードを取り寄せ、日本円→豪ドルの両替方法を決めます。現地銀行は到着後に開設するため、最初の数週間はWiseや海外対応カードで支払う計画にしておきます。",
+        title: "渡航費・補償・初日の宿を確定する",
+        description: "予算と出国費用を分け、保険の免責・就労中の補償を保険会社の約款で確認します。",
+        links: [
+          {
+            label: "必要な資金を見積もる",
+            url: "/guides/working-holiday-budget"
+          },
+          {
+            label: "渡航保険で確認する内容",
+            url: "/guides/insurance-guide"
+          },
+          {
+            label: "一時滞在先の決め方",
+            url: "/guides/temporary-accommodation-before-arrival"
+          }
+        ]
       },
       {
-        title: "【1か月前】日本側の手続き",
-        description:
-          "海外転出届（1年以上滞在の場合）、国民年金・健康保険・住民税の扱い、携帯電話の解約/休止、クレジットカードの有効期限と海外利用設定、各種サブスクの整理を行います。",
+        title: "携帯と書類を準備する",
+        description: "豪州到着後の連絡手段を確保し、持込品の条件を確認。ビザ・保険・宿の情報を端末に保存します。",
+        links: [
+          {
+            label: "SIMを決める",
+            url: "/guides/sim-guide"
+          },
+          {
+            label: "豪州の持込・申告",
+            url: "https://www.abf.gov.au/entering-and-leaving-australia/can-you-bring-it-in/declare-it"
+          }
+        ]
       },
       {
-        title: "【2週間前】書類とコピーを準備",
-        description:
-          "パスポート、ビザ許可通知（PDF）、保険証券、英文の残高証明、海外運転免許（必要なら国際免許証またはNAATI翻訳）、証明写真、常備薬と英文処方箋を用意。重要書類はクラウドにもバックアップします。",
-      },
-      {
-        title: "【前日〜当日】荷造りと最終確認",
-        description:
-          "預け荷物と機内持ち込みを分け、貴重品・書類・常備薬・現金（数百ドル）は手荷物へ。SIM/eSIMの到着後プランや空港から宿への移動手段も確認しておきます。",
-      },
+        title: "着いた後の手順を控える",
+        description: "空港からの移動、豪州郵送先、TFNと銀行の順を確認します。",
+        links: [
+          {
+            label: "到着後のチェックリスト",
+            url: "/guides/arrival-checklist"
+          }
+        ]
+      }
     ],
     tips: [
       "重要書類はすべてスマホとクラウド（Googleドライブ等）にPDF保存。紙とデジタルの二重持ちが安心です。",
@@ -80,8 +107,20 @@ export const preparationArticles: Article[] = [
       "海外転出・年金・税金の取り扱いは個人の状況で異なります。判断に迷う場合は市区町村の窓口で確認してください。",
     ],
     relatedSlugs: ["whv-complete-guide", "money-transfer-wise", "arrival-checklist", "working-holiday-timeline", "working-holiday-budget"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "最初に用意",
+          items: [
+            "旅券、使えるメール、転送・復旧方法、渡航予算",
+            "就労や住まいの候補、印刷・端末保存できる書類"
+          ]
+        }
+      ],
+      completion: "ビザ許可と条件、到着日の移動・通信、緊急時の連絡手段を確認。旅券と重要書類をオフラインでも見られるようにします。"
+    },
   },
 
   {
@@ -90,30 +129,185 @@ export const preparationArticles: Article[] = [
     slug: "insurance-guide",
     category: "preparation",
     description:
-      "海外保険は『万一の医療費』への備え。ワーホリで重視すべき補償項目と、加入時のチェックポイントを解説します。",
+      "Bupa、たびほ、Allianz Careの保険料例と補償の違いを比較。出発前・現地滞在中の選び方と、契約前に見る項目をまとめました。",
     content: [
-      "オーストラリアの医療費は非常に高額で、ちょっとした受診や入院でも日本の数倍かかることがあります。ワーホリでは公的医療（Medicare）の対象外となるため、民間の海外保険への加入が事実上の必須です。",
-      "保険は『安さ』だけで選ばず、治療・救援費用が無制限または十分に高いか、歯科・持病・携行品・個人賠償責任までカバーされるかを基準に選びましょう。",
+      "日本は豪州との相互医療協定の対象国ではありません。別のMedicare加入資格がない場合は、医療費にどう備えるか、出発前に決めておきます。",
+      "日本出発前で治療・救援、携行品や賠償をまとめて備えたいときは海外旅行保険から比較。豪州での医療を中心に備えたいときはOVHC（海外訪問者向け医療保険）を比較し、国内外の旅行、帰国のための搬送、携行品・賠償が別契約で必要かを確かめます。",
+      "417でも自分のビザに8501（十分な医療保険の維持）が付いているかは許可通知またはVEVOで確認します。該当する場合は、選んだ契約がその条件を満たすことを保険会社に確認します。"
     ],
     keyFacts: [
-      { label: "必要性", value: "Medicare対象外のため民間保険がほぼ必須" },
-      { label: "期間", value: "滞在期間に合わせて1年などで設定" },
-      { label: "費用の目安", value: "1年で10〜20万円前後（補償内容で変動）" },
-      { label: "重要な補償", value: "治療・救援費用、賠償責任、携行品、歯科" },
+      {
+        label: "比べるもの",
+        value: "日本出発前の海外旅行保険と、豪州の海外訪問者向け医療保険（OVHC）"
+      },
+      {
+        label: "見積もりでそろえる条件",
+        value: "補償期間・居住州・人数・自己負担。豪ドルの月額と滞在期間の合計を区別"
+      },
+      {
+        label: "優先して見る補償",
+        value: "入院、GP・外来、救急車、救援・帰国搬送、予定する就労"
+      }
     ],
     steps: [
-      { title: "補償範囲を確認", description: "治療・救援費用の上限、歯科・持病・妊娠の扱い、賠償責任額をチェックします。" },
-      { title: "期間と費用を比較", description: "複数社で1年プランを比較。長期割引やクレカ付帯との併用も検討します。" },
-      { title: "申込・証券を保存", description: "加入後は英文の保険証券をPDFで保存し、緊急連絡先を控えます。" },
+      {
+        title: "許可通知と就労予定を確認する",
+        description: "許可通知またはVEVOで8501の有無を確認。農作業、建設、配達など具体的な仕事と使う車両をメモします。",
+        links: [
+          {
+            label: "Home Affairs｜VEVOでビザ条件を確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          },
+          {
+            label: "Home Affairs｜必要な医療保険",
+            url: "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/adequate-health-insurance"
+          }
+        ]
+      },
+      {
+        title: "同じ期間で見積もりを取る",
+        description: "旅行日程・開始日・終了日・年齢・人数・居住予定の州をそろえ、上の各社の公式ページで見積もります。入院自己負担と通院の自己負担は別々に比べます。"
+      },
+      {
+        title: "補償の対象外と不足を確認する",
+        description: "約款で入院、GP、救急車、持病の待機期間、救援・帰国搬送、仕事や車両に関する除外項目を確認します。記載が不明な場合は契約前に保険会社へ照会します。"
+      },
+      {
+        title: "申込み後に証券と連絡先を保存する",
+        description: "保険証券の開始日・終了日と氏名を確認し、証券と緊急連絡先をオフラインで見られるようにします。8501が付いている場合は、条件を満たす証明も確認します。"
+      }
     ],
     tips: [
-      "クレジットカード付帯保険は『最初の90日のみ』『治療費が低額』など制限が多いので、長期滞在では本格的な保険を主契約にしましょう。",
-      "持病がある場合は事前申告が必要なことが多いです。申告漏れは支払い拒否の原因になります。",
+      "カード付帯保険を使うなら、補償開始の利用条件、期間、医療費の上限、予定する仕事が対象かをカードの約款で確認し、不足する期間や補償を別に備えます。",
+      "持病については、申告が必要か、待機期間や免責があるかを契約前に保険会社へ確認します。"
     ],
-    warnings: ["補償内容・免責は商品ごとに大きく異なります。契約前に約款で必ず確認してください。"],
-    relatedSlugs: ["preparation-checklist", "whv-complete-guide"],
-    updatedAt: "2026-06-10",
+    warnings: [
+      "医療保険と旅行保険は補償範囲が異なります。保険料が安くても、治療・仕事・旅行で必要な補償が揃うとは限りません。"
+    ],
+    relatedSlugs: [
+      "preparation-checklist",
+      "whv-complete-guide",
+      "medicare-oshc",
+      "delivery-insurance"
+    ],
+    examples: {
+      title: "ワーホリ保険の候補と保険料",
+      items: [
+        {
+          title: "Bupa Australia｜Short Stay Visitors Cover",
+          summary: "豪州での入院を中心に備えたい、単身の417保持者が確認したいOVHCです。",
+          details: [
+            "417は対象ビザの一覧にあります。家族契約が必要な場合は、この商品ではなく別の対象プランを確認してください。",
+            "入院とGP・外来は別です。入院を伴わない救急外来、救急車、ネットワーク外の病院、持病の待機期間と自己負担を確認します。",
+            "8501が付いている場合は、見積もり時に会社へ適合の可否と証明書の発行を確認します。旅行中の盗難・賠償・中断は別に備えが必要かを確認してください。"
+          ],
+          facts: [
+            {
+              label: "現在の保険料",
+              value: "対象プランを選び、Bupa公式で要見積もり"
+            },
+            {
+              label: "過去の公式掲載例",
+              value: "月A$53.13（2025年4月1日適用、NSW・ACT、単身。現行価格ではありません）"
+            }
+          ],
+          links: [
+            {
+              label: "Bupa公式でOVHCを見積もる",
+              url: "https://www.bupa.com.au/health-insurance/cover/overseas-visitors"
+            },
+            {
+              label: "Short Stayの商品説明",
+              url: "https://www.bupa.com.au/health-insurance/overseas-visitors/cover/short-stay-visitors-cover"
+            },
+            {
+              label: "2025年の公式料金資料",
+              url: "https://bupaanzstdhtauspub01.blob.core.windows.net/productfiles/Short_Stay_Visitors_Cover_NSW_ACT_S_20250205_130119.pdf"
+            }
+          ]
+        },
+        {
+          title: "t@bihoたびほ｜日本からの出発前に比較",
+          summary: "治療・救援だけでなく、個人賠償や携行品もまとめて検討したい人向けの海外旅行保険です。",
+          details: [
+            "料金例は出発日時点18〜32歳、オーストラリアの掲載プラン。たびほの掲載例（1年・6か月）では治療・救援費用5,000万円、個人賠償責任1億円。補償額と条件は見積もりで再確認します。",
+            "既に日本を出国して同じ旅行を続けている場合、新規加入できる前提で計画しないでください。重要事項説明書の申込条件を確認します。",
+            "仕事中のけがが必ず対象とは限りません。農作業、建設、バイク配達など、具体的な作業と車両を伝えて補償対象か照会してください。"
+          ],
+          facts: [
+            {
+              label: "たびほの公式例",
+              value: "1年216,660円・6か月121,680円"
+            },
+            {
+              label: "たびほプライムの公式例",
+              value: "1年265,770円・6か月144,710円"
+            }
+          ],
+          links: [
+            {
+              label: "オーストラリア向けの公式保険料・見積もり",
+              url: "https://tabiho.jp/plan-workingholiday/australlia/index.html"
+            },
+            {
+              label: "申込条件・重要事項説明書",
+              url: "https://tabiho.jp/overseas/inc/plan/jyusetsu.html"
+            }
+          ]
+        },
+        {
+          title: "Allianz Care Australia｜入院中心とGP付きの比較",
+          summary: "現地の医療費を中心に備え、普段のGP受診も必要かを価格差で判断したい場合の候補です。",
+          details: [
+            "Hospital Care Workersは対象となる入院中心。Everyday Care Workersは対象となるGP診察も含むので、通院込みで比べたいときはこちらを確認します。",
+            "GP付きでも診察費全額が戻るとは限りません。支払基準・差額、専門医や処方薬、持病の待機期間を契約前に確認します。",
+            "50歳未満向けのValue Careは月A$53.00〜（入院自己負担A$500）と別表示されています。会社は8501が付く場合に適さないことがあると案内しています。"
+          ],
+          facts: [
+            {
+              label: "Hospital Care Workers",
+              value: "月A$72.50〜（据え置きで12か月A$870〜）"
+            },
+            {
+              label: "Everyday Care Workers",
+              value: "月A$93.00〜（据え置きで12か月A$1,116〜）"
+            },
+            {
+              label: "価格表示の条件",
+              value: "いずれも入院時自己負担A$500の公式表示"
+            }
+          ],
+          links: [
+            {
+              label: "417向けプラン・公式見積もり",
+              url: "https://www.allianzcare.com.au/en/visas/visitors-visa-ovhc/417-visa.html"
+            },
+            {
+              label: "Home Affairs｜ビザ条件と必要な医療保険",
+              url: "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/adequate-health-insurance"
+            }
+          ]
+        }
+      ],
+      intro: "日本出発前に旅行全体を守る海外旅行保険と、豪州滞在中の医療費を中心に備えるOVHC（海外訪問者向け医療保険）を分けて比較します。どれが合うかは、出発済みか、GPに通う予定があるか、仕事中・旅行中の補償が必要かで変わります。",
+      note: "2026年11月19日確認。円は保険会社の期間別掲載例、豪ドルは公式の月額下限または日付を明記した過去の掲載例です。補償範囲・自己負担が異なるため、金額だけで順位付けできません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "見積もり・申込み前に揃えるもの",
+          items: [
+            "旅券の氏名・生年月日、417の許可通知またはVEVOの条件",
+            "出発日・帰国予定日、補償開始日、滞在予定の州、加入する人数",
+            "予定する仕事・車両、持病など保険会社から質問された事項",
+            "途中変更・解約、請求窓口、補償の空白期間がないか"
+          ]
+        }
+      ],
+      completion: "必要な補償と契約の開始日を確認し、保険証券と緊急連絡先を保存できたら完了です。8501がある場合は適合の証明も控えます。"
+    },
   },
 
   {
@@ -167,38 +361,48 @@ export const preparationArticles: Article[] = [
       "予備費を軽視しないことが最大のコツです。到着直後は「SIM・交通・食費・当面の宿・家のボンド」が一気に出ていきます。加えて、仕事が見つかるまでの期間や、体調を崩したときの出費も想定しておく必要があります。楽観的な最低ラインだけで渡航すると、仕事が決まる前に資金が尽きる、という典型的な失敗につながります。",
     ],
     keyFacts: [
-      { label: "初回ビザ申請料（417）", value: "AUD840（公式・固定額）" },
-      { label: "セカンド/サード申請料", value: "各 AUD1,000（公式・固定額）" },
-      { label: "残高証明の目安", value: "約5,000 AUD（要否・金額は申請状況による／要公式確認）" },
-      { label: "到着後の生活費", value: "最低1〜2か月分を確保（給料が入るまでの空白に備える）" },
-      { label: "予算の考え方", value: "固定費用＋変動費用の目安＋予備費" },
+      {
+        label: "初回ビザ申請料（417）",
+        "value": "A$840（一般枠。最新額を確認）"
+      },
+      {
+        label: "セカンド/サード申請料",
+        "value": "各 AUD1,000（公式・固定額）"
+      },
+      {
+        label: "残高証明の目安",
+        "value": "約5,000 AUD（要否・金額は申請状況による／要公式確認）"
+      },
+      {
+        label: "到着後の生活費",
+        "value": "最低1〜2か月分を確保（給料が入るまでの空白に備える）"
+      },
+      {
+        label: "予算の考え方",
+        "value": "固定費用＋変動費用の目安＋予備費"
+      }
     ],
     steps: [
       {
         title: "① 固定費用を確定させる",
-        description:
-          "ビザ申請料（ファースト AUD840）は公式の固定額。ここは正確に計上できます。セカンド/サードを見据えるなら各 AUD1,000 も頭に入れておきます。",
+        description: "ビザ申請料（ファースト AUD840）は公式の申請料（改定あり）。ここは正確に計上できます。セカンド/サードを見据えるなら各 AUD1,000 も頭に入れておきます。"
       },
       {
         title: "② 出発前費用の見積もりを取る",
-        description:
-          "航空券と保険は実際に見積もりを取って金額を確定します。保険は補償額・治療費上限・持病の扱いを比較し、料金だけで選ばないことが重要です。",
+        description: "航空券と保険は実際に見積もりを取って金額を確定します。保険は補償額・治療費上限・持病の扱いを比較し、料金だけで選ばないことが重要です。"
       },
       {
         title: "③ 到着後1〜2か月の生活費を積む",
-        description:
-          "当面の宿泊費、家のボンド（数週間分の家賃相当が一般的）、食費、交通費、SIM代を1〜2か月分まとめて確保します。",
+        description: "当面の宿泊費、家のボンド（数週間分の家賃相当が一般的）、食費、交通費、SIM代を1〜2か月分まとめて確保します。"
       },
       {
         title: "④ 予備費を上乗せする",
-        description:
-          "仕事が決まるまでの期間や、体調不良・急な出費に備えて予備費を必ず上乗せします。ここを削ると資金切れのリスクが跳ね上がります。",
+        description: "仕事が決まるまでの期間や、体調不良・急な出費に備えて予備費を必ず上乗せします。ここを削ると資金切れのリスクが跳ね上がります。"
       },
       {
         title: "⑤ 為替とカードを準備",
-        description:
-          "現金を全部両替せず、海外対応のデビット/クレジットカードと少額の現地通貨を組み合わせます。到着直後の交通・買い物はタッチ決済が使えます。",
-      },
+        description: "現金を全部両替せず、海外対応のデビット/クレジットカードと少額の現地通貨を組み合わせます。到着直後の交通・買い物はタッチ決済が使えます。"
+      }
     ],
     tips: [
       "「最低ライン」ではなく「仕事が決まらなくても数か月耐えられる額」で計画すると失敗しにくいです。",
@@ -233,7 +437,7 @@ export const preparationArticles: Article[] = [
       },
     ],
     relatedSlugs: ["whv-complete-guide", "visa-application", "insurance-guide", "working-holiday-timeline", "first-30-days-roadmap"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -1304,10 +1508,38 @@ export const preparationArticles: Article[] = [
       { label: "確認先", value: "Australian Border Force・DAFF" },
     ],
     steps: [
-      { title: "持ち込み品を確認", description: "食品・植物・動物製品を事前に確認し不要品は持たない。" },
-      { title: "入国カード記入", description: "該当品はIncoming Passenger Cardで申告します。" },
-      { title: "検査を受ける", description: "検査で処分を求められたら従います。" },
-      { title: "現金も申告", description: "AUD 10,000相当以上の現金も申告します。" },
+      {
+        title: "品物ごとに持込条件を確認する",
+        description: "食品・植物・動物由来製品・薬など、実際の種類と包装、量で条件を確認します。",
+        links: [
+          {
+            label: "Australian Border Force 持込品一覧",
+            url: "https://www.abf.gov.au/entering-and-leaving-australia/can-you-bring-it-in/declare-it"
+          },
+          {
+            label: "食品の持込案内",
+            url: "https://www.abf.gov.au/entering-and-leaving-australia/can-you-bring-it-in/categories/food"
+          },
+          {
+            label: "薬を持ち込む手順",
+            url: "/guides/medication-customs"
+          }
+        ]
+      },
+      {
+        title: "申告できるよう梱包する",
+        description: "品名・原材料・量が分かるラベルを残し、確認対象を取り出せるようにします。"
+      },
+      {
+        title: "申告し職員の指示を受ける",
+        description: "入国時に公式の申告質問に回答し、不明な品は申告して職員に示します。廃棄や検査の指示があれば従います。",
+        links: [
+          {
+            label: "申告の公式手順",
+            url: "https://www.abf.gov.au/entering-and-leaving-australia/can-you-bring-it-in/declare-it"
+          }
+        ]
+      }
     ],
     tips: [
       "『少しだから』と自己判断せず、該当しそうなものは全部申告しましょう。",
@@ -1344,8 +1576,20 @@ export const preparationArticles: Article[] = [
     ],
     warnings: ["持ち込み可否・申告ルールは変更されます。渡航前にABF・DAFFの公式案内で確認してください。"],
     relatedSlugs: ["medication-customs", "cards-and-cash-before-departure", "baggage-packing-strategy", "arrival-checklist"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申告の準備",
+          items: [
+            "持込品・食品・薬の一覧。表示のある元の包装と必要な処方資料",
+            "入国時に使う申告内容。迷う品は申告する"
+          ]
+        }
+      ],
+      completion: "申告が済み、必要な品を職員に見せて指示を受けたら完了です。申告は持込許可と同じではありません。"
+    },
   },
 
   {

@@ -25,7 +25,8 @@
     "monitor:health": "tsx scripts/monitor-health.mts",
     "test:external": "tsx --test scripts/external-candidates.test.mts",
     "ai:index": "tsx scripts/ai-index.mts --changed",
-    "ai:reindex": "tsx scripts/ai-index.mts --reindex"
+    "ai:reindex": "tsx scripts/ai-index.mts --reindex",
+    "test:procedures": "node --import tsx --test scripts/article-procedures.test.mts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

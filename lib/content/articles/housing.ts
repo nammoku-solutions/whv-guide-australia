@@ -9,7 +9,7 @@ export const housingArticles: Article[] = [
     description: "Facebook Marketplace等での家探しの手順、Bond（敷金）の仕組み、詐欺を避けるチェックポイントを解説します。",
     content: [
       "ワーホリの住居はシェアハウス（フラットシェア）が一般的です。Facebookグループ/Marketplace、Flatmates.com.au、Gumtreeなどで探します。",
-      "内見せずに送金を求める物件は詐欺の典型です。必ず現地で部屋・契約条件・同居人を確認してから支払いましょう。Bond（敷金）は通常2〜4週間分が目安です。",
+      "支払う前に物件・契約相手・条件を確認しましょう。ボンドの上限や預託先は州と契約形態によって異なります。行政の公式手続きで確認し、入居時の状態と送金記録を残してください。"
     ],
     keyFacts: [
       { label: "主な探し方", value: "Facebookグループ/Marketplace、Flatmates、Gumtree" },
@@ -18,10 +18,54 @@ export const housingArticles: Article[] = [
       { label: "費用の含有", value: "光熱費・ネット込み（bills included）か要確認" },
     ],
     steps: [
-      { title: "予算とエリアを決める", description: "通勤時間・治安・スーパーの近さを考慮します。" },
-      { title: "複数物件に内見を予約", description: "写真だけで決めず、実際に見て比較します。" },
-      { title: "条件を確認", description: "家賃・Bond・最低滞在期間・光熱費・人数を確認します。" },
-      { title: "契約・入金", description: "内見・合意後に支払い、領収書や契約メッセージを残します。" },
+      {
+        title: "物件を探して内見を予約する",
+        description: "掲載者に、空き日、週家賃、光熱費、ボンドを聞き、内見を予約します。写真だけで相手を信用して送金しないでください。",
+        links: [
+          {
+            label: "物件サイトの使い分け",
+            url: "/guides/housing-platforms-comparison"
+          },
+          {
+            label: "内見依頼の英語テンプレ",
+            url: "/guides/housing-message-templates"
+          }
+        ]
+      },
+      {
+        title: "部屋と契約相手を確認する",
+        description: "現地で鍵、騒音、設備、同居人数を確認し、契約相手が貸す権限を持つか確認します。",
+        links: [
+          {
+            label: "内見で確認するもの",
+            url: "/guides/inspection-checklist"
+          },
+          {
+            label: "契約形態を確認",
+            url: "/guides/rental-agreement-share-house"
+          }
+        ]
+      },
+      {
+        title: "ボンドと賃料を書面で確認する",
+        description: "ボンドの上限・預け先は州や契約形態で異なります。州の公式手続きと、必要なら直接払いの選択肢を確認します。",
+        links: [
+          {
+            label: "州ごとのボンド手続き",
+            url: "/guides/bond-rules-overview"
+          }
+        ]
+      },
+      {
+        title: "署名・入金後に状態を記録する",
+        description: "契約書を保管し、支払いは受領記録を残します。入居時の傷や設備の状態は写真と書面で双方に共有します。",
+        links: [
+          {
+            label: "Condition Reportの作り方",
+            url: "/guides/condition-report-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "「週いくら」表示が多いので、月額換算（週×52÷12）で予算と比較しましょう。",
@@ -43,8 +87,88 @@ export const housingArticles: Article[] = [
       "housing-message-templates",
       "inspection-checklist",
     ],
-    updatedAt: "2026-07-19",
+    examples: {
+      title: "入居前に比べる2つの部屋の例",
+      items: [
+        {
+          title: "部屋A｜家賃に光熱費が含まれる",
+          summary: "週A$270で光熱費込み。駅から徒歩圏にある想定です。",
+          details: [
+            "見学時に、電気・水道・インターネットが全て込みか、上限や追加請求の条件を聞きます。",
+            "入居時の振込は継続費用と分けて計算し、ボンドの送金先と受付番号を確認します。"
+          ],
+          facts: [
+            {
+              label: "試算",
+              value: "4週間の継続費用はA$1,080"
+            }
+          ],
+          links: [
+            {
+              label: "州ごとのボンドの預け方",
+              url: "/guides/bond-rules-overview"
+            }
+          ]
+        },
+        {
+          title: "部屋B｜家賃が安く、光熱費と交通費が別",
+          summary: "家賃が週A$240、光熱費の自分の負担が週A$15、交通費が週A$15と仮定します。",
+          details: [
+            "交通費・光熱費を入れるとAと同じ。帰宅時間や乗り換え、夏の電気代の変動を比べます。",
+            "光熱費は請求書の写し、人数での割り方、退去月の精算方法が分かる状態にします。"
+          ],
+          facts: [
+            {
+              label: "試算",
+              value: "週の合計はA$270、4週間でA$1,080"
+            }
+          ],
+          links: [
+            {
+              label: "内見依頼・費用を確認する英文",
+              url: "/guides/housing-message-templates"
+            }
+          ]
+        }
+      ],
+      intro: "週家賃だけでは判断しにくいときは、光熱費、通勤費、初回に払うお金を同じ表に並べます。",
+      note: "次の金額は計算用の架空例です。相場や法定の上限を示すものではありません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "内見前",
+          items: [
+            "週予算、入居希望日、通勤手段、入居人数",
+            "内見時の確認表と、相手を確認してから提出する本人確認書類"
+          ]
+        },
+        {
+          title: "契約と支払い前",
+          items: [
+            "貸主・契約相手の身元、契約形態、賃料・光熱費・保証金を書面で確認",
+            "入居先の州の手続きと、シェアハウスに適用されるルールを確認"
+          ]
+        }
+      ],
+      completion: "契約書、支払記録、入居時の状態写真、該当する場合は州のボンド受付番号を保存します。"
+    },
+    sources: [
+      {
+        label: "Service NSW｜Rental Bonds Online",
+        url: "https://www.service.nsw.gov.au/referral/lodge-a-residential-rental-bond-tenants"
+      },
+      {
+        label: "Consumer Affairs Victoria｜ボンドの預託",
+        url: "https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/lodging-the-bond-with-the-rtba"
+      },
+      {
+        label: "Queensland RTA｜ボンド",
+        url: "https://www.rta.qld.gov.au/starting-a-tenancy/rental-bond"
+      }
+    ],
   },
 
   {
@@ -65,10 +189,44 @@ export const housingArticles: Article[] = [
       { label: "内見", value: "必ず現地で確認してから契約・送金する" },
     ],
     steps: [
-      { title: "エリアと予算を決める", description: "通勤・治安・家賃から住みたいエリアを絞ります。" },
-      { title: "物件を探して連絡", description: "条件に合う部屋にメッセージを送り、内見をアポイントします。" },
-      { title: "内見でチェック", description: "水回り・カビ・騒音・住人の雰囲気・含まれる費用(光熱費/Wi-Fi)を確認します。" },
-      { title: "契約・支払い", description: "条件(家賃/ボンド/最低滞在期間/退去通知)を書面で確認してから支払います。" },
+      {
+        title: "希望条件を決めて候補を探す",
+        description: "予算・勤務場所・通勤時間・同居条件で絞ります。",
+        links: [
+          {
+            label: "物件サイトを選ぶ",
+            url: "/guides/housing-platforms-comparison"
+          },
+          {
+            label: "募集へ送る英文",
+            url: "/guides/housing-message-templates"
+          }
+        ]
+      },
+      {
+        title: "内見し相手と条件を確認する",
+        description: "物件と相手の身元、契約書、光熱費の分担、退去通知の条件を見ます。",
+        links: [
+          {
+            label: "内見チェックリスト",
+            url: "/guides/inspection-checklist"
+          }
+        ]
+      },
+      {
+        title: "書面を交わして正規手続きで支払う",
+        description: "州の当局で契約形態とボンドを確認してから支払い、控えを保管します。",
+        links: [
+          {
+            label: "州のボンド預託手続き",
+            url: "/guides/bond-rules-overview"
+          },
+          {
+            label: "詐欺に遭わないために",
+            url: "/guides/rental-scam-examples"
+          }
+        ]
+      }
     ],
     tips: [
       "内見前の送金要求は詐欺の定番。必ず現物を見てから払いましょう。",
@@ -98,8 +256,20 @@ export const housingArticles: Article[] = [
       "safety-emergency",
       "area-overview",
     ],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "内見前の用意",
+          items: [
+            "週家賃の上限、希望エリア、入居日、通勤先",
+            "連絡用の短い自己紹介、確認したい光熱費・ボンド・契約形態"
+          ]
+        }
+      ],
+      completion: "内見・契約相手の確認を済ませ、条件を書面で同意。ボンドの扱いと入居時の写真を記録します。"
+    },
   },
 
   {
@@ -346,7 +516,34 @@ export const housingArticles: Article[] = [
       "housing-platforms-comparison",
       "housing-message-templates",
     ],
-    updatedAt: "2026-07-19",
+    examples: {
+      title: "内見で確認する場面の例",
+      items: [
+        {
+          title: "写真と現地の設備が違う",
+          summary: "掲載写真にはエアコンがあるものの、内見では部屋に見当たらない例です。",
+          details: [
+            "部屋と共用部のどちらにあるか、使用時間・追加料金があるかを質問します。",
+            "設備名と料金が契約書にも反映されるまでは、掲載写真だけで決めません。"
+          ]
+        },
+        {
+          title: "設備に傷・しみがある",
+          summary: "入居前から窓にひびがある、床にしみがある場合の例です。",
+          details: [
+            "修理の予定を確認し、同意のうえ傷の位置と大きさが分かる写真を撮ります。",
+            "入居時に状態報告書へ「入居前からあり」と記載し、双方で控えを保管します。"
+          ],
+          links: [
+            {
+              label: "状態報告書の書き方",
+              url: "/guides/condition-report-guide"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
   },
 
@@ -362,9 +559,9 @@ export const housingArticles: Article[] = [
       "オーストラリア賃貸のBond（敷金）の仕組み、金額の目安（家賃4週間分が上限の目安）、州ごとの公式預託機関（NSW Rental Bonds Online／VIC RTBA／QLD RTA）への正しい預け方、退去時の返金ルールと詐欺の見分け方を解説します。",
     content: [
       "結論から言うと、Bond（敷金・保証金）は退去時に部屋を原状回復すれば返ってくるお金で、いちばん大切なのは『オーナー個人の口座に払いっぱなしにせず、州の公式な預託機関に預けられているか』を確認することです。正式な賃貸契約（residential tenancy agreement）では、オーナーやエージェントは受け取ったBondを一定期間内に州の機関へ預託する義務があります。金額の目安は家賃の約4週間分ですが、上限は州によって異なるため、必ず自分の州の当局で確認してください。",
-      "州ごとの公式なBond預託先は次の通りです。NSW＝Rental Bonds Online（NSW Fair Trading）、VIC＝RTBA（Residential Tenancies Bond Authority、rentalbonds.vic.gov.au）、QLD＝RTA（Residential Tenancies Authority）。これらの機関にBondが預けられていれば、退去時の返金や紛争処理が公的な仕組みで守られます。QLDでは2024年9月30日以降、一般賃貸のBond上限は週家賃の額にかかわらず家賃4週間分と定められています（詳細な上限は各州で確認）。",
+      "州の預託先は、NSWがRental Bonds Online、VICがRTBA、QLDがRTAです。NSWでは州全域でSmart Rental Bondsが利用可能です。VICでは借主から書面で申し出てRTBAへ直接支払う選択肢があります。州ごとの条件と契約形態を公式案内で確認してください。",
       "注意が必要なのは、シェアハウスの又貸し（sub-let）や間借り（lodger）です。シェアメイトの一人（head tenant）に又貸しで入る形だと、州の賃貸法の保護対象外になる場合が多く、Bondが公式機関に預託されず個人間のやり取りになります。この場合はBondが返らないトラブルが起きやすいため、①金額・返金条件を書面（メッセージ）で残す、②支払いは記録が残る銀行振込にする、③入居時の部屋の状態を写真で記録する、の3点を必ず行いましょう。",
-      "返金の基本ルールは『破損や未払い家賃がなければ全額返金』です。退去時に、通常の使用による経年劣化（fair wear and tear）はあなたの負担にはなりません。返金でもめないために、入居時に既存の傷・汚れをCondition Report（入居時状態報告書）と写真で記録しておくことが最大の防御になります。Bondを個人口座に振り込むよう求められたり、内見前に送金を迫られたりした場合は詐欺を強く疑ってください。",
+      "返金の基本ルールは『破損や未払い家賃がなければ全額返金』です。退去時に、通常の使用による経年劣化（fair wear and tear）はあなたの負担にはなりません。返金でもめないために、入居時に既存の傷・汚れをCondition Report（入居時状態報告書）と写真で記録しておくことが最大の防御になります。Bondを個人口座に振り込むよう求められたり、内見前に送金を迫られたりした場合は詐欺を強く疑ってください。"
     ],
     keyFacts: [
       { label: "Bondとは", value: "退去時の原状回復を条件に返金される保証金" },
@@ -375,11 +572,52 @@ export const housingArticles: Article[] = [
       { label: "最大の防御", value: "入居時に既存の傷を写真＋Condition Reportで記録" },
     ],
     steps: [
-      { title: "契約形態を確認", description: "正式な賃貸契約か、又貸し/間借りかを確認します。保護の範囲が変わります。" },
-      { title: "Bondの金額と根拠を確認", description: "家賃何週間分か、州の上限内かを確認します。" },
-      { title: "預託先を確認", description: "州の公式機関（RBO/RTBA/RTA）に預けられるか、領収書・預託番号をもらえるか確認します。" },
-      { title: "入居時の状態を記録", description: "Condition Reportに記入し、既存の傷を日付入りの写真で残します。" },
-      { title: "支払いは記録の残る方法で", description: "銀行振込で支払い、金額・条件をメッセージで残します。" },
+      {
+        title: "契約形態と州を確認する",
+        description: "シェアでも、正式な賃貸・転貸・下宿では適用される制度が異なります。契約書を見て、管轄当局のルールと照合してください。",
+        links: [
+          {
+            label: "シェアの契約形態",
+            url: "/guides/rental-agreement-share-house"
+          }
+        ]
+      },
+      {
+        title: "NSW・VIC・QLDの窓口を開く",
+        description: "NSWはRental Bonds Online、VICはRTBA、QLDはRTAを確認します。NSWで引っ越しの場合はSmart Rental Bonds、VICでは書面で依頼してRTBAへ直接支払う選択肢があります。",
+        links: [
+          {
+            label: "NSW Rental Bonds Online",
+            url: "https://www.service.nsw.gov.au/referral/lodge-a-residential-rental-bond-tenants"
+          },
+          {
+            label: "NSW ボンドを引き継ぐ",
+            url: "https://www.nsw.gov.au/housing-and-construction/renting-a-place-to-live/residential-rental-bonds/smart-rental-bonds"
+          },
+          {
+            label: "VIC RTBAへ預ける",
+            url: "https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/lodging-the-bond-with-the-rtba"
+          },
+          {
+            label: "QLD RTA 申請と支払方法",
+            url: "https://www.rta.qld.gov.au/starting-a-tenancy/rental-bond"
+          }
+        ]
+      },
+      {
+        title: "支払後の控えと写真を保管する",
+        description: "金額、物件住所、名義を照合してから支払い、通知・写真・契約書の写しを保管します。",
+        links: [
+          {
+            label: "Condition Reportを作る",
+            url: "/guides/condition-report-guide"
+          },
+          {
+            label: "退去時の返金と異議",
+            url: "/guides/bond-refund-dispute"
+          }
+        ]
+      }
     ],
     tips: [
       "『per week（週いくら）』表記が基本。Bondは通常その4週間分が目安です。",
@@ -408,7 +646,19 @@ export const housingArticles: Article[] = [
       { en: "Could I get a receipt or lodgement number for the bond?", ja: "Bondの領収書か預託番号をもらえますか？" },
     ],
     sources: [
-      { label: "NSW Government｜Renting a place to live", url: "https://www.nsw.gov.au/housing-and-construction/renting-a-place-to-live" },
+      {
+        label: "NSW Government｜Renting a place to live",
+        url: "https://www.nsw.gov.au/housing-and-construction/renting-a-place-to-live"
+      },
+      {
+        label: "NSW｜スマートボンド",
+        url: "https://www.nsw.gov.au/housing-and-construction/renting-a-place-to-live/residential-rental-bonds/smart-rental-bonds"
+      },
+      {
+        label: "VIC｜直接預託",
+        url: "https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/lodging-the-bond-with-the-rtba"
+      },
+      
     ],
     verifiedAt: "2026-07-19",
     officialSources: [
@@ -436,8 +686,20 @@ export const housingArticles: Article[] = [
       "rental-agreement-share-house",
       "rental-scam-examples",
     ],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "先に確認すること",
+          items: [
+            "州、貸主との契約か転貸・下宿か、賃料と提示されたボンド額",
+            "預託依頼メールの送信元、受付番号の保存先、契約書・入居時の写真"
+          ]
+        }
+      ],
+      completion: "州の正規機関に預託する契約なら、支払後に受付通知または預託番号を確認して保存します。"
+    },
   },
 
   {
@@ -799,10 +1061,38 @@ export const housingArticles: Article[] = [
       { label: "又貸し/間借り", value: "州の預託制度外だと少額訴訟等になる場合あり" },
     ],
     steps: [
-      { title: "証拠を集める", description: "入居・退去時の写真、Condition Report、支払い記録、やり取りを整理します。" },
-      { title: "書面で返金を求める", description: "差し引きの根拠を尋ね、経年劣化は負担外である旨を記録の残る形で伝えます。" },
-      { title: "州機関に申請", description: "正式な賃貸なら州の預託機関を通じて返金を申請します。" },
-      { title: "トリブナルへ", description: "合意できなければNCAT/QCAT/VCATに申し立て、証拠に基づく裁定を求めます。" },
+      {
+        title: "退去時に状態と支払いを記録する",
+        description: "入居時の資料と比較して撮影し、鍵返却・最終支払いを記録します。",
+        links: [
+          {
+            label: "状態報告書の作り方",
+            url: "/guides/condition-report-guide"
+          }
+        ]
+      },
+      {
+        title: "預託先で返金・請求の手順を開く",
+        description: "州と契約形態を確認し、預託先の正式手続きで請求・同意・異議の期限を確認します。",
+        links: [
+          {
+            label: "NSWボンドの公式窓口",
+            url: "https://www.service.nsw.gov.au/referral/lodge-a-residential-rental-bond-tenants"
+          },
+          {
+            label: "VICの預託手続き・関連窓口",
+            url: "https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/lodging-the-bond-with-the-rtba"
+          },
+          {
+            label: "QLD RTA公式案内",
+            url: "https://www.rta.qld.gov.au/starting-a-tenancy/rental-bond"
+          }
+        ]
+      },
+      {
+        title: "争いがある場合は根拠と期限を確認する",
+        description: "貸主の請求理由と資料を求め、入退去の記録・領収書を比較します。難しい場合は州の公式相談窓口へ。"
+      }
     ],
     tips: [
       "退去前に部屋を掃除し、退去時の状態を写真・動画で残すと差し引きの口実を減らせます。",
@@ -858,8 +1148,20 @@ export const housingArticles: Article[] = [
       "ending-tenancy-notice",
       "housing-guide",
     ],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "退去前にそろえる",
+          items: [
+            "契約書・ボンド預託番号、入居時と退去時の写真・Condition Report",
+            "鍵返却、清掃および賃料の記録、退去通知の記録"
+          ]
+        }
+      ],
+      completion: "返金の入金または正式な紛争手続きの受付を確認し、期限・提出資料の控えを保存します。"
+    },
   },
 
   {

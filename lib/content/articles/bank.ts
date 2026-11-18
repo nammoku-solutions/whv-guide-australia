@@ -19,10 +19,37 @@ export const bankArticles: Article[] = [
       { label: "カード", value: "デビットカード（タッチ決済）が即日〜数日で利用可" },
     ],
     steps: [
-      { title: "銀行を選ぶ", description: "アプリの使いやすさ・口座維持費・ATM網で比較します。" },
-      { title: "渡航前にオンライン申込", description: "多くの銀行は到着前に口座開設の事前申込が可能です。" },
-      { title: "到着後に本人確認", description: "支店またはアプリでパスポートを提示し口座を有効化します。" },
-      { title: "デビットカードを受け取る", description: "カードを受け取り、給与振込先・決済に使います。" },
+      {
+        title: "口座の条件を比較する",
+        description: "月額・免除条件、カード配送、渡航前申込の可否、本人確認の方法を選んだ銀行の公式情報で確認します。",
+        links: [
+          {
+            label: "主要銀行を比較",
+            url: "/guides/bank-comparison"
+          },
+          {
+            label: "CommBank 渡航者向け案内",
+            url: "https://www.commbank.com.au/banking/moving-to-australia.html"
+          }
+        ]
+      },
+      {
+        title: "銀行の公式サイトまたは支店で申し込む",
+        description: "選んだ口座の申請画面を開き、本人情報と住所を記入します。渡航前申請に対応していなければ到着後に申請します。",
+        checklist: [
+          "検索広告の先でパスワード等を入力する前に、銀行の公式ドメインを確認。"
+        ]
+      },
+      {
+        title: "本人確認とカード設定を完了する",
+        description: "必要なら旅券などを持って支店へ。アプリへログインし、カードの有効化、連絡先、振込口座情報を確認します。",
+        links: [
+          {
+            label: "銀行口座の詐欺対策",
+            url: "/guides/bank-scam-security"
+          }
+        ]
+      }
     ],
     tips: [
       "TFNは後から口座に登録できます。未登録だと利息に高い税率がかかるため、届いたら登録を。",
@@ -40,8 +67,20 @@ export const bankArticles: Article[] = [
       { label: "Commonwealth Bank（移住者向け口座）", url: "https://www.commbank.com.au/banking/moving-to-australia.html" },
     ],
     relatedSlugs: ["money-transfer-wise", "tfn-guide", "arrival-checklist", "proof-of-address", "bank-scam-security"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "銀行が求める本人確認",
+          items: [
+            "パスポート、連絡先、住所と開始予定日。ビザ情報や追加の身分証は銀行の指示に従う",
+            "税務上の居住地・納税識別番号など、求められる自己申告情報"
+          ]
+        }
+      ],
+      completion: "口座の本人確認が完了し、アプリにログインして自分のBSB・口座番号を確認できたら、給与受取先として用意完了です。"
+    },
   },
 
   {
@@ -50,29 +89,145 @@ export const bankArticles: Article[] = [
     slug: "bank-comparison",
     category: "bank",
     description:
-      "口座開設前に知っておきたい主要4行の特徴・手数料・アプリの使いやすさを比較。ワーホリに向いた選び方を解説します。",
+      "CommBank、NAB、ANZ、Westpacの日常口座を、口座維持費と免除条件、渡航者の開設方法で比較します。",
     content: [
-      "オーストラリアの主要銀行は『4大銀行（Big Four）』と呼ばれるCommonwealth Bank（CommBank）、NAB、ANZ、Westpacです。どれもワーホリの口座開設に対応しており、スマホアプリでの管理が中心になります。",
-      "ワーホリに人気なのはCommBankとNAB。CommBankは支店・ATMが多くアプリが使いやすい、NABは月額口座維持手数料が無料で海外送金にも対応しやすい、といった特徴があります。給与受け取り口座として使うなら、職場が指定する形式（BSB＋口座番号）に対応していれば問題ありません。",
+      "毎月の維持費を無条件で抑えたいならNAB Classic Banking、出発前に手続きを始めたいならCommBankの渡航者向け案内など、優先する条件から選びます。4行の口座例と申込先は下にまとめました。",
+      "給与口座として使う場合は、本人確認が完了したらBSBと口座番号を雇用主の指定方法で伝えます。カードの暗証番号やオンラインバンキングのパスワードは不要です。"
     ],
     keyFacts: [
-      { label: "CommBank", value: "支店/ATM最多・アプリが使いやすい・利用者多数" },
-      { label: "NAB", value: "口座維持手数料が無料・海外送金に強み" },
-      { label: "ANZ / Westpac", value: "大手で安定。学生/新規向けプランあり" },
-      { label: "開設に必要", value: "パスポート・住所・連絡先(到着後すぐ開設可)" },
+      {
+        label: "口座維持費",
+        value: "月A$0の口座と、年齢・入金などの条件で無料になる口座を区別"
+      },
+      {
+        label: "開設前の確認",
+        value: "到着日、本人確認書類、現地住所や連絡先の要件"
+      },
+      {
+        label: "別に確認する費用",
+        value: "海外利用、送金、ATM、標準外のカード"
+      }
     ],
     steps: [
-      { title: "銀行を選ぶ", description: "ATMの多さ、手数料、アプリの使いやすさで選びます。" },
-      { title: "オンラインで申込", description: "多くは到着前後にオンラインで口座開設の申込ができます。" },
-      { title: "支店で本人確認", description: "到着後に支店でパスポート提示し、口座を有効化します。" },
-      { title: "TFNを登録", description: "口座にTFNを登録しないと利子に高い税金がかかるため必ず登録します。" },
+      {
+        title: "料金と申込み条件で候補を絞る",
+        description: "月額費用や免除条件、到着前に申し込めるか、本人確認の方法を上の例から比較します。"
+      },
+      {
+        title: "銀行公式の案内から申し込む",
+        description: "銀行ごとに本人確認書類・現地住所・申込経路が異なります。旅券原本を準備し、オンラインで完了しない場合は公式の案内に従い支店へ行きます。",
+        links: [
+          {
+            label: "持ち物・本人確認・初回設定",
+            url: "/guides/bank-account-guide"
+          }
+        ]
+      },
+      {
+        title: "使える状態を確認する",
+        description: "開設後はBSBと口座番号、デビットカードの受取先を確認。利息の税区分やTFNの登録方法は銀行に確認します。"
+      }
     ],
     tips: [
-      "月額の口座維持手数料の有無を確認。条件付き無料の場合は条件（毎月の入金額等）をチェック。",
-      "デビットカードのタッチ決済が生活の基本。Apple Pay/Google Payに登録すると便利です。",
+      "免除条件に年齢・入金額・期間などが付く場合は、満たさなくなる月の料金も比べます。海外利用の手数料は口座維持費と別です。"
     ],
     relatedSlugs: ["bank-account-guide", "tfn-guide", "money-transfer-wise"],
-    updatedAt: "2026-06-20",
+    examples: {
+      title: "給与受取に使える4行の口座例",
+      items: [
+        {
+          title: "CommBank｜Everyday Smart Access",
+          summary: "到着直前に申し込みを始めたい人の候補です。",
+          details: [
+            "渡航者向けルートでは到着前14日以内または到着後12か月以内が目安。開設後20日以内に支店で旅券原本を提示する案内があるので、到着日と来店日を確認します。"
+          ],
+          facts: [
+            {
+              label: "口座維持費",
+              value: "月A$4。30歳未満や毎月A$2,000以上の対象入金などで免除条件あり"
+            }
+          ],
+          links: [
+            {
+              label: "渡航者向け口座開設",
+              url: "https://www.commbank.com.au/moving-to-australia.html"
+            },
+            {
+              label: "公式の料金・免除条件",
+              url: "https://www.commbank.com.au/banking/everyday-account-smart-access/rates-fees.html"
+            }
+          ]
+        },
+        {
+          title: "NAB｜NAB Classic Banking",
+          summary: "収入の少ない月でも、毎月の入金条件を管理したくない人が比較しやすい口座です。",
+          details: [
+            "Platinumカードには別の月額料金があります。標準カードで必要な機能が足りるかを見てから、公式の口座開設案内で本人確認方法を選びます。"
+          ],
+          facts: [
+            {
+              label: "口座維持費",
+              value: "月A$0。標準NAB Visa Debitも月額無料"
+            }
+          ],
+          links: [
+            {
+              label: "NAB公式｜日常口座・申込",
+              url: "https://www.nab.com.au/personal/bank-accounts/transaction-accounts"
+            },
+            {
+              label: "NAB公式｜手数料表",
+              url: "https://www.nab.com.au/important-information/personal/transaction-savings-accounts-fee-summary"
+            }
+          ]
+        },
+        {
+          title: "ANZ｜Access Advantage",
+          summary: "到着後に比較したい日常口座です。",
+          details: [
+            "出発前に申し込めると決めつけず、海外在住者の申し込み案内と本人確認書類をチェックします。ネット手続きが使えない場合は支店の案内を確認。"
+          ],
+          facts: [
+            {
+              label: "口座維持費",
+              value: "月A$5。毎月A$2,000以上の対象入金または他の条件で免除あり"
+            }
+          ],
+          links: [
+            {
+              label: "ANZ公式｜口座条件",
+              url: "https://www.anz.com.au/personal/bank-accounts/everyday-accounts/access-advantage/"
+            },
+            {
+              label: "ANZ公式｜口座開設方法",
+              url: "https://www.anz.com.au/personal/bank-accounts/open-account/"
+            }
+          ]
+        },
+        {
+          title: "Westpac｜Choice",
+          summary: "新規渡航者の免除を利用できるか確認したい人の候補です。",
+          details: [
+            "免除が適用されるときは終了月を控え、以降も別の免除条件を満たせるか確認します。申し込み方法と用意する本人確認書類は公式ページから確認してください。"
+          ],
+          facts: [
+            {
+              label: "口座維持費",
+              value: "通常月A$5。条件を満たす新規渡航者などは開設後12か月の免除あり"
+            }
+          ],
+          links: [
+            {
+              label: "Westpac公式｜Choiceの条件・申込",
+              url: "https://www.westpac.com.au/bank-accounts/choice"
+            }
+          ]
+        }
+      ],
+      intro: "すべて個人向けの日常口座です。月額維持費に加え、本人確認の方法、使うATM、帰国後も使うかで選びます。",
+      note: "2026年11月19日確認。維持費以外のATM・海外利用・カード手数料は含みません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
   },
 ];

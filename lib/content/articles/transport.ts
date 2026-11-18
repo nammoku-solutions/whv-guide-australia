@@ -9,44 +9,114 @@ export const transportArticles: Article[] = [
     description:
       "OpalやmykiなどのICカードに加え、クレジット/デビットのタッチ決済でそのまま乗車できる都市の交通事情と支払い方法を解説します。",
     content: [
-      "オーストラリアの都市部では、公共交通機関の支払いに現金や切符はほぼ不要です。シドニー（Opal）やメルボルン（myki）などの交通系ICカードに加え、多くの都市でVisa/Mastercardのタッチ決済（コンタクトレス）でそのまま改札・乗車ができます。",
-      "シドニー・ブリスベン・パースなどはクレジット/デビットのタッチ決済（スマホのApple Pay/Google Payを含む）に対応しており、カードをかざすだけで乗車可能。料金は自動計算され、1日の上限（デイキャップ）も適用されます。メルボルンはmykiカードが基本です。",
-      "都市によって運賃システムも異なります。シドニーのOpalは距離制で、平日の上限（デイキャップ）や日曜の割引上限、一定回数乗ると割引になる仕組みがあります。メルボルンは市内中心部の一部で無料トラム区間（Free Tram Zone）があり、mykiのゾーン制で運賃が決まります。ブリスベン（go card）やパース（SmartRider）もゾーン/区間制です。長く滞在して毎日通勤する都市では、上限（キャップ）や乗継割引を意識すると交通費を抑えられます。",
+      "同じ都市でも、乗る路線や運賃種別によって使える支払い方法が違います。出発前にルートを検索し、タッチ決済の対象か、交通系ICが必要かを運営機関の案内で確かめます。",
+      "シドニーはOpal圏内の対応サービスでタッチ決済が使えます。メルボルンはmykiと、対応路線のタッチ決済が選択肢です。ブリスベン周辺はTranslink対象サービスで50セント運賃が適用されます。空港区間や対象外のサービスは別です。"
     ],
     keyFacts: [
-      { label: "シドニー", value: "Opalカード or クレカ/スマホのタッチ決済" },
-      { label: "メルボルン", value: "mykiカード（要事前購入・チャージ）" },
-      { label: "ブリスベン", value: "go card or タッチ決済（Smart Ticketing拡大中）" },
-      { label: "パース", value: "SmartRider or タッチ決済（順次拡大）" },
-      { label: "運賃制度", value: "距離/ゾーン制。1日・週の上限（キャップ）あり" },
-      { label: "現金", value: "基本不要。タッチ決済 or ICカードで完結" },
+      {
+        label: "シドニー",
+        value: "Opalまたは対象のタッチ決済。空港駅アクセス料は別"
+      },
+      {
+        label: "メルボルン",
+        value: "myki・対応路線のタッチ決済。無料トラム区間は全行程を確認"
+      },
+      {
+        label: "ブリスベン",
+        value: "対象のTranslinkサービスはA$0.50。空港のAirtrainは対象外"
+      },
+      {
+        label: "タッチ決済",
+        value: "乗車と降車で同じカードまたは同じ端末を使用"
+      }
     ],
     steps: [
-      { title: "都市の方式を確認", description: "滞在する都市がタッチ決済対応かICカード必須かを調べます。" },
-      { title: "カード/スマホを準備", description: "タッチ決済対応のクレカ/デビット（Wise可）やスマホ決済を用意します。" },
-      { title: "必要ならICカードを購入", description: "メルボルン等はmykiなどのICカードをコンビニ/駅で購入・チャージします。" },
-      { title: "かざして乗車", description: "改札やバスのリーダーにカード/スマホをタッチして乗降します。" },
+      {
+        title: "乗る路線と運賃種別を調べる",
+        description: "出発地と行き先を検索し、空港区間、無料区間、一般運賃と割引運賃の条件を確認します。"
+      },
+      {
+        title: "路線で使える支払い方法を用意する",
+        description: "タッチ決済対象のカード・端末を確認し、対応していなければ交通系ICを購入・チャージします。"
+      },
+      {
+        title: "案内に従って乗降時にタッチする",
+        description: "カードや端末を途中で替えず、乗車と降車それぞれでタッチが必要か案内を確認します。"
+      }
     ],
     tips: [
-      "同じカードで往復・複数交通機関を使うと1日の上限（デイキャップ）や乗継割引が自動適用される都市が多いです。",
-      "バスは乗車時にタッチ。都市により降車時もタッチが必要なので表示を確認しましょう。",
-      "Wiseや日本のタッチ決済対応カードでも乗れることが多く、わざわざ現金で切符を買う必要はありません。",
+      "複数枚のカードが入った財布ごとタッチすると、別のカードが読まれる場合があります。利用するカードだけをかざします。",
+      "運賃上限の対象外となる空港アクセス料などは、出発前に別途確認します。"
     ],
     faqs: [
       {
         question: "日本のクレジットカードでも乗れますか？",
-        answer:
-          "Visa/Mastercardのタッチ決済（コンタクトレス）対応カードであれば、多くの都市でそのまま乗車できます。海外利用手数料がかかる場合があるため、現地カードやWiseのデビットを使うと手数料を抑えられます。",
+        answer: "路線がタッチ決済に対応し、案内にあるカードブランドとタッチ決済条件を満たすカードなら使える場合があります。カード会社の海外利用条件と、代替の交通系ICも確認すると安心です。"
       },
       {
         question: "切符を現金で買う必要はありますか？",
-        answer:
-          "都市部ではほぼ不要です。ICカードかタッチ決済で完結します。ごく一部の地方路線では現金対応の場合があります。",
-      },
+        answer: "例に挙げた都市の対応路線なら、交通系ICかタッチ決済で乗れます。地域路線や空港専用サービスは、乗車前に個別の案内を確認してください。"
+      }
     ],
     relatedSlugs: ["money-transfer-wise", "arrival-checklist", "cars-guide", "intercity-transport"],
     redirectFrom: ["city-public-transport-comparison"],
-    updatedAt: "2026-06-10",
+    examples: {
+      title: "都市別に見る最初の乗り方",
+      items: [
+        {
+          title: "シドニー｜Opal圏内の電車とバス",
+          summary: "成人の一般運賃なら、対応するタッチ決済カードまたはOpalを使えます。",
+          details: [
+            "乗るときと降りるときは同じカード・端末を使います。同じカードを登録していても、スマホで入って物理カードで出ないようにします。",
+            "空港駅のアクセス料は一般のデイキャップ・週上限には含まれないため、空港発着なら別に確認します。"
+          ],
+          links: [
+            {
+              label: "NSW公式｜タッチ決済",
+              url: "https://transportnsw.info/tickets-fares/contactless-payments"
+            },
+            {
+              label: "NSW公式｜成人運賃と空港駅アクセス料",
+              url: "https://transportnsw.info/tickets-fares/fares/adult-opal-fares"
+            }
+          ]
+        },
+        {
+          title: "メルボルン｜市内の電車・トラム",
+          summary: "メルボルンでは、対応する路線でVisa・Mastercardのタッチ決済が利用でき、mykiも選べます。",
+          details: [
+            "乗るモードと駅がタッチ決済に対応しているか確認。V/Lineや地域の移動では同じ方法が使えると仮定しないでください。",
+            "市内トラムを使うなら、全行程がFree Tram Zone内か、区間を出る場合はどこでタッチするかを確認します。"
+          ],
+          links: [
+            {
+              label: "Transport Victoria公式｜券種・支払い",
+              url: "https://transport.vic.gov.au/tickets-and-payments"
+            },
+            {
+              label: "Transport Victoria公式｜対応路線とタッチ決済",
+              url: "https://transport.vic.gov.au/tickets-and-payments/contactless"
+            }
+          ]
+        },
+        {
+          title: "ブリスベン｜Translinkで通勤する",
+          summary: "Translinkの対象路線は1回A$0.50。空港のAirtrainはこの運賃の対象外です。",
+          details: [
+            "たとえば対象区間で1日往復し、週5日利用した場合、10回×A$0.50でA$5です。空港や対象外サービスは別料金で計算します。",
+            "路線ごとの支払い方法を確認し、対応しているカードやgo cardを用意します。"
+          ],
+          links: [
+            {
+              label: "Translink公式｜50セント運賃・対象外",
+              url: "https://translink.com.au/tickets-and-fares/50-cent-fares"
+            }
+          ]
+        }
+      ],
+      intro: "初日は行き先の路線で使える支払い方法と、空港区間が別料金かを調べます。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
   },
 
@@ -189,12 +259,36 @@ export const transportArticles: Article[] = [
       { label: "実施タイミング", value: "支払い前（必須）" },
     ],
     steps: [
-      { title: "VINを入手", description: "フロントガラス下・ドア開口部・エンジンルーム・登録書類でVINを確認します。" },
-      { title: "VINの一致を確認", description: "売主が言うVINと車体・書類が一致しているか照合します。" },
-      { title: "公式サイトで照会", description: "ppsr.gov.au のQuickVIN Searchにアクセスし、VINを入力します。" },
-      { title: "$2を決済", description: "カードで$2を支払い、その場で証明書を発行します。" },
-      { title: "結果を確認", description: "残債・盗難・全損の記録がないかを読み取ります。" },
-      { title: "証明書を保存", description: "PDF/メールを保管し、購入判断とトラブル時の証拠にします。" },
+      {
+        title: "車体番号を照合する",
+        description: "出品者の申告だけでなく、実車に刻印された番号と登録書類を比べます。",
+        links: [
+          {
+            label: "中古車の現車確認",
+            url: "/guides/used-car-inspection-checklist"
+          }
+        ]
+      },
+      {
+        title: "公式PPSRで照会する",
+        description: "政府の中古車照会を開き、車体番号を転記して決済します。第三者の高額な代行サイトと区別してください。",
+        links: [
+          {
+            label: "政府公式のPPSR中古車照会",
+            url: "https://www.ppsr.gov.au/carcheck"
+          }
+        ]
+      },
+      {
+        title: "証明書を保存して判断する",
+        description: "検索証明書の車体番号と、担保・盗難・全損に関する確認結果を読みます。問題や判断できない記載があれば支払い・契約を止め、解消を確認。",
+        links: [
+          {
+            label: "州ごとの登録・譲渡の確認",
+            url: "/guides/vehicle-transfer-by-state"
+          }
+        ]
+      }
     ],
     tips: [
       "必ず自分でVINを入力して照会しましょう。売主が見せる証明書は別の車のものである可能性があります。",
@@ -239,8 +333,71 @@ export const transportArticles: Article[] = [
       "vehicle-transfer-by-state",
       "car-insurance-comparison",
     ],
-    updatedAt: "2026-07-19",
+    examples: {
+      title: "検索結果の見方の例",
+      items: [
+        {
+          title: "担保が表示された中古車",
+          summary: "売り手から車を買う前に、PPSRで登録済みの担保が見つかった場合の例です。",
+          details: [
+            "その場で売り手に送金せず、登録がどう解消されるかを確認します。未解消なら支払い・契約を進めません。",
+            "VINと証明書の日時を控え、状況が変わった場合は購入直前に再照会します。"
+          ],
+          links: [
+            {
+              label: "豪州政府｜中古車の公式検索",
+              url: "https://www.ppsr.gov.au/carcheck"
+            }
+          ]
+        },
+        {
+          title: "盗難・全損の記録が出なかった中古車",
+          summary: "PPSRの証明書に関係する記録が出なかった場合でも、車両の良好な状態を保証するものではありません。",
+          details: [
+            "VINを実車と書類で再照合し、州の登録情報、整備履歴、点検結果を別に確認します。",
+            "名義変更に必要な証明・費用・期限を州の案内で確認してから購入します。"
+          ],
+          links: [
+            {
+              label: "中古車を現地で点検する",
+              url: "/guides/used-car-inspection-checklist"
+            },
+            {
+              label: "州で異なる名義変更手続き",
+              url: "/guides/vehicle-transfer-by-state"
+            }
+          ]
+        },
+        {
+          title: "パース｜Transperthの電車・バス",
+          summary: "成人の一般運賃なら、TransperthのSmartRiderかVisa・Mastercardのタッチ決済を選べます。",
+          details: [
+            "タッチ決済は通常の現金運賃と同じです。SmartRiderの割引や割引運賃の対象になる場合は、どちらが安いかを確認します。",
+            "入場と出場では同じカードまたは端末を使います。カードを複数枚まとめたままかざさないようにします。"
+          ],
+          links: [
+            {
+              label: "Transperth公式｜タッチ決済と運賃",
+              url: "https://www.transperth.wa.gov.au/Contactless-Payments"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "購入前に必要",
+          items: [
+            "実車で見たVINまたは該当する車体番号、車両登録書類、小額を決済できるカード",
+            "照会結果を保存する場所。支払い・契約前に照会する"
+          ]
+        }
+      ],
+      completion: "購入予定車の番号と検索証明書の番号が一致し、証明書を手元に保存。PPSRは車両の点検や州の登録確認を代替しません。"
+    },
   },
 
   {
