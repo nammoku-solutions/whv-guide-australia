@@ -37,10 +37,10 @@ export const tools: ToolMeta[] = [
   {
     slug: "tool-88-day-calculator",
     path: "/tools/88-day-calculator",
-    title: "セカンドビザ88日カレンダー・勤務記録ツール",
-    navLabel: "88日カウンター",
+    title: "セカンドビザ勤務日カレンダー（88日・120日）",
+    navLabel: "指定労働カウンター",
     description:
-      "セカンドビザの指定業務（Specified work）の勤務日を記録し、88日に対する進捗と証拠書類の有無を管理できるツール。ビザの可否は判定しません。",
+      "セカンドビザの指定業務（Specified work）の勤務日を記録し、88日または120日を目標に進捗と証拠書類の有無を管理できるツール。ビザの可否は判定しません。",
     category: "calculator",
     categoryLabel: "計算・記録",
     icon: "📅",
@@ -48,8 +48,13 @@ export const tools: ToolMeta[] = [
     verifiedAt: "2026-08-02",
     officialSources: [
       {
+        label: "Department of Home Affairs｜セカンド・サードビザの変更発表",
+        url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx",
+        accessedAt: "2026-11-18",
+      },
+      {
         label: "Department of Home Affairs｜Second Working Holiday visa (subclass 417)",
-        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/second-work-holiday-417",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/second-working-holiday-417",
         accessedAt: "2026-08-02",
       },
       {

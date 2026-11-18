@@ -8,7 +8,8 @@ export const taxReturnArticles: Article[] = [
     category: "tax-return",
     description: "会計年度・申告期限・必要書類・myGov連携まで、ワーホリの確定申告に必要な知識を整理します。",
     content: [
-      "オーストラリアの会計年度は7月1日〜翌年6月30日。確定申告（Tax Return）はその後の7月1日〜10月31日に行います。多くのワーホリは源泉徴収された税金の一部が還付されます。",
+      "自分で申告する場合、期限は原則10月31日で、週末に当たる年は次の営業日です。ATOが2026年10月19日に案内した2025–26年度の自己申告期限は、2026年11月2日午後11時59分（現地時間）でした。申告が必要で期限を過ぎた場合は、できるだけ早く申告してください。",
+      "オーストラリアの会計年度は7月1日〜翌年6月30日。自己申告はその後の7月1日から原則10月31日までに行います。多くのワーホリは源泉徴収された税金の一部が還付されます。",
       "myGovアカウントを作成してATOと連携すれば、雇用主が報告したIncome Statementが自動で反映され、オンラインで簡単に申告できます。",
       "ワーホリには「Working Holiday Maker（WHM）税率」という専用の税率が適用されます。課税所得の最初の45,000 AUDまでは15%で課税され、それを超える部分は通常の累進税率になります。給与から源泉徴収された金額が実際の税額より多ければ差額が還付され、少なければ追加で納税する形になります。多くの短期就労のワーホリは、還付を受けられるケースが一般的です。",
       "申告に必要なものは、TFN、myGovとATOの連携、そして各雇用主からのIncome Statement（かつてのPayment Summary）です。Income Statementは通常、会計年度終了後にATO側で自動的に「Tax ready」の状態になり、申告画面に反映されます。銀行の利子や、ギグワーク（ABNでの収入）がある場合はそれらも申告に含める必要があります。",
@@ -16,7 +17,7 @@ export const taxReturnArticles: Article[] = [
     ],
     keyFacts: [
       { label: "会計年度", value: "7月1日〜翌6月30日" },
-      { label: "申告期間", value: "7月1日〜10月31日" },
+      { label: "申告期間", value: "7月1日から原則10月31日。週末は次の営業日" },
       { label: "申告方法", value: "myGov連携でATOオンライン、または税理士（Tax Agent）" },
       { label: "WH税率", value: "課税所得の最初の45,000 AUDまで15%（Working Holiday Maker税率）" },
     ],
@@ -38,11 +39,13 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now" },
       { label: "ATO - Lodging your tax return", url: "https://www.ato.gov.au/individuals-and-families/your-tax-return" },
       { label: "myGov", url: "https://my.gov.au/" },
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
+      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now", accessedAt: "2026-11-18" },
       {
         label: "ATO｜Tax rates – working holiday maker（2025–26年度）",
         url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers",
@@ -56,7 +59,7 @@ export const taxReturnArticles: Article[] = [
     ],
     searchIntent: "タックスリターンの基本と税率",
     relatedSlugs: ["super-guide", "tfn-guide", "abn-guide", "whm-tax-rates"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-10-25",
     published: true,
   },
 
@@ -68,12 +71,13 @@ export const taxReturnArticles: Article[] = [
     description:
       "毎年7〜10月の確定申告（タックスリターン）を自分で行う手順。myGovとATOの連携、必要書類、還付の受け取りまでを実践的に解説します。",
     content: [
+      "自分で申告する場合、期限は原則10月31日で、週末に当たる年は次の営業日です。ATOが2026年10月19日に案内した2025–26年度の自己申告期限は、2026年11月2日午後11時59分（現地時間）でした。申告が必要で期限を過ぎた場合は、できるだけ早く申告してください。",
       "オーストラリアの会計年度は7月1日〜翌6月30日。働いた人は原則として翌年度の確定申告（タックスリターン）が必要です。申告期間は通常7月〜10月末で、払い過ぎた税金が還付されることが多いため、忘れずに行いましょう。",
       "申告は『myGov』アカウントを作り『ATO（税務署）』と連携すれば、オンラインで自分で完結できます。多くの収入情報（給与・源泉徴収）は自動で取り込まれるため、内容を確認して提出するだけのケースも増えています。複雑な場合は会計士（tax agent）に依頼する選択肢もあります。",
     ],
     keyFacts: [
       { label: "会計年度", value: "7/1〜翌6/30" },
-      { label: "申告期間", value: "通常 7月〜10月末" },
+      { label: "申告期間", value: "7月から原則10月31日。週末は次の営業日" },
       { label: "方法", value: "myGov + ATO連携でオンライン申告" },
       { label: "必要書類", value: "TFN・各職場の収入情報・銀行口座" },
     ],
@@ -90,10 +94,11 @@ export const taxReturnArticles: Article[] = [
     ],
     warnings: ["税率・控除のルールは毎年変わります。申告前にATOの最新情報を確認してください。"],
     sources: [
+      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now" },
       { label: "ATO（オーストラリア税務署）", url: "https://www.ato.gov.au/" },
     ],
     relatedSlugs: ["tax-return-guide", "tfn-guide", "dasp-refund"],
-    updatedAt: "2026-06-20",
+    updatedAt: "2026-10-25",
     published: true,
   },
 
@@ -108,11 +113,12 @@ export const taxReturnArticles: Article[] = [
     description:
       "ワーホリ（417/462）に適用されるWorking Holiday Maker税率を、2025–26年度のATO公式の税額表で解説。15%が適用される範囲、TFN未提出時の45%源泉、確認方法までまとめます。",
     content: [
+      "自分で申告する場合、期限は原則10月31日で、週末に当たる年は次の営業日です。ATOが2026年10月19日に案内した2025–26年度の自己申告期限は、2026年11月2日午後11時59分（現地時間）でした。申告が必要で期限を過ぎた場合は、できるだけ早く申告してください。",
       "結論から言うと、ワーホリ（サブクラス417・462）には「Working Holiday Maker（WHM）税率」という専用の所得税率が適用され、課税所得の0〜45,000 AUDの部分は1ドルあたり15セント（15%）で課税されます。これは全国共通の連邦（国）税で、州や準州によって変わるものではありません。以下は2025–26年度のATO公式の税額表です。",
       "【2025–26年度 WHM税率（課税所得に対する税額）】 0〜45,000 AUD：1ドルにつき15セント／ 45,001〜135,000 AUD：6,750 AUD ＋ 45,000超の1ドルにつき30セント／ 135,001〜190,000 AUD：33,750 AUD ＋ 135,000超の1ドルにつき37セント／ 190,001 AUD以上：54,100 AUD ＋ 190,000超の1ドルにつき45セント。（出典：ATO Tax rates – working holiday maker）",
       "給与からの源泉徴収の仕組みも知っておきましょう。雇用主がATOに「WHM雇用主」として登録している場合、あなたに支払う額が年間45,000 AUDに達するまでは一律15%で源泉徴収されます。45,000 AUDを超えた分からは上の表に沿った高い率が適用されます。登録していない雇用主は外国居住者向けの税率で源泉徴収します。",
       "TFN（納税者番号）を雇用主に提出していないと、支払額に対して45%という高い率で源泉徴収されます。仕事を始める前にTFNを取得・提出しておくことが、手取りを守るうえで非常に重要です。TFN未提出のまま働くと、後から取り戻すには確定申告（タックスリターン）が必要になります。",
-      "実際の年間の税額や、還付になるか追加納税になるかは、1年間の総所得と源泉徴収額によって決まります。会計年度（7月1日〜翌6月30日）の終了後、7月1日〜10月31日の申告期間にmyGov経由でタックスリターンを行うと、源泉徴収が多すぎた分は還付されます。正確な自分の税額はATOの計算ツールで試算できます。",
+      "実際の年間の税額や、還付になるか追加納税になるかは、1年間の総所得と源泉徴収額によって決まります。会計年度（7月1日〜翌6月30日）の終了後、7月1日から始まる申告期間にmyGov経由でタックスリターンを行うと、源泉徴収が多すぎた分は還付されます。正確な自分の税額はATOの計算ツールで試算できます。",
     ],
     keyFacts: [
       { label: "適用対象", value: "サブクラス417・462のワーホリ（全国共通の連邦税）" },
@@ -149,10 +155,12 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now" },
       { label: "ATO｜Tax rates – working holiday maker", url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers" },
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
+      { label: "Australian Taxation Office｜2025–26年度の自己申告期限（2026年10月19日発表）", url: "https://www.ato.gov.au/media-centre/the-final-countdown-ato-reminds-taxpayers-to-lodge-now", accessedAt: "2026-11-18" },
       {
         label: "ATO｜Tax rates – working holiday maker（2025–26年度の税額表）",
         url: "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers",
@@ -165,7 +173,7 @@ export const taxReturnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["tax-return-guide", "tfn-guide", "super-guide", "abn-guide"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-10-25",
     published: true,
   },
 

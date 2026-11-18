@@ -93,7 +93,7 @@ export const superArticles: Article[] = [
       "対象条件はシンプルで、18歳以上の従業員なら月の収入額にかかわらずSuperが支払われます（以前あった月450 AUD未満は対象外というルールは2022年7月に撤廃されました）。18歳未満の場合は週30時間超の勤務が条件です。カジュアル・パートタイム・フルタイムいずれも対象で、雇用形態は問いません。ただしABNで働く個人事業主（Sole Trader）自身にはSuperは付きません。",
       "口座（Superファンド）の選び方：手数料が低く、運用実績が安定した大手ファンドを1つ選ぶのが基本です。ワーホリは短期滞在で運用益より『手数料の低さ』と『不要な保険を付けない』ことが重要です。多くのファンドは加入時に生命保険・所得補償保険が自動付帯され、掛金が残高から引かれます。短期滞在で不要なら加入後に保険をオフにできる場合があります。",
       "雇用主への提出方法：入社時に『Superannuation Standard Choice Form』で自分のファンド（ファンド名・USI・メンバー番号）を指定して提出します。指定しない場合、雇用主はATOに照会してあなたの既存の『Stapled Super（紐づけられた既定のファンド）』に支払います。Stapledもなければ雇用主の既定ファンドが使われます。複数の職場で毎回新しい口座を作ると口座が乱立し手数料が無駄になるため、最初の1口座を使い回すのが賢明です。",
-      "確認とトラブル対応：毎回のPayslipに『Super』の金額とファンド名が記載されているか確認し、実際にファンドのアプリ／myGov（ATO連携）で入金されているかをチェックしましょう。未払いの雇用主も存在するため、四半期ごとに確認するのが安全です（2026年7月1日からは給与と同時にSuperを支払う『Payday Super』制度が始まっています）。帰国してビザが失効した後は、積み立てたSuperをDASPとして払い戻し請求できます（ワーホリの源泉税率は高め）。",
+      "確認とトラブル対応：毎回のPayslipに『Super』の金額とファンド名が記載されているか確認し、実際にファンドのアプリ／myGov（ATO連携）で入金されているかをチェックしましょう。2026年7月1日以降に支払われた給与にはPayday Superが適用され、原則、Superの拠出は給与支払日ごとに行われ、ファンドに7営業日以内に着金します。新規雇用の初回など例外があります。給与明細に載っていても着金したとは限らないため、ファンドの入金明細を確認しましょう。帰国してビザが失効した後は、積み立てたSuperをDASPとして払い戻し請求できます（ワーホリの源泉税率は高め）。",
     ],
     keyFacts: [
       { label: "拠出率", value: "OTEの12%（2025年7月1日から。雇用主負担）" },
@@ -130,10 +130,12 @@ export const superArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Australian Taxation Office｜Payday Superの支払い・例外（2026年10月20日更新）", url: "https://www.ato.gov.au/businesses-and-organisations/super-for-employers/paying-super-on-payday/how-to-work-out-and-pay-super" },
       { label: "ATO - Super for employers（SG rate）", url: "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/super-guarantee" },
     ],
     verifiedAt: "2026-07-18",
     officialSources: [
+      { label: "Australian Taxation Office｜Payday Superの支払い・例外（2026年10月20日更新）", url: "https://www.ato.gov.au/businesses-and-organisations/super-for-employers/paying-super-on-payday/how-to-work-out-and-pay-super", accessedAt: "2026-11-18" },
       {
         label: "ATO｜How much super to pay（SG率12%・2025–26年度）",
         url: "https://www.ato.gov.au/businesses-and-organisations/super-for-employers/paying-super-contributions/how-much-super-to-pay",
@@ -146,7 +148,7 @@ export const superArticles: Article[] = [
       },
     ],
     relatedSlugs: ["super-guide", "dasp-refund", "payslip-guide", "tax-return-guide", "tfn-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-10-25",
     published: true,
   },
 ];

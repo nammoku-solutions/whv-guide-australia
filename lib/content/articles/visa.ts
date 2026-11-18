@@ -9,6 +9,7 @@ export const visaArticles: Article[] = [
     description:
       "ワーホリ準備から現地生活、帰国までの全体像を時系列で整理した入門記事。何をいつやるべきかが一目でわかります。",
     content: [
+      "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
       "ワーキングホリデー（Working Holiday：サブクラス417）は、18〜30歳（一部国籍は35歳まで）の日本国籍者が最長1年間オーストラリアに滞在し、観光・就労・就学を自由に組み合わせられるビザです。条件を満たせばセカンド・サードビザで最大3年まで延長できます。",
       "成功のコツは「順番」です。ビザ取得 → 航空券・保険 → 到着後の手続き（TFN・銀行・SIM）→ 家探し → 仕事探し、という流れを崩さないことで、無駄な出費とトラブルを避けられます。",
       "本サイトはこの順番に沿ってカテゴリを構成しています。まずは渡航前準備と到着後チェックリストから読み進めるのがおすすめです。お金の管理（Wiseでの両替・送金）や交通（現金不要でクレジット決済）など、現地で差がつく実践情報もカテゴリごとにまとめています。",
@@ -70,6 +71,7 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
       {
         label: "Department of Home Affairs（ビザ公式）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
@@ -77,7 +79,7 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["ビザ制度・申請料・必要資金は予告なく変更されます。申請前に必ず公式情報を確認してください。"],
     relatedSlugs: ["visa-application", "arrival-checklist", "money-transfer-wise", "working-holiday-budget", "working-holiday-timeline", "first-30-days-roadmap"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -181,6 +183,7 @@ export const visaArticles: Article[] = [
     description:
       "ワーホリ終了後も滞在を続けたい人向けに、セカンド/サードビザ、学生ビザ、就労ビザ（スポンサー）など主要な選択肢を整理します。",
     content: [
+      "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
       "1年目のワーホリが終わりに近づくと、『もっと滞在したい』と考える人は多いです。主な選択肢は、①セカンド/サードビザ（規定の労働で延長）、②学生ビザ（学校に通う）、③就労ビザ（雇用主のスポンサー）、④パートナービザなどです。",
       "それぞれ条件・費用・準備期間が大きく異なります。特にスポンサービザは雇用主の協力が必要で時間もかかるため、滞在を延ばしたいなら早めに方向性を決めて動くことが重要です。",
     ],
@@ -203,6 +206,7 @@ export const visaArticles: Article[] = [
     warnings: ["ビザ制度は予告なく変更されます。重大な判断の前に必ず公式情報・専門家で確認してください。"],
     verifiedAt: "2026-07-16",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Department of Home Affairs｜List of all visas",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing",
@@ -216,7 +220,7 @@ export const visaArticles: Article[] = [
     ],
     searchIntent: "ワーホリ後の在留延長・ビザ選択",
     relatedSlugs: ["second-visa-guide", "whv-complete-guide", "language-school"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -231,17 +235,18 @@ export const visaArticles: Article[] = [
     description:
       "「英語を伸ばす」「お金を貯める」「ローカル就職」「セカンドビザ取得」など目的別に、1年間の過ごし方のモデルプランを比較。都市選び・仕事・時期の組み立て方がわかります。",
     content: [
+      "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
       "ワーキングホリデー（サブクラス417）の1年は自由度が高い反面、目的を決めずに過ごすと「英語も貯金も中途半端」で終わりがちです。まずは自分の最優先目的を1つ決め、それに合わせて都市・仕事・時期を逆算するのが成功のコツです。この記事では代表的な4つの目的別モデルプランを比較します。",
       "【英語重視プラン】到着後に語学学校へ数週間通い、ローカルの職場（カフェ・小売・ホスピタリティ）を目指すプランです。日本人が少なめの都市やローカル比率の高い職場を選ぶと英語環境を作りやすくなります。就学はビザ条件の範囲内（一般に最長17週間）で計画します。",
       "【貯金重視プラン】時給の高い仕事と生活費の安い地域を組み合わせるプランです。ファーム・鉱山周辺・地方の加工場などは短期間で稼ぎやすい一方、車が必要な場合が多く支出も変わります。収入と支出はセットで比較し、週単位の予算を管理しましょう。",
       "【ローカル就職・キャリアプラン】自分の専門（IT・調理・介護・美容など）を活かす仕事を狙うプランです。英文レジュメの準備、LinkedIn、契約形態（Casual/Contractor）の理解が鍵になります。就労は同一雇用主で原則6か月までという条件に注意が必要です。",
-      "【セカンドビザ取得プラン】2年目・3年目のビザを見据え、早い時期に指定地域でSpecified Work（3か月＝最低88暦日）を終えるプランです。悪天候による無給日は日数に含められないため、収穫シーズンと地域を先に調べ、余裕を持って計画します。どのプランでも、目的を1つに絞り、残高証明・初期資金・保険を渡航前に整えておくことが共通の土台です。",
+      "【セカンドビザ取得プラン】2年目・3年目のビザを見据え、早い時期に指定地域でSpecified Work（申請時期に応じた日数）を終えるプランです。悪天候による無給日は日数に含められないため、収穫シーズンと地域を先に調べ、余裕を持って計画します。どのプランでも、目的を1つに絞り、残高証明・初期資金・保険を渡航前に整えておくことが共通の土台です。",
     ],
     keyFacts: [
       { label: "滞在期間", value: "1回の入国で最長12か月（条件を満たせば延長可）" },
       { label: "就学の目安", value: "一般に最長17週間まで" },
       { label: "同一雇用主", value: "原則6か月まで（例外あり）" },
-      { label: "セカンド条件", value: "指定業種・地域で3か月＝最低88暦日のSpecified Work" },
+      { label: "セカンド条件", value: "指定業種・地域で申請時期に応じた日数のSpecified Work" },
     ],
     steps: [
       { title: "最優先の目的を1つ決める", description: "英語・貯金・キャリア・セカンドのどれを最優先にするかを決めます。すべてを同時に狙わないのがコツです。" },
@@ -266,6 +271,7 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
       {
         label: "Department of Home Affairs｜Work and Holiday（417）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
@@ -273,6 +279,7 @@ export const visaArticles: Article[] = [
     ],
     verifiedAt: "2026-07-17",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Department of Home Affairs｜Working Holiday visa (subclass 417)",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
@@ -281,7 +288,7 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["ビザ条件・就学期間・就労制限は予告なく変更されます。計画前に必ず公式情報を確認してください。"],
     relatedSlugs: ["whv-complete-guide", "working-holiday-common-mistakes", "second-visa-guide", "working-holiday-budget"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -634,11 +641,12 @@ export const visaArticles: Article[] = [
     description:
       "年齢上限が近い29〜30歳からのワーホリで注意したい申請期限の考え方と、限られた時間を無駄にしないキャリア設計・目的の絞り方を解説します。",
     content: [
+      "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
       "日本国籍の場合、ワーキングホリデー（サブクラス417）は申請時に18〜30歳であることが条件です（30歳のうちに申請）。年齢上限が近い人ほど、申請のタイミングを逃さないことが最重要になります。ビザの申請可能な年齢や締切の扱いは変更されることがあるため、必ず公式情報で最新の条件を確認してください。",
       "30歳前後で申請する場合、まず確認すべきは「いつまでに申請すればよいか」です。一般に申請時点の年齢が要件となるため、誕生日との兼ね合いで申請可能な期限が決まります。パスポート更新が必要な場合は先に済ませ、余裕を持って申請しましょう。",
       "年齢が上の人ほど、目的を絞ることが成果に直結します。英語・貯金・キャリアのうち最優先を1つ決め、遠回りを減らすことで、限られた1年を有効に使えます。これまでの職歴・専門を活かせる仕事を狙うと、時給や経験の面で有利になりやすいです。",
       "帰国後のキャリアも見据えましょう。ワーホリ経験（英語環境での就労、異文化対応、自立した生活）は、伝え方次第で日本の転職・キャリアに活かせます。渡航前に「何を持ち帰るか」を決めておくと、現地での行動が明確になります。",
-      "セカンド・サードビザで滞在を延ばす選択肢もありますが、これも年齢や条件の制約があります。延長を考える場合は、早い時期にSpecified Work（3か月＝最低88暦日）を計画的に終えることが鍵です。制度・年齢条件は変わり得るため、延長の可否は必ず公式で確認してください。",
+      "セカンド・サードビザで滞在を延ばす選択肢もありますが、これも年齢や条件の制約があります。延長を考える場合は、早い時期にSpecified Work（申請時期に応じた日数）を計画的に終えることが鍵です。制度・年齢条件は変わり得るため、延長の可否は必ず公式で確認してください。",
     ],
     keyFacts: [
       { label: "年齢要件", value: "申請時に18〜30歳（日本国籍）" },
@@ -669,6 +677,7 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
       {
         label: "Department of Home Affairs｜Work and Holiday（417）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
@@ -676,6 +685,7 @@ export const visaArticles: Article[] = [
     ],
     verifiedAt: "2026-07-17",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Department of Home Affairs｜Working Holiday visa (subclass 417) Eligibility",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
@@ -684,7 +694,7 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["年齢要件・申請期限・延長条件は変更されることがあります。申請前に必ず公式情報で最新を確認してください。"],
     relatedSlugs: ["whv-complete-guide", "working-holiday-model-plans", "second-visa-guide", "use-wh-experience-in-resume"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -775,10 +785,11 @@ export const visaArticles: Article[] = [
     description:
       "Working Holiday visa（417）とWork and Holiday visa（462）の違いを、対象国・追加要件・申請方法の観点から整理。日本国籍者がどちらを申請するのかを最初に明確にします。",
     content: [
+      "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
       "結論から言うと、日本国籍の人が申請するのはサブクラス417（Working Holiday visa）です。サブクラス462（Work and Holiday visa）は対象国が異なり、日本は462の対象ではありません。そのため『417か462か』で迷う必要は基本的になく、日本のパスポートで申請するのは417になります。",
       "417と462はどちらも18〜30歳（一部国籍は35歳）の若者向けで、最長12か月の滞在、就労・就学が可能という点は共通しています。滞在期間・費用・セカンド/サードでの延長制度も基本的な枠組みは似ています。",
       "大きな違いは『対象国』と『追加要件』です。462は国によって、学歴要件（一定の高等教育歴）、一定レベルの英語力の証明、自国政府からの推薦状（サポートレター）などの追加条件が課されることがあります。417はこうした学歴・英語要件が課されないのが一般的です。日本は417対象国のため、これらの462特有の追加要件は関係ありません。",
-      "セカンド・サードビザの要件（Specified Work）も、417と462で対象となる仕事や地域の定義が異なる場合があります。日本国籍者は417の枠組みで、3か月（セカンド）・6か月（サード）の指定労働を行うことで延長を狙えます。",
+      "セカンド・サードビザの要件（Specified Work）も、417と462で対象となる仕事や地域の定義が異なる場合があります。日本国籍者は417の枠組みで、申請時期に応じた指定労働と申請要件を満たせば、セカンド・サードを申請できます。",
       "他国籍の友人と情報交換する際は、相手が462対象国の場合、申請条件や必要書類が自分（417）と違うことを念頭に置きましょう。制度は国ごと・年ごとに変わるため、それぞれ自分の国籍に対応する公式ページで確認するのが確実です。",
     ],
     keyFacts: [
@@ -810,10 +821,12 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
       { label: "Department of Home Affairs｜Working Holiday Maker program", url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/" },
     ],
     verifiedAt: "2026-07-17",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Department of Home Affairs｜Working Holiday visa (subclass 417)",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
@@ -827,7 +840,7 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["対象国・追加要件は変更されることがあります。申請前に自分の国籍に対応する公式ページで確認してください。"],
     relatedSlugs: ["working-holiday-eligibility", "visa-application", "whv-complete-guide", "second-visa-guide"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
