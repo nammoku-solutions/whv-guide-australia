@@ -48,7 +48,7 @@ export function MobileNav({ groups, isOpen, onOpenChange }: MobileNavProps) {
   }
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => onOpenChange(!open)}
@@ -56,7 +56,7 @@ export function MobileNav({ groups, isOpen, onOpenChange }: MobileNavProps) {
         aria-haspopup="true"
         aria-expanded={open}
         aria-controls="mobile-nav-panel"
-        className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-50"
+        className="flex size-11 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-50"
       >
         {open ? (
           <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6" aria-hidden="true">
