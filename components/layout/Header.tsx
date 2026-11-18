@@ -7,8 +7,8 @@ import { primaryNavGroups } from "@/lib/navigation";
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-sky-100 bg-white/90 backdrop-blur">
-      <Container className="flex h-16 items-center justify-between gap-4">
-        <Logo size={36} />
+      <Container className="flex h-16 items-center justify-between gap-2 lg:gap-4">
+        <Logo size={36} className="min-w-0" />
         <PrimaryNav groups={primaryNavGroups} />
         <HeaderActions groups={primaryNavGroups} />
       </Container>

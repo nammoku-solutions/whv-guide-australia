@@ -54,27 +54,75 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
     first?.focus();
   }, [isOpen]);
 
+  function handleSelect() {
+    onOpenChange(false);
+  }
+
   if (loading) {
-    return <span className="text-xs text-slate-400">読み込み中…</span>;
+    return (
+      <span className="flex h-11 min-w-11 items-center justify-center text-xs whitespace-nowrap text-slate-500">
+        <span className="sr-only lg:not-sr-only">読み込み中…</span>
+      </span>
+    );
   }
 
   if (!isLoggedIn) {
     return (
-      <div className="flex items-center gap-2 text-sm">
-        <Link
-          href="/login"
-          className="rounded-full border border-sky-200 px-3 py-1 text-sky-700 transition hover:bg-sky-50"
-        >
-          ログイン
-        </Link>
-        {/* 狭いモバイルでは主要導線（ログイン）を優先し、二次導線ははみ出し防止のため広い画面でのみ表示 */}
-        <Link
-          href="/register"
-          className="hidden rounded-full bg-sky-600 px-3 py-1 text-white transition hover:bg-sky-700 min-[380px]:inline-block"
-        >
-          新規登録
-        </Link>
-      </div>
+      <>
+        <div ref={containerRef} className="relative lg:hidden">
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={() => onOpenChange(!isOpen)}
+            aria-label="ログイン・新規登録"
+            aria-expanded={isOpen}
+            aria-controls={isOpen ? menuId : undefined}
+            className="flex size-11 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-50 hover:text-sky-700 focus-visible:ring-2 focus-visible:ring-sky-500"
+          >
+            <svg viewBox="0 0 24 24" fill="none" className="size-5" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.25" stroke="currentColor" strokeWidth="2" />
+              <path d="M5 20v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+          {isOpen ? (
+            <div
+              ref={panelRef}
+              id={menuId}
+              className="absolute right-0 top-full z-50 mt-2 grid w-40 gap-1 rounded-xl border border-slate-200 bg-white p-2 text-sm shadow-lg"
+            >
+              <Link
+                href="/login"
+                data-menu-item
+                onClick={handleSelect}
+                className="flex min-h-11 items-center rounded-lg px-3 whitespace-nowrap text-sky-700 transition hover:bg-sky-50 focus-visible:ring-2 focus-visible:ring-sky-500"
+              >
+                ログイン
+              </Link>
+              <Link
+                href="/register"
+                onClick={handleSelect}
+                className="flex min-h-11 items-center rounded-lg bg-sky-600 px-3 whitespace-nowrap text-white transition hover:bg-sky-700 focus-visible:ring-2 focus-visible:ring-sky-500"
+              >
+                新規登録
+              </Link>
+            </div>
+          ) : null}
+        </div>
+        <div className="hidden items-center gap-2 text-sm lg:flex">
+          <Link
+            href="/login"
+            className="inline-flex min-h-10 items-center rounded-full border border-sky-200 px-3 whitespace-nowrap text-sky-700 transition hover:bg-sky-50"
+          >
+            ログイン
+          </Link>
+          <Link
+            href="/register"
+            className="inline-flex min-h-10 items-center rounded-full bg-sky-600 px-3 whitespace-nowrap text-white transition hover:bg-sky-700"
+          >
+            新規登録
+          </Link>
+        </div>
+      </>
     );
   }
 
@@ -94,10 +142,6 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
     }
   }
 
-  function handleSelect() {
-    onOpenChange(false);
-  }
-
   return (
     <div ref={containerRef} className="relative">
       <button
@@ -108,7 +152,7 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls={menuId}
-        className="relative flex h-10 items-center gap-1.5 rounded-full border border-slate-200 pl-1 pr-2 text-sm text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
+        className="relative flex h-11 items-center gap-1.5 rounded-full border border-slate-200 pl-1 pr-2 text-sm text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
       >
         <span
           aria-hidden="true"
@@ -148,7 +192,7 @@ export function HeaderAuth({ isOpen, onOpenChange }: HeaderAuthProps) {
           id={menuId}
           role="menu"
           aria-label="アカウントメニュー"
-          className="absolute right-0 top-full z-50 mt-2 w-64 max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-200 bg-white p-2 text-sm shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 w-64 max-w-[calc(100vw-5rem)] rounded-xl border border-slate-200 bg-white p-2 text-sm shadow-lg"
         >
           <div className="px-3 py-2">
             <p className="truncate font-semibold text-slate-900">{displayName}</p>

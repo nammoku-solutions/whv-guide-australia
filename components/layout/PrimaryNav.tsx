@@ -50,7 +50,7 @@ export function PrimaryNav({ groups }: PrimaryNavProps) {
   }, [openId]);
 
   return (
-    <nav aria-label="カテゴリ" className="hidden md:block">
+    <nav aria-label="カテゴリ" className="hidden shrink-0 lg:block">
       <ul ref={containerRef} className="flex items-center gap-1 text-sm text-slate-700">
         {groups.map((group) => {
           const isOpen = openId === group.id;
@@ -72,7 +72,7 @@ export function PrimaryNav({ groups }: PrimaryNavProps) {
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => setOpenId((current) => (current === group.id ? null : group.id))}
-                className={`inline-flex items-center gap-1 rounded-lg px-3 py-2 font-medium transition hover:bg-sky-50 hover:text-sky-700 ${
+                className={`inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2 xl:px-3 py-2 font-medium transition hover:bg-sky-50 hover:text-sky-700 ${
                   isOpen ? "bg-sky-50 text-sky-700" : ""
                 }`}
               >
