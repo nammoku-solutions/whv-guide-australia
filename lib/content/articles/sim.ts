@@ -19,18 +19,60 @@ export const simArticles: Article[] = [
       { label: "料金の目安", value: "月20〜40 AUDで大容量データのプランが多い" },
     ],
     steps: [
-      { title: "到着前にeSIMを用意（任意）", description: "eSIM対応端末ならオンラインで購入し、到着後に有効化すればすぐ使えます。" },
-      { title: "SIM/プランを選ぶ", description: "地方中心ならTelstra系、都市中心ならOptus/Vodafone系が目安です。" },
-      { title: "本人確認・開通", description: "プリペイドSIMはパスポートで本人確認のうえアクティベートします。" },
-      { title: "テザリング設定", description: "ノートPC用にテザリングを設定すれば、自宅Wi-Fiがなくても作業できます。" },
+      {
+        title: "必要な回線と範囲を決める",
+        description: "銀行や仕事の連絡に現地番号を使うなら、データ専用eSIMではなく通話・SMS対応プランを比較します。地方に行く場合は住所・地域で回線エリアを調べます。",
+        links: [
+          {
+            label: "Telstra プリペイドを確認",
+            url: "https://www.telstra.com.au/prepaid/mobile-plans"
+          },
+          {
+            label: "Optus プリペイドを確認",
+            url: "https://www.optus.com.au/prepaid"
+          },
+          {
+            label: "Vodafone プリペイドを確認",
+            url: "https://www.vodafone.com.au/prepaid"
+          }
+        ]
+      },
+      {
+        title: "プランを購入する",
+        description: "端末のeSIM対応と対応機種を確認し、eSIMなら提供会社のサイト・アプリ、物理SIMなら公式ショップや取扱店を利用します。",
+        checklist: [
+          "購入前に、開通が現地でしかできないか、本人確認がオンラインで完了するか確認。"
+        ]
+      },
+      {
+        title: "本人確認と開通を行う",
+        description: "提供会社が案内するActivation手順を進めます。eSIMはWi-Fiがある場所で追加し、回線が有効になったか確認します。"
+      },
+      {
+        title: "通話・通信・更新設定を確認する",
+        description: "Wi-Fiを切って通信を確認し、電話番号付きなら通話・SMSをテスト。自動更新、データ容量、解約方法とサポート先を控えます。"
+      }
     ],
     tips: [
       "ファームや地方に行く予定があるなら、つながりやすさ重視でTelstra系を選ぶと安心です。",
       "多くのプランは28日サイクル。自動更新の有無と残データの繰り越し条件を確認しましょう。",
     ],
     relatedSlugs: ["arrival-checklist", "preparation-checklist"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "用意するもの",
+          items: [
+            "SIMロック解除済みで、豪州サービスと互換性のある端末",
+            "パスポートなど提供元が求める身分証、メール、決済手段",
+            "番号が必要な用途か、データのみで足りるかを先に決める"
+          ]
+        }
+      ],
+      completion: "モバイルデータが通信でき、電話番号付きプランなら通話・SMSも確認できたら完了です。"
+    },
   },
 
   {

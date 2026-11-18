@@ -6,25 +6,65 @@ export const tfnArticles: Article[] = [
     title: "TFN（タックスファイルナンバー）取得ガイド",
     slug: "tfn-guide",
     category: "tfn",
-    description: "給与受け取りに必須のTFNをATO公式サイトから無料でオンライン申請する方法を解説します。",
+    description: "TFNは税務上の個人番号です。日本などの外国旅券で豪州に滞在中のワーホリ向けに、ATOの公式無料申請から受領・雇用主への申告までを解説します。",
     content: [
-      "TFN（Tax File Number）は納税者番号で、就労して給与を受け取るために必須です。ATO（オーストラリア国税局）の公式サイトから無料で申請できます。",
-      "申請から発行まで通常2〜4週間。郵送で登録住所に届きます。番号は一生変わらないため、安全に保管してください。",
-      "TFNを持たずに働き始めると、雇用主は法律上最も高い税率で源泉徴収を行うため、手取りが大きく減ってしまいます。就労開始から28日以内にTFNを雇用主へ提出すれば通常の税率が適用されるため、到着後は早めに申請しておくのが得策です。申請自体はオンラインで10〜15分ほどで完了します。",
-      "申請時に入力する住所は、TFNの通知書が郵送される先になります。短期滞在のホステルなどではなく、数週間以上滞在できるシェアハウスなど安定した住所を登録しましょう。もし通知書が届く前に住所が変わった場合でも、番号自体はATOのオンラインサービス（myGov連携）で確認できるため、番号を書き留めておけば通知書の紛失をそれほど心配する必要はありません。",
-      "注意したいのは、TFNの申請は必ずATOの公式サイトから無料で行える点です。「TFN取得代行」をうたって手数料を請求する非公式サイトも存在しますが、利用する必要はまったくありません。公式ドメイン（ato.gov.au）であることを確認してから申請してください。",
+      "TFN（Tax File Number）は税務上の個人番号で、就労資格とは別です。働くには就労できるビザが必要ですが、TFNが届く前でも就労は可能です。TFNがないと源泉徴収が高くなる場合があるため、申請中なら雇用主に伝えてください。",
+      "有効な就労資格で豪州にいる外国旅券保持者は、ATO公式のオンライン手続きで無料で申請できます。銀行口座開設はこの申請の前提ではありません。TFNを持っている場合は再申請しないでください。",
+      "申請後の受領番号を控え、郵送でTFNを受け取れる住所を用意します。ATOは通知に最大28日を案内しています。"
     ],
     keyFacts: [
-      { label: "費用", value: "無料（公式サイトのみ。代行に費用を払う必要なし）" },
-      { label: "申請先", value: "ATO公式サイト（オンライン）" },
-      { label: "発行期間", value: "約2〜4週間（郵送）" },
-      { label: "必要条件", value: "オーストラリア国内に滞在し、有効なビザを保持していること" },
+      {
+        label: "費用",
+        "value": "ATO公式で無料"
+      },
+      {
+        label: "対象",
+        "value": "豪州内の外国旅券保持者で有効な就労資格がある人"
+      },
+      {
+        label: "受け取り",
+        "value": "郵送。最大28日が目安"
+      }
     ],
     steps: [
-      { title: "ATOのTFN申請ページへ", description: "ワーホリ等の一時滞在者向けオンライン申請フォームを開きます。" },
-      { title: "パスポート・ビザ情報を入力", description: "氏名、生年月日、パスポート番号、入国情報を入力します。" },
-      { title: "郵送先住所を入力", description: "TFN通知を受け取れる住所（ホステル可）を登録します。" },
-      { title: "申請を送信して待つ", description: "受付番号を控え、郵送での到着を待ちます。" },
+      {
+        title: "使う申請ルートを確認する",
+        description: "外国旅券で豪州にいる一時滞在者向けのオンライン申請を開きます。申請は無料です。",
+        links: [
+          {
+            label: "ATO 外国旅券保持者向けの申請",
+            url: "https://www.ato.gov.au/forms-and-instructions/tfn-application-for-permanent-migrants-and-temporary-visitors"
+          }
+        ]
+      },
+      {
+        title: "フォームを記入する",
+        description: "氏名と生年月日を旅券から転記し、郵便が届く住所を記入します。受取先を変える場合はATOに連絡してください。",
+        checklist: [
+          "就労資格とパスポートが同じ情報で確認できるようにする。",
+          "画面の案内に従い、申請の受領番号を保存。"
+        ]
+      },
+      {
+        title: "郵送を確認し、受け取った番号を保管する",
+        description: "ATOはTFN通知の郵送に最大28日を案内しています。届かなければ受領番号を手元に置いてATOに問い合わせます。",
+        links: [
+          {
+            label: "ATOへの連絡方法",
+            url: "https://www.ato.gov.au/about-ato/contact-us"
+          }
+        ]
+      },
+      {
+        title: "雇用主にTFN申告をする",
+        description: "番号がなくても就労資格があれば雇用自体は可能です。申請中なら雇用主に伝え、申告フォームの該当欄と適用期限を確認します。",
+        links: [
+          {
+            label: "TFN申告フォームの案内",
+            url: "/guides/tfn-declaration-form"
+          }
+        ]
+      }
     ],
     tips: [
       "TFNは雇用主・銀行・myGovで使います。届いたら写真に撮ってクラウドに保管を。",
@@ -32,17 +72,41 @@ export const tfnArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "TFNとABNの違いは？",
-        answer:
-          "TFNは「雇われて働く（従業員）」ための番号、ABNは「個人事業主として働く（Uber Eats等）」ための番号です。ジャパレスやカフェで雇用される場合はTFN、ギグワークをする場合はABNが必要です。",
-      },
+        "question": "TFNとABNはどう違いますか？",
+        "answer": "TFNは税務上の個人番号です。ABNは事業を識別する番号です。雇用として行う仕事のためだけにABNを取得する必要はありません。"
+      }
     ],
     sources: [
-      { label: "ATO - Apply for a TFN", url: "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn" },
+      {
+        label: "ATO｜外国旅券保持者のTFNオンライン申請",
+        url: "https://www.ato.gov.au/forms-and-instructions/tfn-application-for-permanent-migrants-and-temporary-visitors"
+      },
+      {
+        label: "ATO｜雇用主へのTFN申告",
+        url: "https://www.ato.gov.au/forms-and-instructions/tfn-declaration/access-the-tfn-declaration-form"
+      }
     ],
     relatedSlugs: ["abn-guide", "tax-return-guide", "bank-account-guide", "whm-tax-rates"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申請情報",
+          items: [
+            "オーストラリアに滞在中で、外国旅券と有効な就労資格があること",
+            "パスポートの氏名・番号、生年月日、受け取れる豪州の郵送先と連絡先"
+          ]
+        },
+        {
+          title: "二重申請を防ぐ",
+          items: [
+            "以前にTFNを取得した人は新規申請せず、ATOで既存番号を確認する"
+          ]
+        }
+      ],
+      completion: "TFN通知を安全に保管し、雇用主へ必要な申告書で番号を提出したら完了。求人応募の段階で公開・送信する必要はありません。"
+    },
   },
 
   {
@@ -69,10 +133,40 @@ export const tfnArticles: Article[] = [
       { label: "WHMの注意", value: "雇用主がWHM employer登録済みか確認（15%適用の条件）" },
     ],
     steps: [
-      { title: "TFNを用意", description: "未取得ならTFNを先に申請します。" },
-      { title: "提出方法を確認", description: "職場の給与システム・ATOオンライン・紙のどれかを雇用主に確認します。" },
-      { title: "居住区分と免税枠を選択", description: "税務上の居住区分と、免税枠を申請するか（掛け持ち時は主たる1か所のみ）を選びます。" },
-      { title: "雇用主へ提出", description: "内容を確認し、期限内（就労開始からできるだけ早く）に提出します。" },
+      {
+        title: "雇用主の案内とATOフォームを確認する",
+        description: "TFN申告は本人の新規TFN申請とは別です。書面・オンラインのうち雇用主の案内を確認します。",
+        links: [
+          {
+            label: "ATOの申告フォーム",
+            url: "https://www.ato.gov.au/forms-and-instructions/tfn-declaration/access-the-tfn-declaration-form"
+          }
+        ]
+      },
+      {
+        title: "必要項目を埋めて提出する",
+        description: "就労区分と本人情報を確認。TFNを申請中ならその旨を申告し、届いたら雇用主に連絡します。",
+        links: [
+          {
+            label: "TFNがない場合の申請",
+            url: "/guides/tfn-guide"
+          },
+          {
+            label: "ATO ワーホリの税務上の扱い",
+            url: "https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers"
+          }
+        ]
+      },
+      {
+        title: "給与明細を確認する",
+        description: "申告後の源泉徴収と給与明細を確認し、疑問があれば給与担当に確認します。",
+        links: [
+          {
+            label: "給与明細の読み方",
+            url: "/guides/payslip-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "掛け持ちで2か所以上から給与を受ける場合、免税枠の重複申請は年度末の追徴の原因になります。主たる勤務先1か所のみで申請しましょう。",
@@ -107,7 +201,19 @@ export const tfnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["tfn-guide", "whm-tax-rates", "payslip-guide", "tax-return-guide", "tax-return-multiple-jobs"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "提出前",
+          items: [
+            "正規の雇用主、新規のTFN申告かどうか、既存のTFNまたは申請中の情報",
+            "雇用主から案内されたオンライン手続きまたは公式フォーム"
+          ]
+        }
+      ],
+      completion: "雇用主に安全な方法で申告を提出し、初回給与で源泉徴収を確認できたら完了です。"
+    },
   },
 ];

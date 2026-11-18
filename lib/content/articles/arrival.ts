@@ -10,10 +10,10 @@ export const arrivalArticles: Article[] = [
       "空港到着から最初の1週間で済ませたい手続きを優先順位つきで整理。これさえ押さえれば生活の土台が完成します。",
     content: [
       "到着直後は「連絡が取れる状態」と「お金を受け取れる状態」を整えますが、その前に意外と重要なのが住所の確保です。TFNや銀行のカード・書類は登録した住所に郵送されるため、住居が定まらないと受け取れなかったり、短期滞在先を出た後に届いて受け取れない、というトラブルが起きやすいからです。",
-      "そこでおすすめの順番は「SIM → 住居（少なくとも数週間滞在できる拠点）→ 銀行口座 → TFN」です。まずSIMでネットをつなぎ、シェアハウスや中期滞在先を確保してから、その住所で銀行口座開設とTFN申請を行うと郵送物を確実に受け取れます。",
+      "SIMで連絡手段を確保し、郵便を受け取れる住所を確認します。銀行口座とTFNは両方大切ですが、ATOの外国旅券保持者向けTFN申請は銀行口座の開設を待つ必要がありません。準備ができた方から進めます。",
       "空港に着いたら、まずは市内へのアクセス手段を確認しましょう。主要都市は空港から市内まで電車・シャトルバス・ライドシェアが利用できます。多くの交通機関はクレジットカードやスマホのタッチ決済に対応しているため、到着直後に大量の現金を用意する必要はありません。緊急時に備えて100〜200 AUD程度あれば十分です。",
       "最初の数日は、時差ボケや慣れない環境で疲れやすい時期です。無理に一気に手続きを進めようとせず、初日はSIMの有効化と宿泊先の確保だけに絞り、翌日以降に銀行口座やTFNを進めると失敗が減ります。手続きに必要な書類（パスポート、ビザ許可通知、滞在先の住所）はスマホとクラウドの両方に保存しておくと、どこでもすぐ提示できて便利です。",
-      "住居が決まるまでの数日〜1週間は、ホステルや短期のシェアハウスを拠点にするのが一般的です。この間に複数の物件を内見し、通勤のしやすさ・治安・家賃に含まれる費用（光熱費やWi-Fi）を比較して、腰を据えられる拠点を決めましょう。拠点が固まってから銀行やTFNの住所を登録すれば、カードや通知の郵送でつまずくことがありません。",
+      "住居が決まるまでの数日〜1週間は、ホステルや短期のシェアハウスを拠点にするのが一般的です。この間に複数の物件を内見し、通勤のしやすさ・治安・家賃に含まれる費用（光熱費やWi-Fi）を比較して、腰を据えられる拠点を決めましょう。拠点が固まってから銀行やTFNの住所を登録すれば、カードや通知の郵送でつまずくことがありません。"
     ],
     keyFacts: [
       { label: "おすすめ順", value: "SIM → 住居確保 → 銀行口座 → TFN" },
@@ -22,11 +22,66 @@ export const arrivalArticles: Article[] = [
       { label: "現金", value: "ほぼ不要。緊急用に100〜200 AUDあれば十分" },
     ],
     steps: [
-      { title: "SIM/eSIMを有効化", description: "到着前に契約したeSIMを起動、または現地で物理SIMを購入し、家探し・連絡手段を確保します。" },
-      { title: "住居を確保（先に）", description: "ホステル等を拠点に内見し、数週間以上滞在できるシェアハウス等を契約。郵送物を受け取れる安定した住所を先に作ります。" },
-      { title: "銀行口座を開設", description: "確保した住所でアプリ申込→本人確認。カードを自宅で受け取れます（銀行ガイド参照）。" },
-      { title: "TFNを申請", description: "ATOのサイトで無料申請。郵送先に確保した住所を登録すれば通知を確実に受け取れます。" },
-      { title: "交通カードを準備", description: "都市ごとの交通系カードを登録、またはクレカのタッチ決済で乗車します。" },
+      {
+        title: "空港から宿へ移動する",
+        description: "入国審査と申告を済ませます。宿までの移動手段・交通決済を確認します。",
+        links: [
+          {
+            label: "豪州到着時の流れ",
+            url: "/guides/australia-airport-arrival-flow"
+          },
+          {
+            label: "空港からの移動",
+            url: "/guides/airport-to-city"
+          }
+        ]
+      },
+      {
+        title: "携帯回線と銀行口座を用意する",
+        description: "SIMの本人確認・開通を行い、給与を受け取る口座を申し込みます。",
+        links: [
+          {
+            label: "SIMを準備",
+            url: "/guides/sim-guide"
+          },
+          {
+            label: "銀行口座を開設",
+            url: "/guides/bank-account-guide"
+          }
+        ]
+      },
+      {
+        title: "TFNを申請して行政ログインを準備する",
+        description: "豪州にいる外国旅券保持者向けの無料申請を使います。TFNは銀行口座開設が済むまで待つ必要はありません。",
+        links: [
+          {
+            label: "ATOのTFN申請",
+            url: "https://www.ato.gov.au/forms-and-instructions/tfn-application-for-permanent-migrants-and-temporary-visitors"
+          },
+          {
+            label: "myGovの作成・連携",
+            url: "/guides/mygov-account-guide"
+          }
+        ]
+      },
+      {
+        title: "仕事と住まいを確認する",
+        description: "就労条件をVEVOで確認し、雇用条件・入居契約を文字で残します。",
+        links: [
+          {
+            label: "VEVOで就労条件を確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          },
+          {
+            label: "仕事探しを進める",
+            url: "/guides/jobs-guide"
+          },
+          {
+            label: "内見と入居を進める",
+            url: "/guides/housing-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "まずSIMとホステル等の短期拠点を押さえ、シェアハウスを決めてから銀行・TFNに進むと郵送物を取りこぼさない。",
@@ -47,8 +102,20 @@ export const arrivalArticles: Article[] = [
       },
     ],
     relatedSlugs: ["housing-guide", "tfn-guide", "bank-account-guide", "sim-guide", "transport-payment-guide", "first-30-days-roadmap", "australia-airport-arrival-flow", "mygov-account-guide", "proof-of-address", "essential-australia-apps"],
-    updatedAt: "2026-06-16",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "到着直後の準備",
+          items: [
+            "入国書類、宿の住所、連絡できるスマホ、決済手段",
+            "受領できる郵送先を検討。正規の窓口以外へ旅券やTFNの写しを公開しない"
+          ]
+        }
+      ],
+      completion: "連絡手段、給与受取先、郵送先を整え、就労前にビザ条件と雇用条件を自分で確認できる状態にします。"
+    },
   },
 
   {
@@ -97,9 +164,9 @@ export const arrivalArticles: Article[] = [
     content: [
       "最初に結論を言うと、到着後は「SIM → 住居 → 銀行口座 → TFN → 仕事探し」の順で進めるのが失敗しにくい流れです。理由はシンプルで、銀行のカードやTFNの通知など重要な郵送物は登録した住所に届くため、住所が定まらないうちに手続きを進めると受け取れなくなるからです。まず連絡手段（SIM）と受取先（住居）を確保してから、口座開設と納税者番号の申請に進みます。",
       "1週目は『つながる・住む・移動する』を整えます。到着したらまずSIM/eSIMでネットをつなぎ、数週間は滞在できる拠点（ホステルや短期のシェアハウス）を確保します。市内までの移動や日々の買い物はタッチ決済が使えるので、到着直後に大量の現金は不要です。詳しい通信・住居の選び方は各詳細記事にまとめています。",
-      "2週目は『お金と番号』です。住所が決まったら銀行口座を開設し、そのうえでTFN（Tax File Number＝納税者番号）を申請します。TFNは仕事を始めるときに必須で、提出しないと高い税率が源泉徴収されてしまいます。あわせてmyGovアカウントを作っておくと、後の税務手続き（タックスリターン）がスムーズです。",
+      "2週目は銀行・TFN・myGovを整える目安です。口座開設とTFN申請は準備できた方から進められます。TFNは就労許可とは別で、番号がなくても就労できる場合がありますが、申請中なら雇用主に伝え、提出期限や源泉徴収の扱いを確認してください。",
       "3週目は『仕事探し』に本格的に動きます。英文レジュメを用意し、求人サイト・店頭への持ち込み・地域のコミュニティなど複数の経路で応募します。職種によってはRSA（アルコール提供）やWhite Card（建設）などの資格が必要になるため、狙う仕事に合わせて早めに取得を検討します。",
-      "4週目は『生活基盤の仕上げ』です。中期的に住むシェアハウスを固め、必要なら中古車や公共交通の定期を検討し、医療（Medicare対象国かOSHC/保険）や緊急連絡先を確認します。ここまで整えば、あとは働きながら生活のリズムを作っていく段階です。",
+      "4週目は『生活基盤の仕上げ』です。中期的に住むシェアハウスを固め、必要なら中古車や公共交通の定期を検討し、医療（Medicare対象国かOSHC/保険）や緊急連絡先を確認します。ここまで整えば、あとは働きながら生活のリズムを作っていく段階です。"
     ],
     keyFacts: [
       { label: "推奨の順番", value: "SIM → 住居 → 銀行 → TFN → 仕事探し" },
@@ -148,7 +215,7 @@ export const arrivalArticles: Article[] = [
       },
     ],
     relatedSlugs: ["arrival-checklist", "sim-guide", "bank-account-guide", "tfn-guide", "jobs-guide", "share-house-finding", "mygov-account-guide", "australia-living-cost"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -313,10 +380,40 @@ export const arrivalArticles: Article[] = [
       { label: "本人確認", value: "TFN等の情報、またはmyIDを利用" },
     ],
     steps: [
-      { title: "アカウントを作成", description: "my.gov.auで『Create account』を選び、メール認証とパスワード設定を行います。" },
-      { title: "サインイン方法を設定", description: "パスキー・myID・コード送信などのサインイン方法と携帯番号を登録します。" },
-      { title: "ATOをリンク", description: "TFN等の情報、またはmyIDでATOと連携し、給与情報を確認できるようにします。" },
-      { title: "必要なサービスを追加", description: "該当する人はMedicareなど他のサービスも連携します。" },
+      {
+        title: "公式ページでアカウントを作る",
+        description: "Create accountからメールまたは利用できるDigital IDの方法を選び、画面の認証を完了します。",
+        links: [
+          {
+            label: "myGov 公式アカウント作成",
+            url: "https://my.gov.au/en/about/help/mygov-website/create-mygov-account/"
+          }
+        ]
+      },
+      {
+        title: "サインイン設定を確認する",
+        description: "画面で利用できるパスキー・認証方法を確認し、帰国後もアクセスできるよう、出国前に再ログインを試します。",
+        links: [
+          {
+            label: "myGov ログイン",
+            url: "https://my.gov.au/"
+          }
+        ]
+      },
+      {
+        title: "ATOをリンクする",
+        description: "サービス一覧からAustralian Taxation Officeを選びます。氏名等を照合し、質問に答えられないときはATOの案内に沿ってリンクコードを確認します。",
+        links: [
+          {
+            label: "ATO 連携の手順",
+            url: "https://www.ato.gov.au/online-services/online-services-for-individuals-and-sole-traders/ato-online-services-and-mygov/create-a-mygov-account-and-link-it-to-the-ato"
+          },
+          {
+            label: "連携の問題を解消",
+            url: "/guides/mygov-ato-linking"
+          }
+        ]
+      }
     ],
     tips: [
       "ATO連携は最初の給与明細やTFN取得後だと本人確認がスムーズです。",
@@ -356,8 +453,20 @@ export const arrivalArticles: Article[] = [
       },
     ],
     relatedSlugs: ["digital-id-guide", "tfn-guide", "first-30-days-roadmap", "proof-of-address", "tax-return-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "用意するもの",
+          items: [
+            "自分が使い続けられるメールアドレス",
+            "選んだサインイン方式を使えるスマホなど。ATO連携用にTFNや照合用の情報を別途用意"
+          ]
+        }
+      ],
+      completion: "myGovに再ログインでき、ATOのサービス画面を開けたら連携完了。myGovの作成とATO連携は別の手続きです。"
+    },
   },
 
   {
@@ -681,10 +790,36 @@ export const arrivalArticles: Article[] = [
       { label: "現地窓口", value: "管轄の日本大使館・総領事館" },
     ],
     steps: [
-      { title: "滞在期間で判断", description: "3か月以上なら在留届、3か月未満ならたびレジを選びます。" },
-      { title: "オンラインで登録", description: "ezairyu.mofa.go.jpのORRnetで氏名・旅券番号・滞在先を入力します。" },
-      { title: "住所変更を反映", description: "引っ越したら滞在先住所の変更を届け出ます。" },
-      { title: "帰国時に届け出", description: "帰国したら帰国・転出届を出して登録を終了します。" },
+      {
+        title: "滞在期間に合う制度を確認する",
+        description: "3か月以上滞在する日本人は在留届の対象です。短期滞在は外務省のたびレジを確認します。",
+        links: [
+          {
+            label: "外務省 豪州での在留届案内",
+            url: "https://www.anzen.mofa.go.jp/m/mbconsideration_071.html"
+          }
+        ]
+      },
+      {
+        title: "在留届をオンラインで届け出る",
+        description: "公式のORRnetを開き、パスポート情報、滞在住所、緊急連絡先など画面が求める項目を入力します。",
+        links: [
+          {
+            label: "外務省 ORRnetを開く",
+            url: "https://www.ezairyu.mofa.go.jp/RRnet/index.html"
+          }
+        ]
+      },
+      {
+        title: "受付後、変更・帰国時に更新する",
+        description: "提出結果を控え、転居・帰国を含め、該当する変更は公式の案内に従います。",
+        links: [
+          {
+            label: "ORRnetの手続き",
+            url: "https://www.ezairyu.mofa.go.jp/RRnet/index.html"
+          }
+        ]
+      }
     ],
     tips: [
       "在留届は渡航先が決まったら早めに提出。出発3か月前から出せます。",
@@ -711,8 +846,20 @@ export const arrivalArticles: Article[] = [
       },
     ],
     relatedSlugs: ["arrival-checklist", "first-30-days-roadmap", "insurance-guide", "essential-australia-apps"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "用意するもの",
+          items: [
+            "パスポート、現地住所・連絡先、緊急連絡先など",
+            "3か月以上の滞在予定かを確認"
+          ]
+        }
+      ],
+      completion: "提出控えを保管し、住所変更や帰国時に同じ公式窓口から記録を更新できるようにします。"
+    },
   },
 
   {

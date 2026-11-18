@@ -134,11 +134,38 @@ export const licenseArticles: Article[] = [
       { label: "確認先", value: "滞在州の公式『overseas licence』ページ" },
     ],
     steps: [
-      { title: "切替が必要か確認", description: "永住・居住状況の変化で切替義務が生じるか確認します。" },
-      { title: "滞在州の手順を調べる", description: "州の交通当局の海外免許切替ページで要件を確認します。" },
-      { title: "必要書類を揃える", description: "本人確認・在留資格・日本の免許＋英訳などを準備します。" },
-      { title: "窓口を予約する", description: "多くが予約制。オンラインで予約と書類確認をします。" },
-      { title: "窓口で手続き", description: "書類提出・（必要なら）試験・写真撮影・手数料を行います。" },
+      {
+        title: "州の切り替え要件を確認する",
+        description: "滞在資格と居住条件、現在の日本免許、切り替え期限、テストの要否を州の窓口で調べます。",
+        links: [
+          {
+            label: "NSW州 海外免許の切り替え",
+            url: "https://www.service.nsw.gov.au/transaction/transfer-an-overseas-driver-licence"
+          },
+          {
+            label: "VIC州 海外免許の切り替え",
+            url: "https://www.vicroads.vic.gov.au/licences/convert-your-licence/convert-overseas-licence"
+          },
+          {
+            label: "他州の規則の確認先",
+            url: "/guides/japanese-licence-state-rules"
+          }
+        ]
+      },
+      {
+        title: "書類をそろえ来庁の準備をする",
+        description: "窓口が指定する原本、住所証明、翻訳が必要な場合は認められる翻訳を用意します。予約と検査の要否も確認。",
+        links: [
+          {
+            label: "免許の翻訳を用意",
+            url: "/guides/naati-licence-translation"
+          }
+        ]
+      },
+      {
+        title: "窓口で申請し交付条件を確認する",
+        description: "当局で本人確認・必要な試験を済ませ、免許交付後は区分、更新期限、運転時に携行する証明を確認します。"
+      }
     ],
     tips: [
       "切替時に日本の免許証の提出・保管を求められる場合があります。返却の有無を事前に確認しましょう。",
@@ -168,8 +195,20 @@ export const licenseArticles: Article[] = [
       "digital-driver-licence",
       "cars-guide",
     ],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "準備する書類",
+          items: [
+            "日本の現行免許、パスポート、現地住所、州指定の本人確認書類",
+            "必要と言われた場合の翻訳・免許履歴、予約、費用"
+          ]
+        }
+      ],
+      completion: "現地免許または正式の交付書類を受け取り、運転できる車両区分・条件を確認したら完了です。"
+    },
   },
 
   {

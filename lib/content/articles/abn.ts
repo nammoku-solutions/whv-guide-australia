@@ -8,20 +8,77 @@ export const abnArticles: Article[] = [
     category: "abn",
     description: "Uber EatsやDoorDashなどのギグワークに必要なABNを、ABR公式サイトから無料で取得する手順を解説します。",
     content: [
-      "ABN（Australian Business Number）は個人事業主（Sole Trader）として働くための事業者番号です。Uber Eats・DoorDash・一部の建設現場などはABNが必要です。",
-      "ABRの公式サイトから無料で申請でき、多くは即時〜数日で発行されます。ABNでの収入は自分で確定申告（Tax Return）する必要があり、経費や走行記録の管理が重要です。",
+      "ABNは事業を識別する11桁の番号です。実際に事業を行う、または始める場合に資格を確認し、ABRの公式申請を使います。雇用として行う仕事をABN名義に変えるだけでは事業になりません。",
+      "申請は無料です。すぐ発行される場合と追加確認が必要な場合があります。ABNは就労資格の代わりではなく、GSTや所得申告の要件も別に判断します。"
     ],
     keyFacts: [
-      { label: "費用", value: "無料（ABR公式サイト）" },
-      { label: "申請先", value: "Australian Business Register（ABR）" },
-      { label: "発行期間", value: "即時〜数日" },
-      { label: "区分", value: "Sole Trader（個人事業主）" },
+      {
+        label: "費用",
+        "value": "無料（ABR公式サイト）"
+      },
+      {
+        label: "申請先",
+        "value": "Australian Business Register（ABR）"
+      },
+      {
+        label: "発行期間",
+        "value": "即時発行または審査。受付番号を保存"
+      },
+      {
+        label: "区分",
+        "value": "Sole Trader（個人事業主）"
+      }
     ],
     steps: [
-      { title: "ABR公式サイトで申請開始", description: "Sole Traderとして新規ABN申請を選びます。" },
-      { title: "本人・事業情報を入力", description: "TFN、氏名、事業内容（デリバリー等）を入力します。" },
-      { title: "業種コードを選択", description: "フードデリバリーなど該当する業種を選びます。" },
-      { title: "ABNを受け取る", description: "発行されたABN番号を保管し、各アプリに登録します。" },
+      {
+        title: "ABNを申請できるか確認する",
+        description: "個人で事業を行うならSole traderの資格を確認します。実態が従業員の仕事なら、名目だけ請負に変えないでください。",
+        links: [
+          {
+            label: "ABR ABNの資格",
+            url: "https://www.abr.gov.au/business-super-funds-charities/applying-abn/abn-entitlement"
+          },
+          {
+            label: "従業員と請負の違い",
+            url: "/guides/contractor-vs-employee"
+          }
+        ]
+      },
+      {
+        title: "ABRから無料で申請する",
+        description: "公式ページにある申請ボタンから進み、個人事業を選びます。開始日、連絡先、事業場所と主な活動を実態に沿って入力。",
+        links: [
+          {
+            label: "ABRの公式申請を開く",
+            url: "https://www.abr.gov.au/business-super-funds-charities/applying-abn"
+          },
+          {
+            label: "ABR 入力前に必要な情報",
+            url: "https://www.abr.gov.au/business-super-funds-charities/applying-abn/what-you-need-your-abn-application"
+          }
+        ]
+      },
+      {
+        title: "結果・受付番号を保存する",
+        description: "すぐ番号が表示されれば控えます。審査に回った場合は受付番号を保存し、ABRからの依頼を確認します。",
+        checklist: [
+          "番号の発行と就労資格は別。アプリの登録にもそれぞれの承認が必要。"
+        ]
+      },
+      {
+        title: "売上・経費とGSTを分けて確認する",
+        description: "取引日、入金元、金額、業務経費の領収書を保管します。GST登録が必要かは事業内容と売上基準で判断してください。",
+        links: [
+          {
+            label: "配達とGST・経費",
+            url: "/guides/delivery-abn-tax"
+          },
+          {
+            label: "GST登録の要否",
+            url: "/guides/gst-registration-basics"
+          }
+        ]
+      }
     ],
     tips: [
       "ABN収入は源泉徴収されないため、税金分（目安として収入の一部）を別口座に取り分けておくと確定申告で慌てません。",
@@ -39,8 +96,26 @@ export const abnArticles: Article[] = [
       { label: "Australian Business Register", url: "https://www.abr.gov.au/" },
     ],
     relatedSlugs: ["tax-return-guide", "uber-eats-guide", "doordash-guide"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申請情報",
+          items: [
+            "本人の氏名、連絡先、事業住所、事業開始日と主な事業活動",
+            "本人確認に使うTFNなど、ABRが案内する識別情報"
+          ]
+        },
+        {
+          title: "雇用との区別",
+          items: [
+            "実際に事業を行う・始める根拠。雇用として行う仕事のためだけなら、相手から求められてもABNの対象とは限らない"
+          ]
+        }
+      ],
+      completion: "ABNまたは審査用の受付番号を保存。登録が確認できたら、請求・経費・入金の記録を開始します。"
+    },
   },
 
   {
@@ -54,11 +129,11 @@ export const abnArticles: Article[] = [
     description:
       "ABN（事業者番号）が必要な人と不要な人を整理。雇われて働く人はTFN、Uber Eats等の配達やフリーランスなど『事業』として働く人はABN。雇用なのにABN取得を求められる違法なケースの見分け方も解説します。",
     content: [
-      "結論から言うと、ABN（Australian Business Number）が必要なのは『個人事業主（Sole Trader）として事業を営む人』だけです。カフェ・レストラン・農場・小売などで雇われて働く（従業員）場合はABNは不要で、必要なのはTFN（納税者番号）です。ABNは事業者としての登録番号であり、雇われて働くこととは根本的に別物です。",
+      "ABNは企業・事業活動を識別する番号です。ワーホリで個人として申請するなら、個人事業を行う、または開始するための活動があるかをABRで確認します。従業員として働くためのABNは不要です。",
       "ABNが必要な代表例：Uber Eats・DoorDashなどのフードデリバリー、Airtaskerなどの単発請負、Webデザイン・IT・翻訳などのフリーランス、自分の裁量で複数のクライアントから仕事を受ける請負作業。これらは『自分の事業として、自分のリスクで、成果に対して報酬を得る』働き方のため、ABNを取得し、収入を自分で確定申告（Tax Return）します。源泉徴収されないため、税金分を自分で取り分ける必要があります。",
-      "ABNが不要な代表例：時給や週給で雇われ、シフトに入り、雇用主の指示で働く通常の仕事。この場合は雇用主が源泉徴収し、Super（12%）も積み立て、Payslipが発行されます。ここで働くのに必要なのはTFNだけで、ABNを取る必要はありません。",
+      "従業員として雇われる仕事では、雇用主が源泉徴収し、給与明細を発行します。対象となる場合はSuperも支払われます。TFNは税務上の番号で、就労資格の代わりではありません。",
       "重要な注意点：本来は従業員として雇うべき仕事なのに、雇用主が『ABNを取ってきて』と求めてくるケースがあります。これはSuper・有給・最低賃金・労災などの雇用主負担を回避するための違法な手法（Sham Contracting／偽装請負）である可能性があります。シフトに入り、指示どおり働き、時給で支払われる実態なら、それは雇用でありABNは不要です。求められても鵜呑みにせず、実態を確認してください（詳細は『ContractorとEmployeeの違い』の記事参照）。",
-      "迷ったときの判断軸：①仕事の成果に対して報酬を得ているか（＝事業）／時間や指示に対してか（＝雇用）、②自分の道具・車で、自分のリスクで働くか、③複数のクライアントに自由にサービスを提供できるか。これらが『はい』なら事業（ABN）寄り、雇用主の管理下で決まった時間働くなら雇用（TFN）です。1つの仕事で両方が混在することは通常ありません。",
+      "迷ったときの判断軸：①仕事の成果に対して報酬を得ているか（＝事業）／時間や指示に対してか（＝雇用）、②自分の道具・車で、自分のリスクで働くか、③複数のクライアントに自由にサービスを提供できるか。これらが『はい』なら事業（ABN）寄り、雇用主の管理下で決まった時間働くなら雇用（TFN）です。1つの仕事で両方が混在することは通常ありません。"
     ],
     keyFacts: [
       { label: "ABNが必要", value: "Sole Traderとして事業を営む人（配達・フリーランス等）" },
@@ -77,15 +152,13 @@ export const abnArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "TFNとABNの両方を持てますか？",
-        answer:
-          "持てます。昼はカフェで雇われて働き（TFN）、空いた時間にUber Eatsで配達する（ABN）といった併用は一般的です。その場合、雇用の給与と事業の収入を両方、年度末のタックスリターンで合算して申告します。",
+        "question": "TFNとABNの両方を持てますか？",
+        "answer": "持てます。昼はカフェで雇われて働き（TFN）、空いた時間にUber Eatsで配達する（ABN）といった併用は一般的です。その場合、雇用の給与と事業の収入を両方、年度末のタックスリターンで合算して申告します。"
       },
       {
-        question: "ABNを取ると税金は安くなりますか？",
-        answer:
-          "いいえ。ABN収入も同じ所得として課税され、むしろ源泉徴収がないため自分で納税資金を用意する必要があります。Superも付きません。『節税になる』という理由でのABN取得の勧誘には注意してください。",
-      },
+        "question": "ABNを取ると税金は安くなりますか？",
+        "answer": "ABNを取るだけで節税にはなりません。給与と事業所得の扱いは異なり、Superも契約の実態によっては対象になります。仕事の実態とABR・ATOの要件を確認してください。"
+      }
     ],
     sources: [
       { label: "ABR - Applying for an ABN", url: "https://www.abr.gov.au/business-super-funds-charities/applying-abn" },
@@ -104,7 +177,7 @@ export const abnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["abn-guide", "contractor-vs-employee", "sole-trader-basics", "tfn-guide", "uber-eats-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -386,10 +459,36 @@ export const abnArticles: Article[] = [
       { label: "登録後", value: "Tax invoice発行・GST上乗せ・BAS申告が必要" },
     ],
     steps: [
-      { title: "自分の区分を確認", description: "売上見込みと、乗客輸送か配達のみかを確認します。" },
-      { title: "ABNを用意", description: "GST登録の前提としてABNが必要です。" },
-      { title: "登録する", description: "Online services for business・電話・税理士経由で登録します。" },
-      { title: "運用を切り替える", description: "Tax invoice発行・GST管理・BAS提出を始めます。" },
+      {
+        title: "GST登録が必要か判断する",
+        description: "GST turnoverの定義と一般のしきい値、事業内容の例外をATOで確認します。",
+        links: [
+          {
+            label: "ATO GST登録の条件・申請",
+            url: "https://www.ato.gov.au/businesses-and-organisations/gst-excise-and-indirect-taxes/gst/registering-for-gst"
+          }
+        ]
+      },
+      {
+        title: "対象なら公式窓口で登録する",
+        description: "ATOが認める登録方法を選び、ABNと登録開始日を入力して結果を保管します。",
+        links: [
+          {
+            label: "ABNを確認する",
+            url: "/guides/abn-guide"
+          }
+        ]
+      },
+      {
+        title: "登録後の書類と報告を整える",
+        description: "GST対象・対象外の売上を分け、発行した請求書と受領した領収書を記録し、BASの提出・納付期限を確認します。",
+        links: [
+          {
+            label: "BASの手順",
+            url: "/guides/bas-basics"
+          }
+        ]
+      }
     ],
     tips: [
       "『GST売上』は利益ではなく総売上（gross）で判断します。経費を引く前の金額で75,000 AUDを超えるかを見ます。",
@@ -418,8 +517,20 @@ export const abnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["abn-guide", "sole-trader-basics", "invoice-template-australia", "bas-basics", "delivery-abn-tax"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "確認する書類",
+          items: [
+            "ABN、開始日、契約・売上、今後を含むGST turnoverの見込み",
+            "事業内容。乗客を運ぶライドソーシングは一般のしきい値とは別扱い"
+          ]
+        }
+      ],
+      completion: "該当する場合は登録日を確認し、請求書・GST記録とBASの提出スケジュールをセットします。"
+    },
   },
 
   {
@@ -435,7 +546,7 @@ export const abnArticles: Article[] = [
     content: [
       "BAS（Business Activity Statement、事業活動報告書）は、GST登録した事業者がATOに提出する申告書です。結論として、BASはGST登録している人だけが提出するもので、GST未登録のワーホリには関係ありません。GST登録している場合は、集めたGSTと支払ったGST（クレジット）を精算して申告・納付します。",
       "何を報告するか：BASでは主にGST（売上で受け取ったGSTと、仕入れ・経費で支払ったGSTの差額）を報告します。事業によってはPAYG分割払い（所得税の前払い）などが含まれることもあります。受け取ったGSTの方が多ければ差額をATOに納付し、支払ったGSTの方が多ければ還付されます。",
-      "提出頻度：多くの小規模事業者は四半期ごとに提出します（GST売上が大きい場合は毎月）。提出と納付には期限があり、通常は各四半期の終了後28日程度です。期限を過ぎるとペナルティや利息が発生することがあるため、締切管理が重要です。",
+      "提出頻度：多くの小規模事業者は四半期ごとに提出します（GST売上が大きい場合は毎月）。提出と納付には期限があり、四半期報告でも対象期間によって異なります。12月四半期の通常期限は翌年2月28日です。届いたBASとATOの案内で自分の期限を確認してください。期限を過ぎるとペナルティや利息が発生することがあるため、締切管理が重要です。",
       "提出方法：ATOのOnline services（myGov連携／Online services for business）、会計ソフト、または登録税理士・BAS agentを通じて提出できます。GSTの計算や記帳に不安がある場合は、BAS agentや税理士に依頼すると誤りを防げます。ワーホリで短期間だけGST登録するようなケースでは、専門家に任せるのが安全です。",
       "ワーホリの実務：多くのワーホリはGST未登録のためBASは不要ですが、Uber等の乗客輸送を行う場合はGST登録が必須となり、BASの提出義務が生じます。記帳（売上・経費・GST）を日頃から整えておけば、BASの作成が大幅に楽になります。",
     ],
@@ -447,10 +558,36 @@ export const abnArticles: Article[] = [
       { label: "遅延", value: "期限超過はペナルティ・利息の対象" },
     ],
     steps: [
-      { title: "GST登録の有無を確認", description: "登録していなければBASは不要です。" },
-      { title: "記帳を整える", description: "売上・経費・GSTを記録しておきます。" },
-      { title: "BASを作成", description: "受取GSTと支払GSTを集計します。" },
-      { title: "期限内に提出・納付", description: "四半期末後の期限までに提出し、差額を納付または還付を受けます。" },
+      {
+        title: "対象期間と期限を開く",
+        description: "ATOから案内された報告周期とBASに表示される日付を確認します。四半期ごとでもすべてが同じ日数ではありません。",
+        links: [
+          {
+            label: "ATO BAS提出と納付の期限",
+            url: "https://www.ato.gov.au/businesses-and-organisations/preparing-lodging-and-paying/business-activity-statements-bas/due-dates-for-lodging-and-paying-your-bas"
+          }
+        ]
+      },
+      {
+        title: "対象の取引と税額を照合する",
+        description: "行ごとの売上・経費を領収書と照合し、ATOが指定する欄に入力。GST登録・申告先の情報を確認します。",
+        links: [
+          {
+            label: "GST登録の考え方",
+            url: "/guides/gst-registration-basics"
+          }
+        ]
+      },
+      {
+        title: "提出し納付の結果を確認する",
+        description: "公式の連携先または登録代理人から提出し、送信の控えを保管。納付または還付の通知を確認します。",
+        links: [
+          {
+            label: "myGovにログイン",
+            url: "https://my.gov.au/"
+          }
+        ]
+      }
     ],
     tips: [
       "会計ソフトを使うと、記帳からBASの数字が自動集計され、提出が楽になります。",
@@ -479,7 +616,19 @@ export const abnArticles: Article[] = [
       },
     ],
     relatedSlugs: ["gst-registration-basics", "abn-guide", "sole-trader-basics", "tax-agent-guide", "abn-record-keeping"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申告前の記録",
+          items: [
+            "対象期間の売上・経費・税額・領収書、連携済みのアカウント",
+            "ATOから通知された報告周期と提出・納付期限"
+          ]
+        }
+      ],
+      completion: "提出控えを保存し、納付が必要なら期日と受領状況を確認します。"
+    },
   },
 ];

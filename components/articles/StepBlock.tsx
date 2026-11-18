@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ProcedureLinks } from "./ProcedureLinks";
 import type { ArticleStep } from "@/types/article";
 
 type StepBlockProps = {
@@ -15,6 +16,13 @@ export function StepBlock({ step, index }: StepBlockProps) {
       <p className="text-xs font-bold uppercase tracking-wide text-sky-700">Step {index + 1}</p>
       <h3 className="mt-1 text-lg font-semibold text-slate-900">{step.title}</h3>
       <p className="mt-2 text-sm text-slate-700">{step.description}</p>
+
+      {step.checklist?.length ? (
+        <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-slate-800">
+          {step.checklist.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      ) : null}
+      {step.links?.length ? <ProcedureLinks links={step.links} /> : null}
 
       {step.image ? (
         <figure className="mt-3">

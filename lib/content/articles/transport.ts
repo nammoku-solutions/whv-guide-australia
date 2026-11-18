@@ -189,12 +189,36 @@ export const transportArticles: Article[] = [
       { label: "実施タイミング", value: "支払い前（必須）" },
     ],
     steps: [
-      { title: "VINを入手", description: "フロントガラス下・ドア開口部・エンジンルーム・登録書類でVINを確認します。" },
-      { title: "VINの一致を確認", description: "売主が言うVINと車体・書類が一致しているか照合します。" },
-      { title: "公式サイトで照会", description: "ppsr.gov.au のQuickVIN Searchにアクセスし、VINを入力します。" },
-      { title: "$2を決済", description: "カードで$2を支払い、その場で証明書を発行します。" },
-      { title: "結果を確認", description: "残債・盗難・全損の記録がないかを読み取ります。" },
-      { title: "証明書を保存", description: "PDF/メールを保管し、購入判断とトラブル時の証拠にします。" },
+      {
+        title: "車体番号を照合する",
+        description: "出品者の申告だけでなく、実車に刻印された番号と登録書類を比べます。",
+        links: [
+          {
+            label: "中古車の現車確認",
+            url: "/guides/used-car-inspection-checklist"
+          }
+        ]
+      },
+      {
+        title: "公式PPSRで照会する",
+        description: "政府の中古車照会を開き、車体番号を転記して決済します。第三者の高額な代行サイトと区別してください。",
+        links: [
+          {
+            label: "政府公式のPPSR中古車照会",
+            url: "https://www.ppsr.gov.au/carcheck"
+          }
+        ]
+      },
+      {
+        title: "証明書を保存して判断する",
+        description: "検索証明書の車体番号と、担保・盗難・全損に関する確認結果を読みます。問題や判断できない記載があれば支払い・契約を止め、解消を確認。",
+        links: [
+          {
+            label: "州ごとの登録・譲渡の確認",
+            url: "/guides/vehicle-transfer-by-state"
+          }
+        ]
+      }
     ],
     tips: [
       "必ず自分でVINを入力して照会しましょう。売主が見せる証明書は別の車のものである可能性があります。",
@@ -239,8 +263,20 @@ export const transportArticles: Article[] = [
       "vehicle-transfer-by-state",
       "car-insurance-comparison",
     ],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "購入前に必要",
+          items: [
+            "実車で見たVINまたは該当する車体番号、車両登録書類、小額を決済できるカード",
+            "照会結果を保存する場所。支払い・契約前に照会する"
+          ]
+        }
+      ],
+      completion: "購入予定車の番号と検索証明書の番号が一致し、証明書を手元に保存。PPSRは車両の点検や州の登録確認を代替しません。"
+    },
   },
 
   {

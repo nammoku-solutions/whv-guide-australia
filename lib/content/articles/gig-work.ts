@@ -44,15 +44,13 @@ export const gigWorkArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "ワーホリビザでギグワークをしても大丈夫ですか？",
-        answer:
-          "個人事業主（sole trader）としての就労はワーホリビザで可能です。同一雇用主6か月ルールは『雇用』に関する制限のため、複数のプラットフォームを掛け持ちすること自体に制限はありません。ただしビザ条件は変わりうるため、必ず移民局（Home Affairs）で最新を確認してください。",
+        "question": "ワーホリビザでギグワークをしても大丈夫ですか？",
+        "answer": "Condition 8547の6か月ルールは、自営業にも適用され得ます。Home Affairsは自営業の雇用主をサービスの最終利用先（end user）として扱います。単独の提供先に6か月を超えて継続する場合は、例外または書面による許可を確認してください。アプリへの複数登録だけで例外になるとは限りません。"
       },
       {
-        question: "どのサービスが一番稼げますか？",
-        answer:
-          "エリア・時間帯・移動手段・稼働量によって変わるため、一概には言えません。収入は保証されず、経費を差し引いた手取りで考える必要があります。まずは掛け持ちで試し、自分の条件に合うものを見極めるのが現実的です。",
-      },
+        "question": "どのサービスが一番稼げますか？",
+        "answer": "エリア・時間帯・移動手段・稼働量によって変わるため、一概には言えません。収入は保証されず、経費を差し引いた手取りで考える必要があります。まずは掛け持ちで試し、自分の条件に合うものを見極めるのが現実的です。"
+      }
     ],
     verifiedAt: "2026-08-02",
     officialSources: [
@@ -61,8 +59,14 @@ export const gigWorkArticles: Article[] = [
       { label: "Fair Work Ombudsman｜Independent contractors（請負と regulated workers）", url: "https://www.fairwork.gov.au/find-help-for/independent-contractors", accessedAt: "2026-08-02" },
     ],
     relatedSlugs: ["delivery-abn-tax", "delivery-insurance", "delivery-vehicle-comparison", "uber-eats-guide", "doordash-guide", "abn-guide"],
-    updatedAt: "2026-08-02",
+    updatedAt: "2026-11-18",
     published: true,
+    sources: [
+      {
+        label: "Home Affairs｜自営業とビザ条件",
+        url: "https://immi.homeaffairs.gov.au/supporting/Pages/Work/6-month-work-limitation.aspx"
+      },
+    ],
   },
 
   {
@@ -468,11 +472,34 @@ export const gigWorkArticles: Article[] = [
       { label: "備え", value: "複数アプリ併用で収入源を分散" },
     ],
     steps: [
-      { title: "規約を確認する", description: "各プラットフォームの規約と停止の基準・手続きを事前に読んでおきます。" },
-      { title: "書類を最新に保つ", description: "本人確認・ビザ・就労資格の情報を期限切れにしないよう更新します。" },
-      { title: "丁寧に稼働する", description: "注文の完了、正しいキャンセル、礼儀、商品の適切な取り扱いを徹底します。" },
-      { title: "証拠を残す", description: "配達履歴・チャット・写真・サポートのやり取りを必要な範囲で保管します。" },
-      { title: "停止時は冷静に申し立てる", description: "事実を時系列で整理し、証拠を添えて異議申立て（appeal）を行います。" },
+      {
+        title: "停止の種類と通知を読む",
+        description: "一時的な書類不備か、利用停止の決定かを確認します。理由、日時、返信期限を保存。"
+      },
+      {
+        title: "公式アプリ内から問い合わせる",
+        description: "通知で案内された窓口から、注文番号・事実の時系列・求めている対応を短く説明します。",
+        links: [
+          {
+            label: "Uber アカウント状態・サポート",
+            url: "https://help.uber.com/en-AU/driving-and-delivering/article/account-activation-status?nodeId=abe81ce7-64a9-44a6-9e1c-ec3589e386f7"
+          },
+          {
+            label: "DoorDash Australia Dasher公式窓口",
+            url: "https://dasher.doordash.com/en-au"
+          }
+        ]
+      },
+      {
+        title: "不服申立ての適用範囲を確認する",
+        description: "対象のemployee-like workerは、条件を満たせばFair Work Commissionの救済手続きが使えることがあります。期限と資格は決定通知と公式情報で早めに確認します。",
+        links: [
+          {
+            label: "Fair Work Commission 規制対象の労働者",
+            url: "https://www.fwc.gov.au/job-loss-or-dismissal/unfair-deactivation-or-termination-regulated-workers/unfair-deactivation"
+          }
+        ]
+      }
     ],
     tips: [
       "アカウントの貸し借り・なりすましは重大な違反とされることが多く、一発停止につながりえます。絶対に避けましょう。",
@@ -502,8 +529,20 @@ export const gigWorkArticles: Article[] = [
       { label: "business.gov.au｜Sharing economy（ギグワークの権利と責任）", url: "https://business.gov.au/people/contractors/sharing-economy", accessedAt: "2026-08-02" },
     ],
     relatedSlugs: ["gig-work-comparison", "delivery-abn-tax", "uber-eats-guide", "doordash-guide", "delivery-insurance"],
-    updatedAt: "2026-08-02",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "申立て前に用意",
+          items: [
+            "停止通知、対象期間、注文ID、関連するやり取り、提出した書類の状態",
+            "通知にある期限とアプリ内の連絡先。顧客の個人情報は公開しない"
+          ]
+        }
+      ],
+      completion: "受付番号と期限を控え、公式回答が来たら追加書類や今後の手段を確認します。"
+    },
   },
 
   {
@@ -613,15 +652,13 @@ export const gigWorkArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "ワーホリビザでフリーランスの仕事をしても大丈夫ですか？",
-        answer:
-          "個人事業主（sole trader）としての就労はワーホリビザで可能です。同一雇用主6か月ルールは『雇用』に関する制限で、複数のクライアントから請負で仕事を受けること自体に制限はありません。ただしビザ条件は変わりうるため、移民局（Home Affairs）で最新を確認してください。",
+        "question": "ワーホリビザでフリーランスの仕事をしても大丈夫ですか？",
+        "answer": "Condition 8547の6か月ルールは、自営業にも適用され得ます。Home Affairsは自営業の雇用主をサービスの最終利用先（end user）として扱います。単独の提供先に6か月を超えて継続する場合は、例外または書面による許可を確認してください。アプリへの複数登録だけで例外になるとは限りません。"
       },
       {
-        question: "海外のクライアントから受け取った報酬も申告が必要ですか？",
-        answer:
-          "豪州の税務上の居住者であれば、原則として海外から得た収入も申告の対象になりえますが、扱いは居住性や租税条約、個人の状況で変わります。二重課税の調整を含め判断が難しい領域なので、登録税理士や必要に応じて両国の専門家に相談してください。",
-      },
+        "question": "海外のクライアントから受け取った報酬も申告が必要ですか？",
+        "answer": "豪州の税務上の居住者であれば、原則として海外から得た収入も申告の対象になりえますが、扱いは居住性や租税条約、個人の状況で変わります。二重課税の調整を含め判断が難しい領域なので、登録税理士や必要に応じて両国の専門家に相談してください。"
+      }
     ],
     verifiedAt: "2026-08-02",
     officialSources: [
@@ -630,8 +667,14 @@ export const gigWorkArticles: Article[] = [
       { label: "business.gov.au｜Invoicing and payments（請求と支払い）", url: "https://business.gov.au/finance/payments-and-invoicing", accessedAt: "2026-08-02" },
     ],
     relatedSlugs: ["gig-work-comparison", "delivery-abn-tax", "abn-guide", "tax-return-guide", "super-guide"],
-    updatedAt: "2026-08-02",
+    updatedAt: "2026-11-18",
     published: true,
+    sources: [
+      {
+        label: "Home Affairs｜自営業とビザ条件",
+        url: "https://immi.homeaffairs.gov.au/supporting/Pages/Work/6-month-work-limitation.aspx"
+      },
+    ],
   },
 
   {

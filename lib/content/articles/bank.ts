@@ -19,10 +19,37 @@ export const bankArticles: Article[] = [
       { label: "カード", value: "デビットカード（タッチ決済）が即日〜数日で利用可" },
     ],
     steps: [
-      { title: "銀行を選ぶ", description: "アプリの使いやすさ・口座維持費・ATM網で比較します。" },
-      { title: "渡航前にオンライン申込", description: "多くの銀行は到着前に口座開設の事前申込が可能です。" },
-      { title: "到着後に本人確認", description: "支店またはアプリでパスポートを提示し口座を有効化します。" },
-      { title: "デビットカードを受け取る", description: "カードを受け取り、給与振込先・決済に使います。" },
+      {
+        title: "口座の条件を比較する",
+        description: "月額・免除条件、カード配送、渡航前申込の可否、本人確認の方法を選んだ銀行の公式情報で確認します。",
+        links: [
+          {
+            label: "主要銀行を比較",
+            url: "/guides/bank-comparison"
+          },
+          {
+            label: "CommBank 渡航者向け案内",
+            url: "https://www.commbank.com.au/banking/moving-to-australia.html"
+          }
+        ]
+      },
+      {
+        title: "銀行の公式サイトまたは支店で申し込む",
+        description: "選んだ口座の申請画面を開き、本人情報と住所を記入します。渡航前申請に対応していなければ到着後に申請します。",
+        checklist: [
+          "検索広告の先でパスワード等を入力する前に、銀行の公式ドメインを確認。"
+        ]
+      },
+      {
+        title: "本人確認とカード設定を完了する",
+        description: "必要なら旅券などを持って支店へ。アプリへログインし、カードの有効化、連絡先、振込口座情報を確認します。",
+        links: [
+          {
+            label: "銀行口座の詐欺対策",
+            url: "/guides/bank-scam-security"
+          }
+        ]
+      }
     ],
     tips: [
       "TFNは後から口座に登録できます。未登録だと利息に高い税率がかかるため、届いたら登録を。",
@@ -40,8 +67,20 @@ export const bankArticles: Article[] = [
       { label: "Commonwealth Bank（移住者向け口座）", url: "https://www.commbank.com.au/banking/moving-to-australia.html" },
     ],
     relatedSlugs: ["money-transfer-wise", "tfn-guide", "arrival-checklist", "proof-of-address", "bank-scam-security"],
-    updatedAt: "2026-06-10",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "銀行が求める本人確認",
+          items: [
+            "パスポート、連絡先、住所と開始予定日。ビザ情報や追加の身分証は銀行の指示に従う",
+            "税務上の居住地・納税識別番号など、求められる自己申告情報"
+          ]
+        }
+      ],
+      completion: "口座の本人確認が完了し、アプリにログインして自分のBSB・口座番号を確認できたら、給与受取先として用意完了です。"
+    },
   },
 
   {

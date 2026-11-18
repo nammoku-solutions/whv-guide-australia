@@ -19,12 +19,30 @@ export const visaArticles: Article[] = [
       "都市選びも滞在の満足度を大きく左右します。仕事の多さ・家賃・気候・日本人コミュニティの規模は都市ごとに大きく異なります。シティで仕事とネットワークを重視するか、地方でセカンドビザ取得と貯金を優先するか、自分の目的に合わせてエリアガイドを参考に拠点を決めましょう。",
     ],
     keyFacts: [
-      { label: "対象年齢", value: "申請時に18〜30歳（日本国籍は30歳まで）" },
-      { label: "滞在期間", value: "1回の入国で最長12か月。セカンド/サードで延長可" },
-      { label: "ビザ申請料", value: "840 AUD（2025年7月改定。ファースト）" },
-      { label: "セカンド/サード申請料", value: "各1,000 AUD" },
-      { label: "必要資金の目安", value: "5,000 AUD以上＋帰国用航空券相当" },
-      { label: "同一雇用主の就労", value: "原則6か月まで（例外あり）" },
+      {
+        label: "対象年齢",
+        "value": "申請時に18〜30歳（日本国籍は30歳まで）"
+      },
+      {
+        label: "滞在期間",
+        "value": "1回の入国で最長12か月。セカンド/サードで延長可"
+      },
+      {
+        label: "ビザ申請料",
+        "value": "840 AUD（ファーストの一般枠。最新額は公式で確認）"
+      },
+      {
+        label: "セカンド/サード申請料",
+        "value": "各1,000 AUD"
+      },
+      {
+        label: "必要資金の目安",
+        "value": "5,000 AUD以上＋帰国用航空券相当"
+      },
+      {
+        label: "同一雇用主の就労",
+        "value": "原則6か月まで（例外あり）"
+      }
     ],
     steps: [
       {
@@ -71,15 +89,27 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
+      {
+        label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）",
+        url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx"
+      },
       {
         label: "Department of Home Affairs（ビザ公式）",
-        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417"
       },
+      {
+        label: "Home Affairs｜申請料の公式見積もり",
+        url: "https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator"
+      },
+      {
+        label: "Home Affairs｜審査期間の案内",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times"
+      },
+      
     ],
     warnings: ["ビザ制度・申請料・必要資金は予告なく変更されます。申請前に必ず公式情報を確認してください。"],
     relatedSlugs: ["visa-application", "arrival-checklist", "money-transfer-wise", "working-holiday-budget", "working-holiday-timeline", "first-30-days-roadmap"],
-    updatedAt: "2026-11-22",
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -91,50 +121,95 @@ export const visaArticles: Article[] = [
     description:
       "サブクラス417のオンライン申請を、ImmiAccount作成から許可まで具体的に解説。つまずきやすいポイントもカバー。",
     content: [
-      "ワーホリビザはすべてオンライン（ImmiAccount）で完結します。代行業者に頼まなくても自分で申請可能です。",
-      "申請後はステータスがメールで通知されます。多くの場合は数日〜数週間で「Visa Grant Notification（許可通知）」が届きます。許可後はパスポートにビザが電子的に紐づくため、ビザラベルの貼付は不要です。",
-      "申請前に準備しておくとスムーズなものは、有効なパスポート、常用するメールアドレス、支払い用のクレジットカード、そして残高証明（求められた場合に備えて）です。パスポートの有効期限は滞在予定期間より長く残っていることが望ましく、残り1年を切っている場合は申請前に更新しておくと安心です。",
-      "フォーム入力では、氏名・生年月日・パスポート番号をパスポート記載どおり正確に入力することが重要です。スペルミスや誤入力は、入国時や口座開設・就労時の本人確認でトラブルの原因になります。健康・経歴に関する質問（Character・Health）には正直に回答してください。虚偽申告は不許可や将来のビザ取得への悪影響につながります。",
-      "申請から入国までの流れも把握しておきましょう。ビザが許可されると、通常は許可日から12か月以内に初回入国する必要があります。この「初回入国期限（First entry date）」は許可通知に明記されるため、航空券の手配前に必ず確認してください。入国後、1年間の滞在カウントが始まります。",
-      "処理期間は時期によって変動します。繁忙期（年度替わりや長期休暇前）は通常より時間がかかることがあるため、渡航予定が決まっているなら出発の2〜3か月前には申請を済ませておくと余裕を持てます。",
+      "日本のパスポートで初めてサブクラス417を申請する場合は、Home AffairsのFirst Working Holiday visaページで資格と書類を確認し、ImmiAccountから手続きします。初回とセカンド・サードの申請フォームは別です。",
+      "申請前にパスポート、滞在資金と出国費用の証拠、支払手段を準備します。書類は申請画面と公式の書類一覧に沿って提出し、求められた場合は英訳や追加情報も用意します。",
+      "Home Affairsは多くのワーホリ申請の処理期間を平均約3か月と見込んでいます。これは個別の期限ではなく、直近の完了案件の処理時間とも別です。結果が出るまで航空券などの確約は避けてください。",
+      "許可後は旅券にビザが電子的に紐づきます。初回入国期限は許可通知の記載が優先です。許可通知と申請の受付は別なので、出発前に必ず許可と旅券情報を確認してください。"
     ],
     keyFacts: [
-      { label: "申請方法", value: "ImmiAccount（オンライン）" },
-      { label: "申請料（ファースト）", value: "840 AUD（2025年7月改定・カード払い）" },
-      { label: "申請料（セカンド/サード）", value: "各1,000 AUD" },
-      { label: "標準処理期間", value: "即日〜数週間（時期により変動）" },
-      { label: "必要なもの", value: "パスポート、メールアドレス、クレジットカード" },
+      {
+        label: "申請",
+        "value": "ImmiAccountからオンライン"
+      },
+      {
+        label: "基本申請料（一般枠）",
+        "value": "初回 A$840、セカンド・サード各 A$1,000（最新額は公式見積もり）"
+      },
+      {
+        label: "標準的な審査の目安",
+        "value": "Home Affairsの見込みは平均約3か月。個別の保証なし"
+      },
+      {
+        label: "開始前に必要",
+        "value": "旅券、メール、資金・出国費用の証拠、支払手段"
+      }
     ],
     steps: [
       {
-        title: "ImmiAccountを作成",
-        description: "公式サイトでアカウントを登録し、メール認証を完了します。",
-        imageHint: "ImmiAccountの新規登録（Create account）画面のスクリーンショット",
+        title: "ファースト417の要件を確認",
+        description: "Step by stepの書類一覧を開き、日本のパスポートで初回申請する条件と申請時の居場所を確認します。",
+        checklist: [
+          "銀行明細など、資金を示す書類と出国費用の証拠を用意。"
+        ],
+        links: [
+          {
+            label: "Home Affairs 初回417",
+            url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417"
+          }
+        ]
       },
       {
-        title: "申請フォームを入力",
-        description: "パスポート情報、滞在計画、健康・経歴に関する質問に回答します。虚偽申告は不許可の原因になります。",
-        imageHint: "ビザ申請フォーム（サブクラス417を選択する画面）のスクリーンショット",
+        title: "ImmiAccountを作る",
+        description: "公式のアカウント作成案内から個人用アカウントを作成し、メール認証と求められるセキュリティ設定を済ませます。",
+        links: [
+          {
+            label: "ImmiAccountを開く",
+            url: "https://online.immi.gov.au/"
+          },
+          {
+            label: "アカウント作成の公式手順",
+            url: "https://immi.homeaffairs.gov.au/help-support/applying-online-or-on-paper/online/create-your-immiaccount"
+          }
+        ]
       },
       {
-        title: "必要書類をアップロード",
-        description: "パスポートのコピーなど求められた書類を添付します。残高証明は提出を求められたら用意します。",
-        imageHint: "書類アップロード（Attach documents）画面のスクリーンショット",
+        title: "申請フォームを入力・添付",
+        description: "New applicationからWorking Holidayのsubclass 417を選びます。旅券の氏名・生年月日・番号をそのまま転記し、渡航歴や健康・人物要件の質問に回答します。",
+        checklist: [
+          "書類を分かる名前で添付し、入力内容と旅券の表記を再照合。",
+          "英訳が必要なら原文と英訳の両方を用意。"
+        ]
       },
       {
-        title: "申請料を支払う",
-        description: "840 AUD（ファースト）をカードで決済すると審査が始まります。",
-        imageHint: "支払い（Pay for this application）画面のスクリーンショット",
+        title: "申請料を支払い送信",
+        description: "公式見積もりで現在の金額を確認して、ImmiAccountの案内に沿って提出・支払いを完了します。",
+        checklist: [
+          "支払い領収書とTRNを保存。"
+        ],
+        links: [
+          {
+            label: "ビザ申請料の公式見積もり",
+            url: "https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator"
+          }
+        ]
       },
       {
-        title: "許可通知を受け取る",
-        description: "Grant Notificationのメールを保存し、入国時に提示できるようにします。",
-        imageHint: "Visa Grant Notificationのメール/PDFのサンプル画像",
-      },
+        title: "追加依頼と許可通知を確認",
+        description: "ImmiAccountとメールを確認し、健診・警察証明などの追加依頼があれば、通知にある期限と方法に従います。",
+        checklist: [
+          "許可前に変更できない航空券などを確約しない。"
+        ],
+        links: [
+          {
+            label: "VEVOで許可後の条件を確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          }
+        ]
+      }
     ],
     tips: [
-      "パスポートは滞在予定期間より長い有効期限が必要。残り1年を切っていれば先に更新を。",
-      "Grant NotificationのPDFはスマホとクラウドの両方に保存しておくと安心です。",
+      "旅券を更新した場合は、渡航前にHome Affairsの公式手続きで新旅券を届け出て、ビザとの紐づけを確認します。",
+      "Grant NotificationとTRNは第三者に公開せず、必要なときに確認できる状態で保存します。"
     ],
     phrases: [
       { en: "I'd like to apply for a Working Holiday visa (subclass 417).", ja: "ワーキングホリデービザ（サブクラス417）を申請したいです。", note: "問い合わせ時" },
@@ -154,25 +229,57 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "ImmiAccount ログイン", url: "https://online.immi.gov.au/" },
+      {
+        label: "ImmiAccount ログイン",
+        url: "https://online.immi.gov.au/"
+      },
+      {
+        label: "Home Affairs｜申請料の公式見積もり",
+        url: "https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator"
+      },
+      {
+        label: "Home Affairs｜審査期間の案内",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times"
+      },
+      
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
       {
         label: "Department of Home Affairs｜Working Holiday visa (subclass 417)",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417",
-        accessedAt: "2026-07-16",
+        accessedAt: "2026-07-16"
       },
       {
-        label: "First Working Holiday visa（申請料 AUD840）",
+        label: "First Working Holiday visa（申請と条件）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417",
-        accessedAt: "2026-07-16",
-      },
+        accessedAt: "2026-07-16"
+      }
     ],
     searchIntent: "417ビザの申請手順・費用",
     relatedSlugs: ["whv-complete-guide", "arrival-checklist", "working-holiday-timeline", "working-holiday-budget"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "本人確認・資金",
+          items: [
+            "有効なパスポートの顔写真ページと使い続けられるメールアドレス",
+            "滞在資金の証拠と、出国用の航空券または追加資金の証拠。公式案内の目安は通常A$5,000に出国費用を加えた額",
+            "英語以外の書類は原文と英訳。求められた追加資料も用意"
+          ]
+        },
+        {
+          title: "送信前",
+          items: [
+            "渡航・滞在歴、健康・人物要件の回答に必要な情報",
+            "申請料を支払える手段"
+          ]
+        }
+      ],
+      completion: "許可通知で氏名・旅券番号・初回入国期限・ビザ条件を確認し、通知を保存できたら完了。申請受領は許可ではありません。"
+    },
   },
 
   {
@@ -188,10 +295,22 @@ export const visaArticles: Article[] = [
       "それぞれ条件・費用・準備期間が大きく異なります。特にスポンサービザは雇用主の協力が必要で時間もかかるため、滞在を延ばしたいなら早めに方向性を決めて動くことが重要です。",
     ],
     keyFacts: [
-      { label: "セカンド/サードビザ", value: "規定の労働(88日/6か月)で最大3年" },
-      { label: "学生ビザ", value: "学校に通学。就労時間に制限あり" },
-      { label: "就労ビザ", value: "雇用主のスポンサーが必要。準備に時間" },
-      { label: "判断の鍵", value: "費用・準備期間・将来の目的(永住など)" },
+      {
+        label: "セカンド/サードビザ",
+        "value": "指定労働と申請条件あり。セカンドは移行措置88日、2027年3月1日から120日・招待方式"
+      },
+      {
+        label: "学生ビザ",
+        "value": "学校に通学。就労時間に制限あり"
+      },
+      {
+        label: "就労ビザ",
+        "value": "雇用主のスポンサーが必要。準備に時間"
+      },
+      {
+        label: "判断の鍵",
+        "value": "費用・準備期間・将来の目的(永住など)"
+      }
     ],
     steps: [
       { title: "目的を明確化", description: "短期の延長か、長期的なキャリア・永住志向かで選ぶビザが変わります。" },
@@ -220,8 +339,19 @@ export const visaArticles: Article[] = [
     ],
     searchIntent: "ワーホリ後の在留延長・ビザ選択",
     relatedSlugs: ["second-visa-guide", "whv-complete-guide", "language-school"],
-    updatedAt: "2026-11-22",
+    updatedAt: "2026-11-18",
     published: true,
+    sources: [
+      {
+        label: "Home Affairs｜申請料の公式見積もり",
+        url: "https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator"
+      },
+      {
+        label: "Home Affairs｜審査期間の案内",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times"
+      },
+      
+    ],
   },
 
   {
@@ -491,8 +621,13 @@ export const visaArticles: Article[] = [
       },
     ],
     warnings: ["交通ルール・運賃は州・都市で異なり変更されます。利用前に各交通機関・州政府の公式情報を確認してください。"],
-    relatedSlugs: ["whv-complete-guide", "city-public-transport-comparison", "e-bike-e-scooter-rules", "working-holiday-model-plans"],
-    updatedAt: "2026-07-17",
+    relatedSlugs: [
+      "whv-complete-guide",
+      "transport-payment-guide",
+      "e-bike-e-scooter-rules",
+      "working-holiday-model-plans"
+    ],
+    updatedAt: "2026-11-18",
     published: true,
   },
 
@@ -856,29 +991,72 @@ export const visaArticles: Article[] = [
       "サブクラス417の申請料金（ファースト・セカンド・サード）と支払い方法、審査期間の考え方、そして『いつ申請すべきか』のタイミングを、公式情報ベースで解説します。",
     content: [
       "ワーホリビザ（417）の申請料金は、ファースト（1年目）が840 AUDです。セカンド（2年目）・サード（3年目）はそれぞれ1,000 AUDです（2026年7月時点・公式）。支払いはImmiAccount上でクレジットカード等により行い、申請料を支払うと審査が始まります。カードのブランドによっては別途サーチャージ（手数料）がかかる場合があります。",
-      "審査期間は時期や申請量によって変動します。近年はワーホリ申請が非常に多く、通常より処理に時間がかかる傾向があると公式に案内されています。多くの場合は数日〜数週間で許可されますが、繁忙期（年度替わり・長期休暇前）はさらにかかることがあります。目安を知りたい場合は、公式の『visa processing times』ツールで直近の処理状況を確認できます。",
-      "重要な注意点として、オーストラリア当局は『ビザが許可されたと書面で通知されるまで渡航の手配（航空券購入等）をしないように』と明記しています。許可前に航空券を確定させると、審査が長引いた場合にリスクとなります。渡航日が決まっているなら、余裕を持って出発の2〜3か月前には申請を済ませておくのがおすすめです。",
-      "『いつ申請すべきか』は、①年齢（30歳の締切）、②パスポートの有効期限、③初回入国期限（First entry date）の3点から逆算します。許可されると通常は許可日から12か月以内に初回入国する必要があるため、あまりに早く申請すると入国期限が早まる点に注意が必要です。一般的には、渡航予定の2〜4か月前の申請がバランスの良いタイミングです。",
-      "料金・処理期間・条件は予告なく変更されます。申請直前に必ず公式ページで最新の申請料と処理時間の案内を確認してください。",
+      "Home Affairsは多くのワーホリ申請の平均審査期間を約3か月と見込んでいます。公式処理時間は直近の完了案件の目安で、案件ごとの保証ではありません。",
+      "ビザ許可が書面で通知される前に、航空券・就労・就学などの取消できない予定を確約しないようにしましょう。申請後は個別の審査時間が異なります。",
+      "申請時期は年齢要件、パスポート、予定する初回入国日から逆算します。初回入国期限は許可通知で確認できるため、申請前の時点で確定した日付とは考えないでください。",
+      "料金・処理期間・条件は予告なく変更されます。申請直前に必ず公式ページで最新の申請料と処理時間の案内を確認してください。"
     ],
     keyFacts: [
-      { label: "ファースト申請料", value: "840 AUD（2026年7月時点・公式）" },
-      { label: "セカンド/サード申請料", value: "各1,000 AUD" },
-      { label: "支払い方法", value: "ImmiAccountでカード決済（サーチャージあり得る）" },
-      { label: "審査期間", value: "数日〜数週間（繁忙期はさらに変動）" },
-      { label: "渡航手配", value: "許可の書面通知が来るまで航空券を確定しない" },
-      { label: "推奨申請時期", value: "渡航の2〜4か月前が目安" },
+      {
+        label: "ファースト申請料",
+        "value": "840 AUD（2026年7月時点・公式）"
+      },
+      {
+        label: "セカンド/サード申請料",
+        "value": "各1,000 AUD"
+      },
+      {
+        label: "支払い方法",
+        "value": "ImmiAccountでカード決済（サーチャージあり得る）"
+      },
+      {
+        label: "審査期間",
+        "value": "Home Affairsの見込みは平均約3か月。個別の保証なし"
+      },
+      {
+        label: "渡航手配",
+        "value": "許可の書面通知が来るまで航空券を確定しない"
+      }
     ],
     steps: [
-      { title: "申請料と処理時間を確認", description: "公式ページで最新の申請料（840 AUD）と直近の処理時間を確認します。" },
-      { title: "申請時期を逆算", description: "年齢・パスポート・初回入国期限から、いつ申請するか決めます。" },
-      { title: "ImmiAccountで支払い", description: "フォーム入力後、カードで申請料を支払うと審査開始です。" },
-      { title: "許可通知を待って手配", description: "書面での許可通知を受け取ってから航空券を確定します。" },
+      {
+        title: "現在の料金を確認する",
+        description: "公式見積もりを開いてビザと申請条件を選びます。表示は見積もりなので、最終額は申請の支払い画面で確認します。",
+        links: [
+          {
+            label: "Home Affairs 申請料を見積もる",
+            url: "https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator"
+          }
+        ]
+      },
+      {
+        title: "直近に処理された申請の傾向を確認する",
+        description: "公式Processing timesを見ます。最近完了した案件の統計で、自分の申請の期限を約束する数字ではありません。",
+        links: [
+          {
+            label: "Home Affairs 審査期間の目安",
+            url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times"
+          }
+        ]
+      },
+      {
+        title: "申請・支払いに進む",
+        description: "書類と追加依頼にかかる費用を分けて見積もったうえで申請します。",
+        links: [
+          {
+            label: "ファーストの申請手順",
+            url: "/guides/visa-application"
+          },
+          {
+            label: "セカンド・サードの申請手順",
+            url: "/guides/second-visa-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "許可される前に航空券を買わないこと。審査が長引いた場合のリスクを避けられます。",
-      "早く申請しすぎると初回入国期限が早まります。渡航の2〜4か月前がバランス良好です。",
-      "カード決済のサーチャージを避けたい場合は、対応するカードブランドを事前に確認しましょう。",
+      "カード決済のサーチャージを避けたい場合は、対応するカードブランドを事前に確認しましょう。"
     ],
     faqs: [
       {
@@ -893,8 +1071,19 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "Department of Home Affairs｜First Working Holiday visa（費用）", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417" },
-      { label: "Visa processing times（処理時間の目安）", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times/global-visa-processing-times" },
+      {
+        label: "Department of Home Affairs｜First Working Holiday visa（費用）",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417"
+      },
+      {
+        label: "Visa processing times（処理時間の目安）",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times"
+      },
+      {
+        label: "Home Affairs｜申請料の公式見積もり",
+        url: "https://immi.homeaffairs.gov.au/visas/visa-pricing-estimator"
+      },
+      
     ],
     verifiedAt: "2026-07-17",
     officialSources: [
@@ -911,8 +1100,20 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["申請料・処理期間は予告なく変更されます。申請前に必ず公式情報で最新を確認してください。"],
     relatedSlugs: ["visa-application", "working-holiday-eligibility", "visa-first-entry-deadline", "working-holiday-timeline"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "調べる前に",
+          items: [
+            "国籍、ファースト・セカンド・サードの区分、申請予定日",
+            "費用の見積もりには申請料以外に、該当する場合の健診・翻訳・証明書を分けて記録"
+          ]
+        }
+      ],
+      completion: "公式の申請料と確認日を予算に反映し、許可前に取消不可の予約を確定しない計画が立てられたら完了です。"
+    },
   },
 
   {
@@ -924,13 +1125,13 @@ export const visaArticles: Article[] = [
     priority: "P0",
     searchIntent: "ワーホリ 残高証明 いくら 英文 取り方",
     description:
-      "ワーホリビザの資金要件（目安 約5,000 AUD）と、銀行で英文の残高証明を取得する方法・費用・注意点を解説。求められたときにすぐ提出できるよう準備しておきましょう。",
+      "サブクラス417の資金要件、出国費用と証拠書類を用意してImmiAccountに提出する手順を解説します。",
     content: [
-      "ワーホリビザ（417）の資金要件の目安は、オーストラリア滞在を支えられる資金として約5,000 AUD（日本円で概ね50万円前後）です。加えて、帰国用の航空券を購入できる資金があること（または購入済み）が望ましいとされています。この資金は申請時に必ず提出するわけではありませんが、審査官から求められた場合に備えて『英文の残高証明書（bank balance certificate / bank statement in English）』を準備しておくと安心です。",
+      "Home Affairsが示す初回417の目安は、豪州滞在用の約A$5,000に加え、豪州から出国する航空券、またはその購入資金です。公式の書類一覧で資金を示す証拠を確認し、提出の指示に従います。",
       "英文残高証明は、日本の銀行の窓口またはネットバンキングで発行を依頼します。多くの銀行で英文の残高証明書または英文の取引明細を有料（1通あたり数百円〜千数百円程度）で発行できます。発行までに数日〜1週間程度かかる銀行もあるため、渡航準備の早い段階で依頼しておきましょう。",
       "証明書には、氏名（パスポートと同じローマ字表記）、口座残高、発行日、通貨が明記されていることを確認します。氏名のスペルがパスポートと一致していないと本人確認で問題になることがあるため、依頼時にローマ字表記を正確に伝えましょう。残高は最新の日付のものを用意し、古すぎる証明にならないよう渡航時期に合わせて取得します。",
       "資金が一時的に基準を下回っている場合、家族からの一時的な入金で見かけ上の残高を作るのはおすすめできません。審査で資金の実在性や出所を確認される可能性があり、実際に生活を支えられる資金があることが重要です。無理のない資金計画で、到着後に仕事が決まるまでの生活費（家賃・食費・当面の交通費）を賄えるようにしておきましょう。",
-      "資金の目安や運用は変更されることがあります。金額の基準は公式ページで、英文証明の発行方法・費用は利用している銀行の案内で、それぞれ最新情報を確認してください。",
+      "資金の目安や運用は変更されることがあります。金額の基準は公式ページで、英文証明の発行方法・費用は利用している銀行の案内で、それぞれ最新情報を確認してください。"
     ],
     keyFacts: [
       { label: "資金の目安", value: "約5,000 AUD＋帰国用航空券相当" },
@@ -940,10 +1141,34 @@ export const visaArticles: Article[] = [
       { label: "所要日数", value: "即日〜1週間程度（銀行による）" },
     ],
     steps: [
-      { title: "必要額を確認", description: "目安の約5,000 AUD＋帰国航空券相当を保有しているか確認します。" },
-      { title: "銀行に英文証明を依頼", description: "窓口またはネットバンキングで英文残高証明を申し込みます。ローマ字表記を正確に伝えます。" },
-      { title: "記載内容を確認", description: "氏名・残高・発行日・通貨が正しいか、パスポート表記と一致するか確認します。" },
-      { title: "PDFで保管", description: "原本とスキャン/PDFの両方を保管し、求められたらすぐ提出できるようにします。" },
+      {
+        title: "申請区分ごとの資金要件を確認する",
+        description: "ファースト417の公式ページで資金の目安と証拠欄を開きます。",
+        links: [
+          {
+            label: "Home Affairs 初回ビザの書類チェック",
+            url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417"
+          }
+        ]
+      },
+      {
+        title: "金融機関の正式書類をそろえる",
+        description: "ネットバンクの明細発行などで証拠を用意し、口座名義・日付・残高と通貨を確認。英語以外は公式の翻訳要件に従います。"
+      },
+      {
+        title: "ImmiAccountへ添付する",
+        description: "出国費用が別に確認できる書類を含め、原文を判読できる形で用意します。",
+        links: [
+          {
+            label: "ImmiAccountで書類を添付",
+            url: "https://online.immi.gov.au/"
+          },
+          {
+            label: "初回申請の全手順",
+            url: "/guides/visa-application"
+          }
+        ]
+      }
     ],
     tips: [
       "氏名のローマ字はパスポートと完全一致させること。不一致は本人確認トラブルの原因です。",
@@ -963,7 +1188,11 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "Department of Home Affairs｜First Working Holiday visa", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417" },
+      {
+        label: "Department of Home Affairs｜First Working Holiday visa",
+        url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417"
+      },
+      
     ],
     verifiedAt: "2026-07-17",
     officialSources: [
@@ -975,8 +1204,20 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["資金の目安は変更されることがあります。金額の基準は必ず公式情報で最新を確認してください。"],
     relatedSlugs: ["working-holiday-eligibility", "visa-application", "cards-and-cash-before-departure", "working-holiday-budget"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "書類を用意する",
+          items: [
+            "口座保有者と残高・通貨・発行日が分かる銀行の書類",
+            "出国用チケット、またはその購入費用が別にあることを示せる書類。必要な場合は原文と英訳"
+          ]
+        }
+      ],
+      completion: "資金と出国費用の両方を説明でき、申請フォームに読める状態の書類を添付できたら完了です。"
+    },
   },
 
   {
@@ -1004,10 +1245,40 @@ export const visaArticles: Article[] = [
       { label: "費用", value: "自己負担（検査項目により変動）" },
     ],
     steps: [
-      { title: "健康診断の要否を確認", description: "ImmiAccountの案内で健康診断が求められているか確認します。" },
-      { title: "HAP IDを受け取る", description: "HAP IDを取得し、指定医療機関を検索します。" },
-      { title: "予約して受診", description: "パスポート・HAP ID・証明写真など指定の持ち物を用意して受診します。" },
-      { title: "結果送信を待つ", description: "結果は医療機関から当局へ送信されます。審査完了を待ちます。" },
+      {
+        title: "健診を求められているか確認する",
+        description: "ImmiAccountの通知または公式案内で処理状況を確認します。必要性や時期を確認する前に、通常の健康診断を先に予約しないでください。",
+        links: [
+          {
+            label: "Home Affairs 健診が必要か",
+            url: "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/who-needs-health-examinations"
+          }
+        ]
+      },
+      {
+        title: "HAP IDを取得して指定施設に予約する",
+        description: "紹介状にあるHAP IDを準備し、公式リスト掲載の指定施設へ連絡します。費用と持ち物は施設へ確認。",
+        links: [
+          {
+            label: "公式の健診予約案内",
+            url: "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/arrange-your-health-examinations"
+          },
+          {
+            label: "ImmiAccountを開く",
+            url: "https://online.immi.gov.au/"
+          }
+        ]
+      },
+      {
+        title: "当日受診し、追加依頼を確認する",
+        description: "旅券・紹介状・施設が指定した資料を持参します。期限までに受診できない場合は、放置せず公式案内に従って連絡します。",
+        links: [
+          {
+            label: "受診日の持ち物",
+            url: "https://immi.homeaffairs.gov.au/supporting/Pages/Health-requirements/on-the-day-of-your-appointment.aspx"
+          }
+        ]
+      }
     ],
     tips: [
       "渡航予定があるなら早めに受診を。結果送信・審査に日数がかかることがあります。",
@@ -1038,8 +1309,20 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["健康診断の要否・内容・指定医療機関は個々の申請で異なります。ImmiAccountの案内と公式情報を必ず確認してください。"],
     relatedSlugs: ["visa-application", "visa-police-certificate", "pre-departure-health-check", "working-holiday-eligibility"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "予約前",
+          items: [
+            "ImmiAccountの健診依頼とHAP ID、依頼期限",
+            "パスポート、紹介状、施設が指定した医療資料や眼鏡等"
+          ]
+        }
+      ],
+      completion: "指定施設で受診し、結果が送付されたか、または追加検査が必要かをImmiAccountの通知で確認します。"
+    },
   },
 
   {
@@ -1136,10 +1419,36 @@ export const visaArticles: Article[] = [
       { label: "注意", value: "旧パスポートも保管しておくと安心" },
     ],
     steps: [
-      { title: "新パスポートを用意", description: "更新後の新しいパスポートの番号・情報を手元に用意します。" },
-      { title: "Form 929を提出", description: "ImmiAccountからパスポート情報の変更を届け出ます。" },
-      { title: "VEVOで確認", description: "新しいパスポートにビザが紐づいているかVEVOで確認します。" },
-      { title: "氏名一致を確認", description: "パスポート・航空券・ビザ記録の氏名がすべて一致するか確認します。" },
+      {
+        title: "最新の手続きを開く",
+        description: "現在申請中かすでに許可済みかを確認し、Home Affairsの新旅券案内を開きます。",
+        links: [
+          {
+            label: "Home Affairs 新パスポートの届け出",
+            url: "https://immi.homeaffairs.gov.au/change-in-situation/passport-details"
+          }
+        ]
+      },
+      {
+        title: "ImmiAccountで旅券情報を更新する",
+        description: "対象の申請・ビザの画面から更新を選び、新旅券の番号・国・発行日・期限を確認して提出します。",
+        links: [
+          {
+            label: "ImmiAccountを開く",
+            url: "https://online.immi.gov.au/"
+          }
+        ]
+      },
+      {
+        title: "反映を確認する",
+        description: "反映されない場合は公式案内にある代替手段を使用します。ビザの有効状態と航空券などの名義を確認してください。",
+        links: [
+          {
+            label: "VEVOでビザ情報を確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          }
+        ]
+      }
     ],
     tips: [
       "更新したら渡航前に必ず手続きを。入国時の就労権・ビザ確認でのトラブルを防げます。",
@@ -1175,8 +1484,20 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["手続き方法・フォーム番号は変更されることがあります。提出前に必ず公式情報を確認してください。"],
     relatedSlugs: ["visa-grant-letter", "vevo-check", "passport-validity-renewal", "visa-application"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "用意するもの",
+          items: [
+            "新旧パスポートと顔写真ページ",
+            "ImmiAccountへのアクセス、許可通知または申請番号"
+          ]
+        }
+      ],
+      completion: "新パスポートへの反映を確認し、必要な更新が済んでから航空券の旅券情報を照合します。"
+    },
   },
 
   {
@@ -1322,10 +1643,10 @@ export const visaArticles: Article[] = [
       "ワーホリビザの『同一雇用主のもとでの就労は原則6か月まで』というルール（Condition 8547）を解説。制限の考え方と、6か月を超えて働ける例外・許可申請の考え方をまとめました。",
     content: [
       "ワーホリビザ（417）には、『同一雇用主のもとで働けるのは原則6か月まで』というルールがあります。これはビザ条件のCondition 8547に基づくもので、1人の雇用主のもとでの就労が原則6か月に制限されるという意味です。この制限は、ワーホリの目的（オーストラリアを広く体験する）を踏まえたものです。",
-      "重要なのは『同一雇用主』の数え方です。原則として、同じ雇用主のもとで働いた期間が通算6か月を超えないようにします。勤務地が異なっても雇用主（法人）が同じであればまとめてカウントされる場合があるため、フランチャイズや大手チェーンで働く場合は注意が必要です。",
-      "ただし、6か月を超えて同じ雇用主で働ける例外もあります。代表的なのは、①別々の州・地域（different locations）で働く場合（一定条件下で各地6か月まで認められることがある）、②特定の業種・地域での就労、③事前に当局の許可（permission to work longer）を得た場合、などです。例外の適用範囲は細かく定められているため、6か月を超えたい場合は必ず公式情報で確認するか、許可申請を検討してください。",
+      "同一雇用主の範囲は、雇用契約の名義だけでは判断できない場合があります。勤務地の違い、雇用主名、派遣先、自営業の最終利用先を確認してください。Condition 8547の6か月ルールは、自営業にも適用され得ます。Home Affairsは自営業の雇用主をサービスの最終利用先（end user）として扱います。単独の提供先に6か月を超えて継続する場合は、例外または書面による許可を確認してください。アプリへの複数登録だけで例外になるとは限りません。",
+      "Home Affairsは複数の勤務地で各勤務地6か月以内となる場合や、指定の業種・業務などに例外を示しています。業種名だけで判断せず、公式に示された業務と条件を確認してください。",
       "この制限を守らないと、ビザ条件違反となり、ビザの取消しや将来のビザ申請への悪影響につながる可能性があります。長く同じ職場で働きたい場合は、勝手に判断せず、当局の案内に沿って例外の可否・許可申請を確認することが安全です。",
-      "6か月制限のルール・例外・許可申請の方法は変更されることがあります。自分のビザ条件（許可通知のConditions欄）を確認し、判断に迷う場合は公式情報や登録移民エージェントに相談してください。",
+      "6か月制限のルール・例外・許可申請の方法は変更されることがあります。自分のビザ条件（許可通知のConditions欄）を確認し、判断に迷う場合は公式情報や登録移民エージェントに相談してください。"
     ],
     keyFacts: [
       { label: "ルール", value: "同一雇用主での就労は原則6か月まで（Condition 8547）" },
@@ -1335,10 +1656,43 @@ export const visaArticles: Article[] = [
       { label: "確認先", value: "許可通知のConditions欄・公式ビザ条件ページ" },
     ],
     steps: [
-      { title: "自分の条件を確認", description: "許可通知のConditions欄に8547があるか確認します。" },
-      { title: "雇用主単位で期間を管理", description: "同じ雇用主での通算勤務期間を記録します。" },
-      { title: "例外の可否を確認", description: "6か月超で働きたい場合は例外条件・許可申請を公式で確認します。" },
-      { title: "必要なら許可申請", description: "当局の許可（permission to work longer）を検討します。" },
+      {
+        title: "VEVOと公式条件を開く",
+        description: "ビザの条件番号、雇用や委託の相手、実際の勤務場所を確認します。",
+        links: [
+          {
+            label: "VEVOで自分の条件を確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          },
+          {
+            label: "Home Affairs 8547の条件と例外",
+            url: "https://immi.homeaffairs.gov.au/supporting/Pages/Work/6-month-work-limitation.aspx"
+          }
+        ]
+      },
+      {
+        title: "雇用・自営業・派遣の扱いを照合する",
+        description: "Home Affairsは、自営業の場合に最終利用先（end user）を雇用主として扱います。同じ先に提供していても、他の事業者にも提供する場合など扱いが異なります。",
+        checklist: [
+          "ABNを持つことや、複数アプリに登録したことだけでは例外の根拠になりません。"
+        ],
+        links: [
+          {
+            label: "自営業・派遣の公式説明",
+            url: "https://immi.homeaffairs.gov.au/supporting/Pages/Work/6-month-work-limitation.aspx"
+          }
+        ]
+      },
+      {
+        title: "例外がなければ期限前に許可を確認する",
+        description: "例外に該当しない場合は、期限前に申請できるかと、回答を待つ間の条件を公式案内で確認してください。",
+        links: [
+          {
+            label: "Home Affairs 許可申請のページ",
+            url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/specified-work-conditions/WHM-condition-8547-permission-request-form"
+          }
+        ]
+      }
     ],
     tips: [
       "大手チェーン・フランチャイズは同一雇用主扱いになることがあります。勤務先の法人単位で管理を。",
@@ -1357,7 +1711,11 @@ export const visaArticles: Article[] = [
       },
     ],
     sources: [
-      { label: "Department of Home Affairs｜See your visa conditions (417-A)", url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/see-your-visa-conditions?product=417-A" },
+      {
+        label: "Department of Home Affairs｜See your visa conditions (417-A)",
+        url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/see-your-visa-conditions?product=417-A"
+      },
+      
     ],
     verifiedAt: "2026-07-17",
     officialSources: [
@@ -1374,8 +1732,20 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["6か月制限のルール・例外は変更されることがあります。自分のビザ条件と公式情報を必ず確認してください。"],
     relatedSlugs: ["visa-grant-letter", "working-rights", "second-visa-guide", "vevo-check"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "自分の状況を整理する",
+          items: [
+            "VEVOの条件、開始日、勤務地、雇用主と実際の就労先",
+            "自営業・派遣の場合は、実際にサービスを受ける事業者と取引の記録。例外に該当する場合は根拠"
+          ]
+        }
+      ],
+      completion: "制限の適用・例外・許可の要否を確認し、判断根拠と日付を記録。分からないまま6か月経過後も続けないようにします。"
+    },
   },
 
   {
@@ -1670,10 +2040,36 @@ export const visaArticles: Article[] = [
       { label: "費用", value: "無料" },
     ],
     steps: [
-      { title: "参照番号を用意", description: "許可通知のTRNやVisa grant numberを手元に用意します。" },
-      { title: "VEVOで照会", description: "パスポート番号・生年月日・参照番号を入力してビザ内容を表示します。" },
-      { title: "条件を確認", description: "就労権・就学・渡航などの条件と有効期限を確認します。" },
-      { title: "雇用主へ共有", description: "必要に応じてVEVO結果を雇用主へ送信/照会させます。" },
+      {
+        title: "パスポートと照会番号を確認する",
+        description: "現行の旅券を使い、許可通知のVisa grant number、またはImmiAccountのTRNなどを控えます。",
+        links: [
+          {
+            label: "ImmiAccountを開く",
+            url: "https://online.immi.gov.au/"
+          }
+        ]
+      },
+      {
+        title: "VEVOの本人向け画面から照会する",
+        description: "公式ページにあるCheck your own visa detailsを選び、旅券情報と照会番号を入力します。",
+        links: [
+          {
+            label: "Home Affairs VEVO本人照会",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          }
+        ]
+      },
+      {
+        title: "条件を保存・共有する",
+        description: "ビザの種類、期限、就労条件を確認します。必要に応じ公式画面から共有し、身分情報は公開しないでください。",
+        links: [
+          {
+            label: "就労条件の読み方",
+            url: "/guides/visa-six-month-work-limitation"
+          }
+        ]
+      }
     ],
     tips: [
       "VEVO結果はPDF/スクショで保存しておくと、就職時にすぐ提示できます。",
@@ -1709,8 +2105,20 @@ export const visaArticles: Article[] = [
     ],
     warnings: ["VEVOの利用方法・必要情報は変更されることがあります。公式ページで最新を確認してください。"],
     relatedSlugs: ["visa-grant-letter", "visa-after-passport-renewal", "working-rights", "jobs-guide"],
-    updatedAt: "2026-07-17",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "照会情報",
+          items: [
+            "照会するパスポートの番号、発行国、生年月日",
+            "TRN、Visa grant numberなど公式画面で選択できる照会番号"
+          ]
+        }
+      ],
+      completion: "現在の就労や滞在の条件を開いて確認し、必要な相手へ公式の方法で共有できたら完了です。"
+    },
   },
 
   {

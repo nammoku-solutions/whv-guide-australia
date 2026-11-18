@@ -55,6 +55,10 @@ export type ArticleImage = {
 export type ArticleStep = {
   title: string;
   description: string;
+  /** この手順で確認・入力・保存すること。 */
+  checklist?: string[];
+  /** この手順から開く公式手続きやサイト内の補足ガイド。 */
+  links?: ArticleLink[];
   /** 手順の画像（用意できたら設定。next/image で表示） */
   image?: ArticleImage;
   /** 画像がまだ無い場合に表示するプレースホルダの説明（どんな写真を入れるか） */
@@ -74,6 +78,11 @@ export type ArticleFact = {
 export type ArticleLink = {
   label: string;
   url: string;
+};
+
+export type ArticleProcedure = {
+  preparation: Array<{ title: string; items: string[] }>;
+  completion: string;
 };
 
 export type ArticlePhrase = {
@@ -97,6 +106,7 @@ export type Article = {
   images?: ArticleImage[];
   content: string[];
   steps: ArticleStep[];
+  procedure?: ArticleProcedure;
   keyFacts?: ArticleFact[];
   tips?: string[];
   /** 現地で使える英語フレーズ＋日本語訳（任意） */

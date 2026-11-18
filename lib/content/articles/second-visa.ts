@@ -27,25 +27,72 @@ export const secondVisaArticles: Article[] = [
     ],
     steps: [
       {
-        title: "対象の仕事・地域か確認",
-        description:
-          "公式の指定業種・指定ポストコードに該当するか、働く前に必ず確認します。対象外の地域・業種で働いても日数にカウントされません。",
+        title: "申請ルートを判定する",
+        description: "日本のパスポートの場合、要件を満たして2027年2月28日までに有効な申請を出せるか最初に確認します。3月1日以降は招待が必要で、セカンドの指定労働は120日、サードの指定労働期間は変更なしです。",
+        links: [
+          {
+            label: "Home Affairs 公式の分岐図",
+            url: "https://immi.homeaffairs.gov.au/programs-subsite/files/whm-upcoming-changes-flow-chart.pdf"
+          },
+          {
+            label: "Home Affairs 制度変更の発表",
+            url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx"
+          }
+        ]
       },
       {
-        title: "正規雇用で働き記録を残す",
-        description:
-          "TFNを提出し、給与が銀行振込・Payslip発行される正規の条件で働きます。現金払いのみの仕事は日数の証明が難しくなります。",
+        title: "対象の仕事・地域と日数を照合する",
+        description: "店舗や会社の登録住所ではなく実際の勤務場所を使い、職種・郵便番号・いつ働いたかを公式例と照合します。",
+        checklist: [
+          "セカンドは通常、初回WHV中の指定労働。サードは通常、セカンドWHV中の指定労働。条件は各ビザの公式ページで確認。",
+          "勤務実績だけで判定せず、通常シフトや対象になる休みの公式例を確認。"
+        ],
+        links: [
+          {
+            label: "指定労働の対象・数え方",
+            url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/specified-work-conditions/specified-work-417"
+          }
+        ]
       },
       {
-        title: "適用される日数を満たす",
-        description:
-          "フルタイム相当の労働日数を満たします。週休や悪天候での休みのカウント方法は要件に従って記録します。",
+        title: "勤務先ごとに証拠を整理する",
+        description: "複数の勤務先がある場合、勤務先ごとに支払いと勤務実績をひも付けます。",
+        checklist: [
+          "給与明細（Payslip）と入金記録、シフト表、契約・勤務証明。",
+          "氏名、勤務先、作業場所、対象期間の食い違いがないか確認。"
+        ]
       },
       {
-        title: "ImmiAccountで申請",
-        description:
-          "移行期限までに指定労働を完了して有効な申請を提出するか、新制度で招待を受けてほかの条件も満たしてから申請します。豪州にいる場合は現在のビザが切れる前に有効な申請をするか出国してください。",
+        title: "必要な場合は登録して招待を待つ",
+        description: "直接申請の移行条件を満たせない場合は、Home Affairsの案内から登録し、招待が届いたら期限を確認します。登録受付は2026年12月1日開始予定です。",
+        checklist: [
+          "招待は許可の保証ではなく、同じビザでの滞在期限を延ばさない。"
+        ],
+        links: [
+          {
+            label: "登録・招待の最新案内",
+            url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/latest-news"
+          }
+        ]
       },
+      {
+        title: "ImmiAccountで申請し受付を保管する",
+        description: "該当する2回目または3回目の申請を選び、就労情報と書類を提出します。国内・国外で異なる申請・審査中の条件も先に確認してください。",
+        links: [
+          {
+            label: "セカンド417の公式書類一覧",
+            url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/second-working-holiday-417"
+          },
+          {
+            label: "サード417の公式書類一覧",
+            url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/third-working-holiday-417"
+          },
+          {
+            label: "ImmiAccountで申請",
+            url: "https://online.immi.gov.au/"
+          }
+        ]
+      }
     ],
     tips: [
       "悪質な農園やブローカーに注意。『日数をごまかして証明する』提案には絶対に乗らないこと。発覚するとビザ却下・将来の入国制限のリスクがあります。",
@@ -101,8 +148,28 @@ export const secondVisaArticles: Article[] = [
       "対象業種・指定地域・必要日数の定義は予告なく変更されます。働き始める前に必ず公式情報で最新の条件を確認してください。",
     ],
     relatedSlugs: ["farm-second-visa", "farm-finding", "whv-complete-guide", "specified-work-postcodes", "farm-payslip-evidence", "88-day-calculation", "specified-work-industries", "six-month-specified-work"],
-    updatedAt: "2026-11-22",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "就労・本人確認",
+          items: [
+            "パスポートと現在・過去の417の許可情報",
+            "実際の作業住所・郵便番号、仕事内容、雇用期間、雇用主連絡先・ABN",
+            "給与明細、タイムシート、銀行入金記録、契約や勤務証明"
+          ]
+        },
+        {
+          title: "新制度の確認",
+          items: [
+            "2027年2月28日までに有効な直接申請を提出できるか判定する",
+            "招待方式なら登録と招待通知を確認。登録・招待だけでは現ビザは延長されない"
+          ]
+        }
+      ],
+      completion: "申請受領とTRNを保存し、現ビザの期限・豪州に滞在できる根拠を確認できたら申請手続きは完了。取得は許可通知で確認します。"
+    },
   },
 
   {

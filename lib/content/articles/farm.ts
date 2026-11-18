@@ -71,10 +71,62 @@ export const farmArticles: Article[] = [
       { label: "セカンドビザ", value: "対象地域・業種で申請時期に応じた必要日数を満たす" },
     ],
     steps: [
-      { title: "収穫期と地域を調べる", description: "作物ごとに収穫期が違います。時期に合う地域を狙います。" },
-      { title: "求人を比較", description: "時給/歩合、住居の有無と費用、送迎の有無、Payslip発行を確認します。" },
-      { title: "条件を書面で確認", description: "賃金・労働時間・Payslip発行を必ず確認。曖昧な口約束は避けます。" },
-      { title: "働いて記録を残す", description: "Payslip・タイムシート・銀行入金を保管し、セカンドビザの証拠にします。" },
+      {
+        title: "求人を探す",
+        description: "Workforce AustraliaでHarvest jobsを見て、作物・町名・職種で検索。雇用主公式サイトや紹介経由でも、求人内容を書面で確認します。",
+        links: [
+          {
+            label: "Workforce Australia 求人検索",
+            url: "https://www.workforceaustralia.gov.au/individuals/jobs/search"
+          },
+          {
+            label: "Fair Work Harvest Trailガイド",
+            url: "https://horticulture.fairwork.gov.au/working-the-harvest-trail"
+          }
+        ]
+      },
+      {
+        title: "会社・勤務地・条件を確認する",
+        description: "会社名とABN、実際の作業住所、開始日、住居・交通、時給制か歩合制かを聞きます。",
+        links: [
+          {
+            label: "ABN Lookupで確認",
+            url: "https://abr.business.gov.au/"
+          },
+          {
+            label: "派遣業者を確認",
+            url: "/guides/farm-labour-hire-contractors"
+          }
+        ]
+      },
+      {
+        title: "ビザの対象と賃金を確認する",
+        description: "会社の「カウントできる」という説明だけで判断せず、仕事内容・郵便番号を公式条件と照合します。",
+        links: [
+          {
+            label: "Home Affairs 指定労働",
+            url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/specified-work-conditions/specified-work-417"
+          },
+          {
+            label: "Fair Work 園芸の賃金情報",
+            url: "https://horticulture.fairwork.gov.au/pay-and-piece-rates"
+          }
+        ]
+      },
+      {
+        title: "移動・初勤務・記録を確定する",
+        description: "最初の集合場所と移動手段、必要な作業靴や保護具を確認します。給与明細・勤務場所・入金記録を保存。",
+        links: [
+          {
+            label: "農作業の服・安全装備",
+            url: "/guides/farm-work-clothing"
+          },
+          {
+            label: "勤務証拠の残し方",
+            url: "/guides/farm-payslip-evidence"
+          }
+        ]
+      }
     ],
     tips: [
       "Payslipを出さない/最低賃金を大きく下回る/日数偽証を持ちかける農園は避けましょう。",
@@ -83,8 +135,20 @@ export const farmArticles: Article[] = [
     ],
     warnings: ["賃金未払い・日数偽証を持ちかける雇用主は違法です。ビザ却下リスクもあるため絶対に関わらないでください。"],
     relatedSlugs: ["farm-second-visa", "harvest-trail-guide", "farm-season-calendar", "piecework-vs-hourly", "farm-employer-verification", "second-visa-guide"],
-    updatedAt: "2026-11-22",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "探す前に決めること",
+          items: [
+            "出発可能日、使える交通手段、住居予算、希望する地域・作業",
+            "指定労働が目的ならビザ、勤務場所、仕事内容、証拠を確認できる求人"
+          ]
+        }
+      ],
+      completion: "書面で勤務地・賃金・勤務開始・移動と住居を確認し、実際に働いた日から給与明細とシフトを保管します。"
+    },
   },
 
   {
@@ -165,58 +229,115 @@ export const farmArticles: Article[] = [
     priority: "P0",
     searchIntent: "Harvest Trail/政府系ファーム求人の使い方",
     description:
-      "政府が運営するHarvest Trail（収穫求人情報）とWorkforce Australiaを使ったファーム求人の探し方を解説。無料の相談窓口Harvest Trail Information Serviceの使い方、応募の流れ、詐欺を避けるコツをまとめます。",
+      "Workforce Australiaで現行の収穫求人を探し、勤務先・賃金・勤務地を確認するガイドです。旧無料相談の終了も説明します。",
     content: [
-      "『安全なファーム求人をどこで探せばいいか』という問いへの最も確実な答えの一つが、政府が運営するHarvest Trail（ハーベストトレイル）です。これはオーストラリア政府のWorkforce Australia（旧jobactive）が提供する収穫求人の情報サービスで、全国の農場の季節労働（picking・packing など）を地域・作物別に無料で検索できます。民間の怪しいブローカーを介さずに探せるのが最大の利点です。",
-      "使い方はシンプルです。Workforce Australiaの求人サイト（workforceaustralia.gov.au）で『harvest』や作物名・地域名で検索すると、農場や正規の労働者派遣（labour hire）の求人が表示されます。掲載されている求人には応募方法（電話・メール・オンライン応募）が記載されているので、レジュメを添えて直接連絡します。",
-      "電話やオンラインが不安な人向けに、Harvest Trail Information Service（収穫求人の無料相談窓口）が用意されています。フリーダイヤルに電話すると、どの地域で今どんな収穫の仕事があるか、どう応募すればよいかを案内してもらえます。英語での問い合わせが基本ですが、公式ルートなので賃金や条件の面でも安心度が高いです。",
-      "応募の流れは、①希望の作物・地域・時期を決める → ②Workforce Australiaで求人検索 → ③レジュメ（連絡先・在豪期間・経験・車の有無を明記）を用意 → ④求人ごとの方法で応募 → ⑤条件（時給か歩合か・Payslip発行・宿や送迎の有無）を確認してから就労、という順です。採用が決まったらTFNを提出し、給与は必ず銀行振込で受け取って記録を残します。",
-      "Harvest Trailはあくまで求人情報の入口で、掲載元がすべて優良とは限りません。応募後も『最低賃金を大きく下回る』『Payslipを出さない』『高額な宿代・送迎費を天引きする』といった条件には応じないでください。公式ルートで見つけた求人でも、賃金・労働条件は自分の目で確認するのが基本です。より広く探す場合は、求人サイト（SEEK・Indeed）やFacebookの地域求人グループ、バックパッカー宿の紹介と併用しましょう。",
+      "旧National Harvest Labour Information Serviceは2024年6月30日で終了しました。現在はWorkforce Australiaの求人検索（Harvest jobs）や雇用主の採用ページから収穫・選別・パッキングの求人を探せます。",
+      "政府の求人検索に載っていても契約や指定労働の資格が自動で保証されるわけではありません。給料、控除、実際の勤務場所と仕事内容、雇用主を自分で確認します。"
     ],
     keyFacts: [
-      { label: "運営", value: "オーストラリア政府 Workforce Australia（無料）" },
-      { label: "探せる仕事", value: "収穫(picking)・選別/箱詰め(packing)などの季節労働" },
-      { label: "相談窓口", value: "Harvest Trail Information Service（無料電話相談）" },
-      { label: "検索先", value: "workforceaustralia.gov.au で作物・地域名で検索" },
-      { label: "併用先", value: "SEEK / Indeed / Facebook地域求人グループ / 宿の紹介" },
+      {
+        label: "現在の求人検索",
+        "value": "Workforce AustraliaのHarvest jobs"
+      },
+      {
+        label: "旧電話窓口",
+        "value": "National Harvest Labour Information Serviceは終了"
+      }
     ],
     steps: [
-      { title: "作物・地域・時期を決める", description: "シーズンカレンダーで狙いを定めます。" },
-      { title: "Workforce Australiaで検索", description: "作物名・地域名・『harvest』で求人を探します。" },
-      { title: "レジュメを用意して応募", description: "在豪期間・車の有無・経験を明記し、求人ごとの方法で連絡します。" },
-      { title: "条件を確認して就労", description: "時給/歩合・Payslip発行・宿/送迎費を確認し、TFNを提出します。" },
+      {
+        title: "現行の求人窓口へ進む",
+        description: "National Harvest Labour Information Serviceは2024年6月30日で終了しています。求人検索はWorkforce AustraliaのHarvest jobsなどを使います。",
+        links: [
+          {
+            label: "Workforce Australia 求人検索",
+            url: "https://www.workforceaustralia.gov.au/individuals/jobs/search"
+          },
+          {
+            label: "Fair Workの現行案内",
+            url: "https://horticulture.fairwork.gov.au/working-the-harvest-trail"
+          }
+        ]
+      },
+      {
+        title: "応募前に支払条件を照合する",
+        description: "会社名・ABN、勤務形態・賃金、住居費や送迎費の控除を聞きます。ビザ要件は勤務地と仕事の種類を公式情報と照合。",
+        links: [
+          {
+            label: "指定労働の公式条件",
+            url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/specified-work-conditions/specified-work-417"
+          },
+          {
+            label: "応募・雇用主確認の手順",
+            url: "/guides/farm-finding"
+          }
+        ]
+      },
+      {
+        title: "宿と交通を確定する",
+        description: "最初の勤務日と集合場所が確定してから、移動・宿泊を予約します。仕事を保証する名目の送金は慎重に扱ってください。",
+        links: [
+          {
+            label: "ファーム宿泊の確認",
+            url: "/guides/farm-accommodation-guide"
+          }
+        ]
+      }
     ],
     tips: [
-      "レジュメには『車を持っているか』『いつから何か月働けるか』を必ず書きましょう。農場が最も重視する情報です。",
-      "電話応募が多いのがファーム。短い英語の自己紹介と質問（時給/歩合、宿の有無）を用意しておくとスムーズです。",
+      "応募先の正式名、ABN、実際の作業場所と郵便番号を控えます。"
     ],
     warnings: ["公式ルートの求人でも、最低賃金割れ・Payslip未発行・高額天引きには応じないでください。条件は書面やメッセージで残しましょう。"],
     faqs: [
       {
-        question: "Harvest Trailは無料ですか？",
-        answer:
-          "はい。政府サービスなので求職者は無料で利用できます。仕事の紹介に手数料を請求してくる相手は正規のHarvest Trailではないので注意してください。",
-      },
-      {
-        question: "英語が苦手でも使えますか？",
-        answer:
-          "求人検索は誰でもできます。電話相談は英語が基本ですが、応募自体はメールやオンラインでも可能です。短い定型フレーズを準備すれば十分対応できます。",
-      },
+        "question": "現在の求人はどこで見られますか？",
+        "answer": "Workforce Australiaの求人検索でHarvest jobsや作物・地域を指定します。申し込み方法や雇用主への連絡方法は各求人で確認してください。"
+      }
     ],
     sources: [
-      { label: "Workforce Australia - Harvest", url: "https://www.workforceaustralia.gov.au/individuals/harvest" },
+      {
+        label: "Workforce Australia｜求人検索",
+        url: "https://www.workforceaustralia.gov.au/individuals/jobs/search"
+      },
+      {
+        label: "Fair Work｜旧窓口の終了と現行案内",
+        url: "https://horticulture.fairwork.gov.au/sourcing-labour"
+      },
+      {
+        label: "Fair Work｜収穫労働者向け案内",
+        url: "https://horticulture.fairwork.gov.au/working-the-harvest-trail"
+      }
     ],
     verifiedAt: "2026-07-19",
     officialSources: [
       {
-        label: "Workforce Australia｜Harvest（政府運営の収穫求人情報・相談窓口）",
-        url: "https://www.workforceaustralia.gov.au/individuals/harvest",
-        accessedAt: "2026-07-19",
+        label: "Workforce Australia｜求人検索",
+        url: "https://www.workforceaustralia.gov.au/individuals/jobs/search"
       },
+      {
+        label: "Fair Work｜旧窓口の終了と現行案内",
+        url: "https://horticulture.fairwork.gov.au/sourcing-labour"
+      },
+      {
+        label: "Fair Work｜収穫労働者向け案内",
+        url: "https://horticulture.fairwork.gov.au/working-the-harvest-trail"
+      }
     ],
     relatedSlugs: ["farm-finding", "farm-season-calendar", "piecework-vs-hourly", "farm-employer-verification", "farm-second-visa"],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "検索する情報",
+          items: [
+            "働ける時期、作物・エリア候補、車や宿泊の有無",
+            "求人票から確認したい賃金、実際の作業場所、雇用主名"
+          ]
+        }
+      ],
+      completion: "雇用主から条件が書面で確認できてから、移動・宿を確定します。"
+    },
   },
 
   {
@@ -318,11 +439,40 @@ export const farmArticles: Article[] = [
       { label: "合算", value: "複数農場・期間を合算可（各期間が要件を満たす必要）" },
     ],
     steps: [
-      { title: "就労前にPayslip発行を確認", description: "発行しない雇用主は避けます。銀行振込かも確認します。" },
-      { title: "毎回Payslipを保存", description: "受け取るたびに撮影＋PDFでクラウド保存します。" },
-      { title: "入金記録を残す", description: "給与が振り込まれる口座の明細を保管します。" },
-      { title: "日数一覧を作る", description: "農場別に開始/終了日・日数・ABN・住所を表にまとめます。" },
-      { title: "申請時に添付", description: "Form 1263と証拠を添えてImmiAccountで申請します。" },
+      {
+        title: "日付・勤務時間・作業内容を記録する",
+        description: "勤務当日に場所、作業、開始と終了時刻、休憩をメモし、シフト記録にも紐づけます。",
+        links: [
+          {
+            label: "Fair Work 勤務記録の扱い",
+            url: "https://www.fairwork.gov.au/workplace-problems/common-workplace-problems/my-pay-doesnt-seem-right"
+          }
+        ]
+      },
+      {
+        title: "給与明細と受取額を突き合わせる",
+        description: "各支払期間の明細と銀行入金を照合し、作業場所が明細に載らない場合は勤務先の書面で補います。違いがあれば早めに確認。",
+        links: [
+          {
+            label: "給与明細の確認",
+            url: "/guides/payslip-guide"
+          }
+        ]
+      },
+      {
+        title: "指定労働の証拠として分類する",
+        description: "実際の勤務地・業種・期間を公式の指定労働要件と照合し、勤務先ごとにファイルを整理。実働日メモは自動的な資格判定になりません。",
+        links: [
+          {
+            label: "Home Affairs 指定労働の例",
+            url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/specified-work-conditions/specified-work-417"
+          },
+          {
+            label: "セカンド・サード申請へ",
+            url: "/guides/second-visa-guide"
+          }
+        ]
+      }
     ],
     tips: [
       "Payslipはクラウド（Googleドライブ等）に日付順で保存。スマホ紛失や退去後の再取得は難しいので二重保管を。",
@@ -362,8 +512,20 @@ export const farmArticles: Article[] = [
       },
     ],
     relatedSlugs: ["88-day-calculation", "farm-employer-verification", "piecework-vs-hourly", "second-visa-guide", "specified-work-postcodes"],
-    updatedAt: "2026-11-22",
+    updatedAt: "2026-11-18",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "そろえる証拠",
+          items: [
+            "勤務先の正式名・ABN・連絡先、実際の勤務場所、業務内容",
+            "給与明細、タイムシート、勤務契約、銀行入金記録。歩合制なら歩合に関する記録"
+          ]
+        }
+      ],
+      completion: "勤務先ごとに期間、実働、給料と作業場所を説明でき、必要な証明書類を公式申請に添付できる状態にします。"
+    },
   },
 
   {
