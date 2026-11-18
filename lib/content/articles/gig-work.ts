@@ -254,7 +254,53 @@ export const gigWorkArticles: Article[] = [
       { label: "business.gov.au｜Contractor responsibilities（保険・税・登録など）", url: "https://business.gov.au/people/contractors/contractor-responsibilities", accessedAt: "2026-08-02" },
     ],
     relatedSlugs: ["delivery-insurance", "delivery-abn-tax", "gig-work-comparison", "cars-guide", "license-guide"],
-    updatedAt: "2026-08-02",
+    examples: {
+      title: "配達車両の費用を比べる試算",
+      items: [
+        {
+          title: "電動自転車を6週間借りる",
+          summary: "週A$55のレンタルを見つけたと仮定し、本体を買う前に試す場合の例です。",
+          details: [
+            "価格だけでなく、配達利用の可否、盗難時の自己負担、交換バッテリーや充電の可否を確認します。",
+            "ライト、鍵、ヘルメット、雨具、バッグの有無を聞き、足りないものを加えた費用で比較します。"
+          ],
+          facts: [
+            {
+              label: "試算",
+              value: "A$55 × 6週 ＝ A$330（保証金・装備・事故負担は別）"
+            }
+          ],
+          links: [
+            {
+              label: "自転車・電動機器の地域ルール",
+              url: "/guides/e-bike-e-scooter-rules"
+            }
+          ]
+        },
+        {
+          title: "手持ちの車で1週間だけ試す",
+          summary: "配達売上A$250、燃料A$45、駐車A$10と仮定します。",
+          details: [
+            "自家用保険で配達業務が対象になるとは限らないため、自分の契約で確認します。",
+            "実際のオンライン時間と対象稼働時間は別に記録。A$195を最終利益と考えず、保険や整備などの負担を追加して判断します。"
+          ],
+          facts: [
+            {
+              label: "試算",
+              value: "A$250 − A$45 − A$10 ＝ A$195（保険・整備・税金を引く前）"
+            }
+          ],
+          links: [
+            {
+              label: "配達用保険の選び方",
+              url: "/guides/delivery-insurance"
+            }
+          ]
+        }
+      ],
+      note: "価格は判断方法を示す架空の例です。商品価格・収入・税務上の控除額ではありません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
   },
 

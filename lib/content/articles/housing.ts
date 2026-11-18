@@ -87,7 +87,54 @@ export const housingArticles: Article[] = [
       "housing-message-templates",
       "inspection-checklist",
     ],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "入居前に比べる2つの部屋の例",
+      items: [
+        {
+          title: "部屋A｜家賃に光熱費が含まれる",
+          summary: "週A$270で光熱費込み。駅から徒歩圏にある想定です。",
+          details: [
+            "見学時に、電気・水道・インターネットが全て込みか、上限や追加請求の条件を聞きます。",
+            "入居時の振込は継続費用と分けて計算し、ボンドの送金先と受付番号を確認します。"
+          ],
+          facts: [
+            {
+              label: "試算",
+              value: "4週間の継続費用はA$1,080"
+            }
+          ],
+          links: [
+            {
+              label: "州ごとのボンドの預け方",
+              url: "/guides/bond-rules-overview"
+            }
+          ]
+        },
+        {
+          title: "部屋B｜家賃が安く、光熱費と交通費が別",
+          summary: "家賃が週A$240、光熱費の自分の負担が週A$15、交通費が週A$15と仮定します。",
+          details: [
+            "交通費・光熱費を入れるとAと同じ。帰宅時間や乗り換え、夏の電気代の変動を比べます。",
+            "光熱費は請求書の写し、人数での割り方、退去月の精算方法が分かる状態にします。"
+          ],
+          facts: [
+            {
+              label: "試算",
+              value: "週の合計はA$270、4週間でA$1,080"
+            }
+          ],
+          links: [
+            {
+              label: "内見依頼・費用を確認する英文",
+              url: "/guides/housing-message-templates"
+            }
+          ]
+        }
+      ],
+      intro: "週家賃だけでは判断しにくいときは、光熱費、通勤費、初回に払うお金を同じ表に並べます。",
+      note: "次の金額は計算用の架空例です。相場や法定の上限を示すものではありません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [
@@ -469,7 +516,34 @@ export const housingArticles: Article[] = [
       "housing-platforms-comparison",
       "housing-message-templates",
     ],
-    updatedAt: "2026-07-19",
+    examples: {
+      title: "内見で確認する場面の例",
+      items: [
+        {
+          title: "写真と現地の設備が違う",
+          summary: "掲載写真にはエアコンがあるものの、内見では部屋に見当たらない例です。",
+          details: [
+            "部屋と共用部のどちらにあるか、使用時間・追加料金があるかを質問します。",
+            "設備名と料金が契約書にも反映されるまでは、掲載写真だけで決めません。"
+          ]
+        },
+        {
+          title: "設備に傷・しみがある",
+          summary: "入居前から窓にひびがある、床にしみがある場合の例です。",
+          details: [
+            "修理の予定を確認し、同意のうえ傷の位置と大きさが分かる写真を撮ります。",
+            "入居時に状態報告書へ「入居前からあり」と記載し、双方で控えを保管します。"
+          ],
+          links: [
+            {
+              label: "状態報告書の書き方",
+              url: "/guides/condition-report-guide"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
   },
 

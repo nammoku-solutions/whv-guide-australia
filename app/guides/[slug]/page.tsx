@@ -8,6 +8,7 @@ import { AudienceBox } from "@/components/articles/AudienceBox";
 import { CommonMistakes } from "@/components/articles/CommonMistakes";
 import { ArticleImageGallery } from "@/components/articles/ArticleImageGallery";
 import { ProcedureChecklist } from "@/components/articles/ProcedureChecklist";
+import { ArticleExamples } from "@/components/articles/ArticleExamples";
 import { StepBlock } from "@/components/articles/StepBlock";
 import { WarningBox } from "@/components/articles/WarningBox";
 import { KeyFacts } from "@/components/articles/KeyFacts";
@@ -229,6 +230,11 @@ export default async function GuideDetailPage({ params }: GuideDetailPageProps) 
       {article.procedure ? <ProcedureChecklist procedure={article.procedure} /> : null}
 
       <TableOfContents steps={article.steps} />
+      {article.examples ? (
+        <a href="#article-examples" className="inline-flex min-h-11 items-center font-semibold text-sky-800 underline underline-offset-4">
+          {article.examples.title}へ移動
+        </a>
+      ) : null}
 
       <article className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 leading-8 text-slate-700 sm:text-[15px]">
         {article.content.map((paragraph) => (
@@ -239,6 +245,8 @@ export default async function GuideDetailPage({ params }: GuideDetailPageProps) 
       </article>
 
       {inlineImages.length > 0 ? <ArticleImageGallery images={inlineImages} /> : null}
+
+      {article.examples ? <ArticleExamples section={article.examples} /> : null}
 
       <section className="space-y-3">
         {article.steps.map((step, index) => (

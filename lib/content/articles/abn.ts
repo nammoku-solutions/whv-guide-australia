@@ -96,7 +96,50 @@ export const abnArticles: Article[] = [
       { label: "Australian Business Register", url: "https://www.abr.gov.au/" },
     ],
     relatedSlugs: ["tax-return-guide", "uber-eats-guide", "doordash-guide"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "ABNを申請するか迷ったときの例",
+      items: [
+        {
+          title: "配達を個人事業として始める",
+          summary: "自分で業務を始め、プラットフォームの登録にABNが必要な場合です。",
+          details: [
+            "事業を始める実態と就労条件を確認してから、ABRでSole traderを選び、事業の開始日、連絡先、業務内容を入力します。",
+            "ABN発行後はプラットフォーム側の本人確認・承認を別に完了します。売上と経費の記録は初日から分けます。"
+          ],
+          facts: [
+            {
+              label: "申請料",
+              value: "ABR公式ならA$0"
+            }
+          ],
+          links: [
+            {
+              label: "ABR公式｜無料でABNを申請",
+              url: "https://www.abr.gov.au/business-super-funds-charities/applying-abn"
+            }
+          ]
+        },
+        {
+          title: "カフェの雇用なのにABNを求められた",
+          summary: "面接で雇用の話をしていたのに、支払いにABNを出すよう言われた場合です。",
+          details: [
+            "契約区分・賃金・給与明細の有無を確認します。働き方の実態が雇用なら、その仕事のためのABNには申請資格がありません。",
+            "言われた区分だけで判断せず、ABR・Fair Workの案内で雇用と請負の違いを照合します。"
+          ],
+          links: [
+            {
+              label: "ABR公式｜雇用とABN申請資格",
+              url: "https://www.abr.gov.au/business-super-funds-charities/applying-abn/abn-entitlement"
+            },
+            {
+              label: "雇用か請負かを確認する",
+              url: "/guides/contractor-vs-employee"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [

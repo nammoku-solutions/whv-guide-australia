@@ -129,30 +129,185 @@ export const preparationArticles: Article[] = [
     slug: "insurance-guide",
     category: "preparation",
     description:
-      "海外保険は『万一の医療費』への備え。ワーホリで重視すべき補償項目と、加入時のチェックポイントを解説します。",
+      "Bupa、たびほ、Allianz Careの保険料例と補償の違いを比較。出発前・現地滞在中の選び方と、契約前に見る項目をまとめました。",
     content: [
-      "オーストラリアの医療費は非常に高額で、ちょっとした受診や入院でも日本の数倍かかることがあります。日本は豪州との相互医療協定の対象国ではありません。別の加入資格がない場合に備えて、民間保険の治療・救急搬送・就労中の補償を確認しましょう。",
-      "保険は『安さ』だけで選ばず、治療・救援費用が無制限または十分に高いか、歯科・持病・携行品・個人賠償責任までカバーされるかを基準に選びましょう。",
+      "日本は豪州との相互医療協定の対象国ではありません。別のMedicare加入資格がない場合は、医療費にどう備えるか、出発前に決めておきます。",
+      "日本出発前で治療・救援、携行品や賠償をまとめて備えたいときは海外旅行保険から比較。豪州での医療を中心に備えたいときはOVHC（海外訪問者向け医療保険）を比較し、国内外の旅行、帰国のための搬送、携行品・賠償が別契約で必要かを確かめます。",
+      "417でも自分のビザに8501（十分な医療保険の維持）が付いているかは許可通知またはVEVOで確認します。該当する場合は、選んだ契約がその条件を満たすことを保険会社に確認します。"
     ],
     keyFacts: [
-      { label: "必要性", value: "通常の日本からの短期滞在でMedicareに加入できない場合は、民間保険の補償を確認" },
-      { label: "期間", value: "滞在期間に合わせて1年などで設定" },
-      { label: "費用の目安", value: "1年で10〜20万円前後（補償内容で変動）" },
-      { label: "重要な補償", value: "治療・救援費用、賠償責任、携行品、歯科" },
+      {
+        label: "比べるもの",
+        value: "日本出発前の海外旅行保険と、豪州の海外訪問者向け医療保険（OVHC）"
+      },
+      {
+        label: "見積もりでそろえる条件",
+        value: "補償期間・居住州・人数・自己負担。豪ドルの月額と滞在期間の合計を区別"
+      },
+      {
+        label: "優先して見る補償",
+        value: "入院、GP・外来、救急車、救援・帰国搬送、予定する就労"
+      }
     ],
     steps: [
-      { title: "補償範囲を確認", description: "治療・救援費用の上限、歯科・持病・妊娠の扱い、賠償責任額をチェックします。" },
-      { title: "期間と費用を比較", description: "複数社で1年プランを比較。長期割引やクレカ付帯との併用も検討します。" },
-      { title: "申込・証券を保存", description: "加入後は英文の保険証券をPDFで保存し、緊急連絡先を控えます。" },
+      {
+        title: "許可通知と就労予定を確認する",
+        description: "許可通知またはVEVOで8501の有無を確認。農作業、建設、配達など具体的な仕事と使う車両をメモします。",
+        links: [
+          {
+            label: "Home Affairs｜VEVOでビザ条件を確認",
+            url: "https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/check-conditions-online/visa-holders"
+          },
+          {
+            label: "Home Affairs｜必要な医療保険",
+            url: "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/adequate-health-insurance"
+          }
+        ]
+      },
+      {
+        title: "同じ期間で見積もりを取る",
+        description: "旅行日程・開始日・終了日・年齢・人数・居住予定の州をそろえ、上の各社の公式ページで見積もります。入院自己負担と通院の自己負担は別々に比べます。"
+      },
+      {
+        title: "補償の対象外と不足を確認する",
+        description: "約款で入院、GP、救急車、持病の待機期間、救援・帰国搬送、仕事や車両に関する除外項目を確認します。記載が不明な場合は契約前に保険会社へ照会します。"
+      },
+      {
+        title: "申込み後に証券と連絡先を保存する",
+        description: "保険証券の開始日・終了日と氏名を確認し、証券と緊急連絡先をオフラインで見られるようにします。8501が付いている場合は、条件を満たす証明も確認します。"
+      }
     ],
     tips: [
-      "クレジットカード付帯保険は『最初の90日のみ』『治療費が低額』など制限が多いので、長期滞在では本格的な保険を主契約にしましょう。",
-      "持病がある場合は事前申告が必要なことが多いです。申告漏れは支払い拒否の原因になります。",
+      "カード付帯保険を使うなら、補償開始の利用条件、期間、医療費の上限、予定する仕事が対象かをカードの約款で確認し、不足する期間や補償を別に備えます。",
+      "持病については、申告が必要か、待機期間や免責があるかを契約前に保険会社へ確認します。"
     ],
-    warnings: ["補償内容・免責は商品ごとに大きく異なります。契約前に約款で必ず確認してください。"],
-    relatedSlugs: ["preparation-checklist", "whv-complete-guide"],
-    updatedAt: "2026-06-10",
+    warnings: [
+      "医療保険と旅行保険は補償範囲が異なります。保険料が安くても、治療・仕事・旅行で必要な補償が揃うとは限りません。"
+    ],
+    relatedSlugs: [
+      "preparation-checklist",
+      "whv-complete-guide",
+      "medicare-oshc",
+      "delivery-insurance"
+    ],
+    examples: {
+      title: "ワーホリ保険の候補と保険料",
+      items: [
+        {
+          title: "Bupa Australia｜Short Stay Visitors Cover",
+          summary: "豪州での入院を中心に備えたい、単身の417保持者が確認したいOVHCです。",
+          details: [
+            "417は対象ビザの一覧にあります。家族契約が必要な場合は、この商品ではなく別の対象プランを確認してください。",
+            "入院とGP・外来は別です。入院を伴わない救急外来、救急車、ネットワーク外の病院、持病の待機期間と自己負担を確認します。",
+            "8501が付いている場合は、見積もり時に会社へ適合の可否と証明書の発行を確認します。旅行中の盗難・賠償・中断は別に備えが必要かを確認してください。"
+          ],
+          facts: [
+            {
+              label: "現在の保険料",
+              value: "対象プランを選び、Bupa公式で要見積もり"
+            },
+            {
+              label: "過去の公式掲載例",
+              value: "月A$53.13（2025年4月1日適用、NSW・ACT、単身。現行価格ではありません）"
+            }
+          ],
+          links: [
+            {
+              label: "Bupa公式でOVHCを見積もる",
+              url: "https://www.bupa.com.au/health-insurance/cover/overseas-visitors"
+            },
+            {
+              label: "Short Stayの商品説明",
+              url: "https://www.bupa.com.au/health-insurance/overseas-visitors/cover/short-stay-visitors-cover"
+            },
+            {
+              label: "2025年の公式料金資料",
+              url: "https://bupaanzstdhtauspub01.blob.core.windows.net/productfiles/Short_Stay_Visitors_Cover_NSW_ACT_S_20250205_130119.pdf"
+            }
+          ]
+        },
+        {
+          title: "t@bihoたびほ｜日本からの出発前に比較",
+          summary: "治療・救援だけでなく、個人賠償や携行品もまとめて検討したい人向けの海外旅行保険です。",
+          details: [
+            "料金例は出発日時点18〜32歳、オーストラリアの掲載プラン。たびほの掲載例（1年・6か月）では治療・救援費用5,000万円、個人賠償責任1億円。補償額と条件は見積もりで再確認します。",
+            "既に日本を出国して同じ旅行を続けている場合、新規加入できる前提で計画しないでください。重要事項説明書の申込条件を確認します。",
+            "仕事中のけがが必ず対象とは限りません。農作業、建設、バイク配達など、具体的な作業と車両を伝えて補償対象か照会してください。"
+          ],
+          facts: [
+            {
+              label: "たびほの公式例",
+              value: "1年216,660円・6か月121,680円"
+            },
+            {
+              label: "たびほプライムの公式例",
+              value: "1年265,770円・6か月144,710円"
+            }
+          ],
+          links: [
+            {
+              label: "オーストラリア向けの公式保険料・見積もり",
+              url: "https://tabiho.jp/plan-workingholiday/australlia/index.html"
+            },
+            {
+              label: "申込条件・重要事項説明書",
+              url: "https://tabiho.jp/overseas/inc/plan/jyusetsu.html"
+            }
+          ]
+        },
+        {
+          title: "Allianz Care Australia｜入院中心とGP付きの比較",
+          summary: "現地の医療費を中心に備え、普段のGP受診も必要かを価格差で判断したい場合の候補です。",
+          details: [
+            "Hospital Care Workersは対象となる入院中心。Everyday Care Workersは対象となるGP診察も含むので、通院込みで比べたいときはこちらを確認します。",
+            "GP付きでも診察費全額が戻るとは限りません。支払基準・差額、専門医や処方薬、持病の待機期間を契約前に確認します。",
+            "50歳未満向けのValue Careは月A$53.00〜（入院自己負担A$500）と別表示されています。会社は8501が付く場合に適さないことがあると案内しています。"
+          ],
+          facts: [
+            {
+              label: "Hospital Care Workers",
+              value: "月A$72.50〜（据え置きで12か月A$870〜）"
+            },
+            {
+              label: "Everyday Care Workers",
+              value: "月A$93.00〜（据え置きで12か月A$1,116〜）"
+            },
+            {
+              label: "価格表示の条件",
+              value: "いずれも入院時自己負担A$500の公式表示"
+            }
+          ],
+          links: [
+            {
+              label: "417向けプラン・公式見積もり",
+              url: "https://www.allianzcare.com.au/en/visas/visitors-visa-ovhc/417-visa.html"
+            },
+            {
+              label: "Home Affairs｜ビザ条件と必要な医療保険",
+              url: "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health/adequate-health-insurance"
+            }
+          ]
+        }
+      ],
+      intro: "日本出発前に旅行全体を守る海外旅行保険と、豪州滞在中の医療費を中心に備えるOVHC（海外訪問者向け医療保険）を分けて比較します。どれが合うかは、出発済みか、GPに通う予定があるか、仕事中・旅行中の補償が必要かで変わります。",
+      note: "2026年11月19日確認。円は保険会社の期間別掲載例、豪ドルは公式の月額下限または日付を明記した過去の掲載例です。補償範囲・自己負担が異なるため、金額だけで順位付けできません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
+    procedure: {
+      preparation: [
+        {
+          title: "見積もり・申込み前に揃えるもの",
+          items: [
+            "旅券の氏名・生年月日、417の許可通知またはVEVOの条件",
+            "出発日・帰国予定日、補償開始日、滞在予定の州、加入する人数",
+            "予定する仕事・車両、持病など保険会社から質問された事項",
+            "途中変更・解約、請求窓口、補償の空白期間がないか"
+          ]
+        }
+      ],
+      completion: "必要な補償と契約の開始日を確認し、保険証券と緊急連絡先を保存できたら完了です。8501がある場合は適合の証明も控えます。"
+    },
   },
 
   {

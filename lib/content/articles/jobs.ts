@@ -114,7 +114,60 @@ export const jobsArticles: Article[] = [
       { label: "SEEK（求人サイト）", url: "https://www.seek.com.au/" },
     ],
     relatedSlugs: ["farm-second-visa", "tfn-guide", "whv-complete-guide", "first-30-days-roadmap"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "求人探しから応募までの具体例",
+      items: [
+        {
+          title: "カフェの仕事に初めて応募する",
+          summary: "平日の朝に働ける人が、通える範囲のカフェを探して応募する例です。",
+          details: [
+            "求人に記載された朝の開始時刻と交通手段を確認し、レジュメ冒頭に働ける曜日を記載します。",
+            "店頭なら混雑しない時間を選び「Hi, are you hiring at the moment? May I leave my résumé?」と聞き、日時と担当者を控えます。"
+          ],
+          facts: [
+            {
+              label: "検索語の例",
+              value: "cafe all rounder、cafe assistant、FOH ＋ 駅・地域名"
+            }
+          ],
+          links: [
+            {
+              label: "店頭応募の時間帯・英語フレーズ",
+              url: "/guides/walk-in-resume"
+            },
+            {
+              label: "SEEKで求人を検索",
+              url: "https://www.seek.com.au/"
+            }
+          ]
+        },
+        {
+          title: "倉庫の求人にオンラインで応募する",
+          summary: "朝のカフェ以外も視野に入れて、実際の勤務地と通勤時間から探す例です。",
+          details: [
+            "夜勤・早朝勤務の時間帯には公共交通がないこともあるので、シフト予定で通勤経路を調べます。",
+            "募集にフォークリフトや安全靴の指定があるか確認し、未取得の資格は取得済みと書きません。応募後に契約区分と適用される賃金を照合します。"
+          ],
+          facts: [
+            {
+              label: "検索語の例",
+              value: "pick packer、warehouse assistant ＋ 地域名"
+            }
+          ],
+          links: [
+            {
+              label: "倉庫の仕事の探し方",
+              url: "/guides/warehouse-jobs-guide"
+            },
+            {
+              label: "Fair Work｜賃金計算",
+              url: "https://calculate.fairwork.gov.au/"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [
@@ -197,7 +250,41 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["interview-guide", "certifications", "jobs-guide"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "英文レジュメの書き方の例",
+      items: [
+        {
+          title: "飲食経験をカフェ向けに書く",
+          summary: "「接客しました」を、採用担当者が具体的に想像できる担当業務に置き換えます。",
+          details: [
+            "接客、カード決済、補充を実際に担当した場合の文です。数字を入れるなら、自分で説明できる事実だけを追加します。",
+            "baristaが必須の求人なら、担当したことのないコーヒーマシンの経験を足さず、接客や衛生管理を示します。"
+          ],
+          facts: [
+            {
+              label: "英文例",
+              value: "Served customers, processed card payments and restocked the counter during busy shifts."
+            }
+          ]
+        },
+        {
+          title: "未経験で倉庫に応募する",
+          summary: "別業種の経験から、応募職種に関係する正確さや勤務可能時間を示す例です。",
+          details: [
+            "在庫を伝票と照合した経験がある場合に使えます。フォークリフト免許などの資格欄とは別に書きます。",
+            "応募用PDFにパスポート番号やTFNは入れず、電話、メール、勤務可能日が正しいか確認します。"
+          ],
+          facts: [
+            {
+              label: "英文例",
+              value: "Checked stock against order sheets and reported discrepancies to the supervisor."
+            }
+          ]
+        }
+      ],
+      intro: "例文は実際に経験した業務だけを使い、自分の職歴と勤務可能日に置き換えます。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [
@@ -2068,19 +2155,25 @@ export const jobsArticles: Article[] = [
     priority: "P1",
     searchIntent: "RSAの取り方",
     description:
-      "バー・レストラン・ボトルショップで働くのに必須のRSA（Responsible Service of Alcohol）を、州ごとの取得方法・有効期限・費用の考え方とあわせて解説します。",
+      "酒類を提供・販売する仕事のRSAについて、州による講習・本人確認・カード申請の違いを説明。NSWで初取得、他州からVICへ移る例も掲載。",
     content: [
-      "結論から言うと、RSA（Responsible Service of Alcohol＝責任あるアルコール提供）は、アルコールを提供・販売する仕事に就くための必須資格で、取得方法・有効期限・扱いが州ごとに異なります。まず自分が働く州のRSAを取るのが基本です。飲食・バー・ボトルショップで働きたいなら最初に取っておくと応募の幅が大きく広がります。",
-      "RSAは、認定された研修機関（RTO）のコースを受けて取得します。多くの州でオンライン受講が可能ですが、州によって発行元・様式・オンライン可否が異なります。特にNSW（ニューサウスウェールズ州）とVIC（ビクトリア州）では、対面要素やコンピテンシーカードの発行など独自の手続きがあるため、州の酒類規制当局の案内を必ず確認しましょう。",
-      "州ごとの管轄の例として、NSWはLiquor & Gaming NSW、VICはVictorian Gambling and Casino Control Commission（VGCCC）系、QLD（クイーンズランド州）はOffice of Liquor and Gaming Regulation（OLGR）が所管です。州によってはRSAが全国的に相互承認されない場合があり、別の州で働くなら取り直しが必要なこともあります。",
-      "有効期限も州で異なります。QLDのように有効期限のある州、更新（refresher）が必要な州などがあるため、取得時に有効期限と更新条件を確認しましょう。RSAはワーホリの間だけでなく、複数州を移動して働く人には特に『どの州のRSAが要るか』の把握が重要です。",
-      "費用は数十ドル程度が目安で、オンラインコースなら1日程度で修了できることが多いです。修了後に発行される証明書やカードは、応募時にレジュメへ明記し、面接に持参できるよう準備しておきましょう。",
+      "RSAはResponsible Service of Alcoholの略です。酒類を提供・販売する仕事では、働く州・職務の要件に従います。受講料を払う前に、州当局が認めている講習と、受講後に必要なカードや証明書を確認します。",
+      "すでに州外資格を持っていれば、フルコースを買う前に移行手続きの有無を確認。たとえばVICでは条件を満たす場合に無料の移行研修があります。",
+      "費用と日程は認定提供者ごとに異なります。受講料にカードなどの費用が含まれるか、評価・本人確認を含めた完了時期はいつかを確認してから申し込みます。"
     ],
     keyFacts: [
-      { label: "何の資格", value: "アルコール提供・販売に必須の資格" },
-      { label: "取得方法", value: "認定RTOのコース（多くはオンライン可）" },
-      { label: "州で違う", value: "発行元・様式・有効期限・相互承認が州ごとに異なる" },
-      { label: "主な所管", value: "NSW: L&GNSW／VIC: VGCCC系／QLD: OLGR" },
+      {
+        label: "先に決めること",
+        value: "働く州と、酒類の提供・販売など担当する職務"
+      },
+      {
+        label: "申込先",
+        value: "州当局が案内する認定提供者"
+      },
+      {
+        label: "取得後",
+        value: "必要に応じて州のカードを申請。州外に移るときは認定・移行を確認"
+      }
     ],
     steps: [
       {
@@ -2138,7 +2231,60 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["rcg-rsa-gaming", "hospitality-jobs-guide", "barista-job-guide", "certifications", "food-safety-certificate"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "働く州が変わるときのRSAの例",
+      items: [
+        {
+          title: "シドニーで初めてRSAを取る｜NSW",
+          summary: "NSWの酒類提供の仕事に応募するために、ゼロから取る例です。",
+          details: [
+            "NSW州の公式案内から認定提供者を確認し、講習・評価を修了。Interim Certificateを受け取ります。",
+            "期限切れになる前に、仮証明書と100ポイント分の本人確認書類を揃え、Service NSWセンターでCompetency Cardを申請します。"
+          ],
+          facts: [
+            {
+              label: "仮証明書",
+              value: "対象のInterim Certificateで働ける期間は90日"
+            }
+          ],
+          links: [
+            {
+              label: "NSW州公式｜RSA研修と認定提供者",
+              url: "https://www.nsw.gov.au/business-and-economy/liquor-and-gaming/training/rsa"
+            },
+            {
+              label: "Service NSW｜カード申請と必要な書類",
+              url: "https://www.service.nsw.gov.au/transaction/apply-for-an-rsa-or-rcg-competency-card"
+            }
+          ]
+        },
+        {
+          title: "州外のRSAを持ってメルボルンで働く｜VIC",
+          summary: "別の州でRSAを取得済みの人が、VICで酒類を提供する仕事に移る例です。",
+          details: [
+            "州外資格だけで働けると決めつけず、既存証明書と修了した研修単位をVIC州の移行条件と照合します。",
+            "対象ならRSA RefresherでVICの証明書を取得。対象外で新たに研修が必要なら、州の認定提供者を選びます。"
+          ],
+          facts: [
+            {
+              label: "移行費用の例",
+              value: "受講資格を満たす場合、VICのRSA Refresherは無料"
+            }
+          ],
+          links: [
+            {
+              label: "VIC州公式｜州外資格からの移行条件",
+              url: "https://www.vic.gov.au/rsa-training"
+            },
+            {
+              label: "VIC州公式｜認定提供者を探す",
+              url: "https://www.vic.gov.au/approved-rsa-course-providers"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [

@@ -80,6 +80,21 @@ export type ArticleLink = {
   url: string;
 };
 
+export type ArticleExample = {
+  title: string;
+  summary: string;
+  facts?: ArticleFact[];
+  details: string[];
+  links?: ArticleLink[];
+};
+
+export type ArticleExampleSection = {
+  title: string;
+  intro?: string;
+  note?: string;
+  items: ArticleExample[];
+};
+
 export type ArticleProcedure = {
   preparation: Array<{ title: string; items: string[] }>;
   completion: string;
@@ -107,6 +122,7 @@ export type Article = {
   content: string[];
   steps: ArticleStep[];
   procedure?: ArticleProcedure;
+  examples?: ArticleExampleSection;
   keyFacts?: ArticleFact[];
   tips?: string[];
   /** 現地で使える英語フレーズ＋日本語訳（任意） */

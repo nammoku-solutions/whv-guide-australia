@@ -158,7 +158,51 @@ export const moneyArticles: Article[] = [
       },
     ],
     relatedSlugs: ["australia-living-cost", "emergency-fund", "money-transfer-wise", "working-holiday-budget"],
-    updatedAt: "2026-07-18",
+    examples: {
+      title: "週予算の埋め方の例",
+      items: [
+        {
+          title: "仕事が決まるまでの4週間",
+          summary: "家賃A$270、食費A$90、交通A$15、通信・日用品A$25と仮定します。",
+          details: [
+            "上の合計には入居時のボンド、ビザ、保険、航空券を含めていません。初回だけに払う費用と緊急資金を別に足します。"
+          ],
+          facts: [
+            {
+              label: "週の生活費",
+              value: "A$400 × 4週 ＝ A$1,600"
+            }
+          ],
+          links: [
+            {
+              label: "渡航全体の予算",
+              url: "/guides/working-holiday-budget"
+            }
+          ]
+        },
+        {
+          title: "シフトが減った週",
+          summary: "手取りA$550と週の支出A$400で、余りがA$150だった週を想定します。",
+          details: [
+            "収入が多かった週の残額は次の家賃・緊急費に先に移すと、少ないシフトでも判断しやすくなります。"
+          ],
+          facts: [
+            {
+              label: "収入がA$120減った場合",
+              value: "余りはA$30。追加出費がA$30を超えると赤字"
+            }
+          ],
+          links: [
+            {
+              label: "緊急予備費の考え方",
+              url: "/guides/emergency-fund"
+            }
+          ]
+        }
+      ],
+      note: "すべて架空の金額です。相場や就職時に保証される収入ではありません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
   },
 

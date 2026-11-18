@@ -87,7 +87,44 @@ export const tfnArticles: Article[] = [
       }
     ],
     relatedSlugs: ["abn-guide", "tax-return-guide", "bank-account-guide", "whm-tax-rates"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "申請時によくある2つのケース",
+      items: [
+        {
+          title: "到着してまだ短期宿にいる",
+          summary: "来週退去する宿にいるが、就職活動を始めたいケースです。",
+          details: [
+            "ATOの案内を読み、郵便物を受け取れる住所が確保できてから申請。銀行口座の開設を待つ必要はありません。",
+            "採用されて番号がまだ届いていなければ、雇用主に申請中と伝え、TFN申告の該当欄を案内どおり記載します。"
+          ],
+          links: [
+            {
+              label: "ATO｜外国旅券保持者の無料申請",
+              url: "https://www.ato.gov.au/forms-and-instructions/tfn-application-for-permanent-migrants-and-temporary-visitors"
+            },
+            {
+              label: "雇用主へのTFN申告",
+              url: "/guides/tfn-declaration-form"
+            }
+          ]
+        },
+        {
+          title: "2回目の渡豪で以前のTFNが分からない",
+          summary: "前回TFNを取得済みなら、新規申請ではなく既存番号を確認します。",
+          details: [
+            "利用できればATOのオンラインサービス、過去の通知などを確認。見つからなければATOへ問い合わせます。",
+            "求人サイトや初対面の連絡相手にTFNの写真を送らず、確実な送付先を確認します。"
+          ],
+          links: [
+            {
+              label: "ATO｜本人向けの連絡方法",
+              url: "https://www.ato.gov.au/about-ato/contact-us"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [

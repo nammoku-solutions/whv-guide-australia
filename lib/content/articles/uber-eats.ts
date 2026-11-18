@@ -135,7 +135,49 @@ export const uberEatsArticles: Article[] = [
       
     ],
     relatedSlugs: ["abn-guide", "doordash-guide", "tax-return-guide", "gig-work-comparison"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "配達を始める2つの例",
+      items: [
+        {
+          title: "自転車で市内から始める",
+          summary: "車を買わずに市街地の配達を試したい場合の例です。",
+          details: [
+            "車両区分を自転車で登録し、公式の書類・本人確認を先に完了します。登録状態が有効になるまで依頼を受けません。",
+            "レンタル店なら、業務配達に使える契約か、盗難時の自己負担、ヘルメット・ライト・鍵が含まれるかを確認。保温バッグは登録中の装備案内を先に見ます。"
+          ],
+          links: [
+            {
+              label: "Uber Australia｜登録と装備",
+              url: "https://www.uber.com/au/en/deliver/getting-started/"
+            },
+            {
+              label: "配達手段の比較",
+              url: "/guides/delivery-vehicle-comparison"
+            }
+          ]
+        },
+        {
+          title: "手持ちの車で配達する",
+          summary: "すでに車があり、燃料代と保険を含めても続けられるか試したい場合の例です。",
+          details: [
+            "車の登録書類等はアプリの要求に沿って提出し、保険会社に有償のフードデリバリー中の損害が補償されるかを書面で確認します。",
+            "最初の週は売上と走行距離、燃料・駐車・その他の費用を別々に記録。経費を引く前の売上を手取りと見なさないようにします。"
+          ],
+          links: [
+            {
+              label: "配達中の保険を確認する",
+              url: "/guides/delivery-insurance"
+            },
+            {
+              label: "売上・経費の記録例",
+              url: "/guides/delivery-expenses-logbook"
+            }
+          ]
+        }
+      ],
+      intro: "登録費用だけでなく、始めるまでの日数、装備、保険、初回の手元に残る金額を比べます。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [

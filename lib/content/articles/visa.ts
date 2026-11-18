@@ -220,7 +220,7 @@ export const visaArticles: Article[] = [
       {
         question: "残高証明はいくら必要ですか？",
         answer:
-          "目安は約5,000 AUD（日本円で約50万円前後）です。英文の残高証明書を用意しておくと、求められた際にすぐ対応できます。",
+          "滞在資金は通常A$5,000です。別に出国航空券、またはそれを買うための資金も確認されます。申請前に公式の書類一覧を開き、必要な証拠と翻訳を用意します。",
       },
       {
         question: "申請から入国までの期限はありますか？",
@@ -258,7 +258,50 @@ export const visaArticles: Article[] = [
     ],
     searchIntent: "417ビザの申請手順・費用",
     relatedSlugs: ["whv-complete-guide", "arrival-checklist", "working-holiday-timeline", "working-holiday-budget"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "417を申請する場面別の具体例",
+      items: [
+        {
+          title: "日本から初めて申請する｜まだ出国便を買っていない",
+          summary: "日本の旅券で初回417を海外から申請し、審査結果を待つ例です。",
+          details: [
+            "Home Affairsの書類一覧を開き、滞在資金・出国費用を示せる書類を準備。日本語書類は公式の翻訳ルールに沿って原文と英訳を添付します。",
+            "ImmiAccountで初回用のフォームを選択。提出後はTRNを保存し、許可通知を受け取るまでは変更できない航空券を買いません。"
+          ],
+          facts: [
+            {
+              label: "資金の準備",
+              value: "滞在資金は通常A$5,000。出国航空券がなければ、その購入資金も確認"
+            }
+          ],
+          links: [
+            {
+              label: "Home Affairs｜初回417と必要書類",
+              url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/first-working-holiday-417"
+            },
+            {
+              label: "ImmiAccountを作成・ログイン",
+              url: "https://online.immi.gov.au/"
+            }
+          ]
+        },
+        {
+          title: "申請後にパスポートを更新した",
+          summary: "申請した後に日本の旅券が新しくなり、番号が変わった場合です。",
+          details: [
+            "ImmiAccountで対象申請を開き、Update detailsからChange of passport detailsを選択。新しい旅券情報と変更理由を入力して送信します。",
+            "渡航前に新旅券との紐づけを確認。オンライン更新で扱えない変更は、Home Affairsが案内する手続きに従います。"
+          ],
+          links: [
+            {
+              label: "Home Affairs｜新しい旅券を届け出る",
+              url: "https://immi.homeaffairs.gov.au/change-in-situation/passport-details"
+            }
+          ]
+        }
+      ]
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [

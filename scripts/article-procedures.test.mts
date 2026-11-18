@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { ArticleExamples } from "../components/articles/ArticleExamples";
 import { articles } from "../lib/content/articles/index";
+import type { ArticleLink } from "../types/article";
 
 const publicArticles = articles.filter((a) => a.published && (!a.status || a.status === "published"));
 const slugs = new Set(publicArticles.map((article) => article.slug));
@@ -27,22 +31,52 @@ test("procedures have preparation, meaningful steps and a completion check", () 
   }
 });
 
-test("steps link to public guide slugs or HTTPS destinations, never arbitrary schemes", () => {
-  for (const { slug, steps } of publicArticles) {
-    for (const step of steps) {
-      const links = step.links ?? [];
-      assert.equal(new Set(links.map((link) => link.url)).size, links.length, slug);
-      for (const link of links) {
-        assert.ok(link.label.trim(), slug);
-        const local = /^\/guides\/([a-z0-9-]+)$/.exec(link.url);
-        if (local) {
-          assert.ok(slugs.has(local[1]), `${slug}: ${link.url}`);
-        } else {
-          const parsed = new URL(link.url);
-          assert.ok(parsed.protocol === "https:" && !parsed.username && !parsed.password, slug);
-        }
-      }
+function assertSafeLinks(links: ArticleLink[], slug: string) {
+  assert.equal(new Set(links.map((link) => link.url)).size, links.length, slug);
+  for (const link of links) {
+    assert.ok(link.label.trim(), slug);
+    const local = /^\/guides\/([a-z0-9-]+)$/.exec(link.url);
+    if (local) {
+      assert.ok(slugs.has(local[1]), `${slug}: ${link.url}`);
+    } else {
+      const parsed = new URL(link.url);
+      assert.ok(parsed.protocol === "https:" && !parsed.username && !parsed.password, slug);
     }
+  }
+}
+
+test("steps and examples link to public guides or HTTPS destinations", () => {
+  for (const { slug, steps, examples } of publicArticles) {
+    for (const step of steps) assertSafeLinks(step.links ?? [], slug);
+    for (const item of examples?.items ?? []) assertSafeLinks(item.links ?? [], slug);
+  }
+});
+
+test("comparison examples are independently titled and contain actionable details", () => {
+  for (const slug of ["insurance-guide", "bank-comparison", "sim-guide", "housing-guide", "jobs-guide", "uber-eats-guide", "visa-application", "abn-guide", "rsa-state-guide"]) {
+    assert.ok(bySlug.get(slug)?.examples, slug);
+  }
+  for (const { slug, examples } of publicArticles) {
+    if (!examples) continue;
+    assert.ok(examples.title.trim() && examples.items.length >= 2, slug);
+    assert.equal(new Set(examples.items.map((item) => item.title)).size, examples.items.length, slug);
+    for (const { title, summary, facts, details } of examples.items) {
+      assert.ok(title.trim() && summary.trim(), slug);
+      assert.ok(details.length > 0 && details.every((detail) => detail.trim()), slug);
+      assert.ok(facts?.every(({ label, value }) => label.trim() && value.trim()) ?? true, slug);
+    }
+  }
+});
+
+test("insurance examples render as a numbered list with separate prices and source links", () => {
+  const section = bySlug.get("insurance-guide")?.examples;
+  assert.ok(section);
+  const html = renderToStaticMarkup(createElement(ArticleExamples, { section }));
+  assert.match(html, /<section id="article-examples" aria-labelledby="article-examples-title"/);
+  assert.match(html, /<ol role="list"/);
+  assert.equal([...html.matchAll(/<h3(?: |>)/g)].length, 3);
+  for (const expected of ["Bupa Australia", "たびほ", "Allianz Care Australia", "216,660円", "現行価格ではありません", "公式見積もり"]) {
+    assert.ok(html.includes(expected), expected);
   }
 });
 

@@ -9,14 +9,22 @@ export const simArticles: Article[] = [
     description:
       "主要キャリアの特徴、eSIM/物理SIMの選び方、到着後の開通手順まで。空港到着の瞬間からネットに困らないための通信ガイド。",
     content: [
-      "オーストラリアの主要キャリアはTelstra、Optus、Vodafoneの3社。これに加えて、これらの回線を借りた格安SIM（Amaysim、Boost、ALDI mobileなど）が多数あります。Telstraは地方でもつながりやすく、Optus/Vodafoneは都市部で割安な傾向です。",
-      "到着前にeSIM対応スマホでeSIMを購入しておけば、空港に降りた瞬間からデータ通信が使えて便利です。物理SIMは現地のスーパーやキャリアショップ、空港で購入できます。",
+      "豪州の電話番号を求人や連絡に使うなら、通話・SMS付きプリペイドを比較。Telstra、Optus、Vodafoneのほか、回線を借りたサービスもあります。同じ系列でも使えるエリアは商品ごとに確認します。",
+      "eSIMは端末・本人確認・開通場所の条件によっては出発前に有効化できません。空港から通信が必要なら、空港Wi-Fiが使える場所や、到着後に開通できる手順を控えます。"
     ],
     keyFacts: [
-      { label: "主要キャリア", value: "Telstra / Optus / Vodafone" },
-      { label: "格安SIM", value: "Boost(Telstra回線) / Amaysim / ALDI mobile 等" },
-      { label: "プラン形態", value: "プリペイド（月額28日サイクル）が主流" },
-      { label: "料金の目安", value: "月20〜40 AUDで大容量データのプランが多い" },
+      {
+        label: "電話番号・SMS",
+        value: "必要ならデータ専用SIMを避ける"
+      },
+      {
+        label: "料金比較",
+        value: "初回価格と通常更新額を分け、更新間隔とデータ容量をそろえる"
+      },
+      {
+        label: "遠方で使う場合",
+        value: "滞在先・職場の住所を商品のカバレッジ地図で確認"
+      }
     ],
     steps: [
       {
@@ -54,11 +62,84 @@ export const simArticles: Article[] = [
       }
     ],
     tips: [
-      "ファームや地方に行く予定があるなら、つながりやすさ重視でTelstra系を選ぶと安心です。",
-      "多くのプランは28日サイクル。自動更新の有無と残データの繰り越し条件を確認しましょう。",
+      "地方で使う予定があるなら、購入前に滞在先・職場・移動経路の回線エリアを確認しましょう。",
+      "28日などの更新間隔と、自動更新・データ繰り越し・有効期限を確認します。"
     ],
     relatedSlugs: ["arrival-checklist", "preparation-checklist"],
-    updatedAt: "2026-11-18",
+    examples: {
+      title: "豪州番号が持てるプリペイドSIMの例",
+      items: [
+        {
+          title: "Telstra｜Pre-Paid Mobile",
+          summary: "地方へ移動する予定があり、実際の住所で電波を確認してから買いたい人向けの比較候補です。",
+          details: [
+            "職場と滞在先の両方をカバレッジ地図で調べ、電話・SMS、eSIM対応、自動更新条件を確認して購入します。",
+            "購入後は公式の開通ページから本人確認を済ませ、通話・SMSを試します。"
+          ],
+          facts: [
+            {
+              label: "代表的な通常更新",
+              value: "A$44／28日（公式の比較表）"
+            }
+          ],
+          links: [
+            {
+              label: "料金を確認",
+              url: "https://www.telstra.com.au/prepaid/mobile-plans/compare-plans"
+            },
+            {
+              label: "Telstraの回線エリア",
+              url: "https://www.telstra.com.au/coverage-networks/our-coverage"
+            },
+            {
+              label: "SIMの公式開通ページ",
+              url: "https://www.telstra.com.au/prepaid/activate"
+            }
+          ]
+        },
+        {
+          title: "Optus｜Flex Plus",
+          summary: "都市部を中心に、更新時の金額とデータ容量を見比べたい人の候補です。",
+          details: [
+            "SIMの注文時は初回の割引価格だけで判断せず、次回の更新金額と基本容量を確認。滞在先の電波と、eSIMまたは物理SIMの開通方法も見ます。"
+          ],
+          facts: [
+            {
+              label: "公開掲載例",
+              value: "A$40／28日（公式ページの初回割引後の表示例）"
+            }
+          ],
+          links: [
+            {
+              label: "Optusのプリペイド比較",
+              url: "https://www.optus.com.au/prepaid/explore"
+            }
+          ]
+        },
+        {
+          title: "Vodafone｜Prepaid Plus",
+          summary: "都市部で28日単位のプリペイドを選び、毎回のデータ量と費用を管理したいときの候補です。",
+          details: [
+            "期間限定のスターターパックと毎回の更新を分けて比較。自動更新の設定と、番号を維持するために必要な更新時期を購入後に確認します。"
+          ],
+          facts: [
+            {
+              label: "プランの掲載例",
+              value: "A$40／28日（Prepaid Plus）"
+            }
+          ],
+          links: [
+            {
+              label: "Vodafone公式｜プリペイドプラン",
+              url: "https://www.vodafone.com.au/prepaid/plans"
+            }
+          ]
+        }
+      ],
+      intro: "求人応募や家主との連絡に使うなら、データ専用ではなく、オーストラリアの電話番号・通話・SMS付きのプランを比較します。",
+      note: "2026年11月19日確認。初回割引や一時的なボーナスデータを除いて比較します。28日単位の料金は暦月単位ではありません。"
+    },
+    updatedAt: "2026-11-19",
     published: true,
     procedure: {
       preparation: [
