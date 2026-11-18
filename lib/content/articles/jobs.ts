@@ -175,7 +175,7 @@ export const jobsArticles: Article[] = [
       "残念ながら、ワーホリの立場の弱さにつけ込み、最低賃金を大きく下回る賃金やPayslipなしの現金払い（cash in hand）を持ちかける雇用主もいます。おかしいと感じたらFair Work Ombudsman（公正労働オンブズマン）に無料で相談できます。",
     ],
     keyFacts: [
-      { label: "全国最低賃金", value: "時給約24 AUD前後（毎年7月に改定。要公式確認）" },
+      { label: "全国最低賃金", value: "Award・協定のない成人は時給26.44 AUD（2026年7月改定）。適用区分を確認" },
       { label: "カジュアル手当", value: "casual雇用は基本時給に上乗せ（loading）あり" },
       { label: "Payslip", value: "給与支払い後1営業日以内に受け取る権利がある" },
       { label: "相談先", value: "Fair Work Ombudsman（無料・多言語対応）" },
@@ -205,11 +205,12 @@ export const jobsArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Fair Work Ombudsman｜2026年の最低賃金改定", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/july-2026/20260701-minimum-wage-increase-media-release" },
       { label: "Fair Work Ombudsman（公式）", url: "https://www.fairwork.gov.au/" },
     ],
     warnings: ["最低賃金や手当は毎年改定されます。金額は必ずFair Work公式で最新情報を確認してください。"],
     relatedSlugs: ["jobs-guide", "tfn-guide", "super-guide"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-15",
     published: true,
   },
 
@@ -650,7 +651,7 @@ export const jobsArticles: Article[] = [
       "結論から言うと、ワーホリの多くはCasual（カジュアル）で働きます。Casualは基本時給に約25%のCasual loading（手当）が上乗せされる代わりに、有給の年次・病気休暇がなく、シフトの保証もありません。Part-time・Full-timeは有給休暇や決まった労働時間がある安定した雇用です。",
       "Casualは、シフトが不規則で、雇用主・従業員のどちらも比較的自由に関係を終えられる働き方です。手当が乗るぶん時給は高めですが、休んでも有給は出ず、来週のシフトが保証されるわけではありません。渡航直後や掛け持ちで柔軟に働きたいワーホリに向いています。",
       "Part-timeは、週の労働時間が決まっている（例：週20時間）安定雇用で、有給の年次休暇・病気休暇が労働時間に応じて発生します。Full-timeは週38時間を基準とするフルタイム雇用で、同様に有給休暇が付きます。どちらもCasual loadingは付きませんが、勤務が安定し、Notice period（退職・解雇の通知期間）の対象になります。",
-      "セカンドビザ（88日のSpecified Work）を狙う場合は、Casualでも要件を満たせますが、Payslipや勤務日数の記録がより重要になります。またワーホリ（417/462）には同一雇用主6か月の就労制限があるため、雇用形態に関わらずこの点を意識しましょう。",
+      "セカンドビザ（指定労働）を狙う場合は、Casualでも要件を満たせますが、Payslipや勤務日数の記録がより重要になります。またワーホリ（417/462）には同一雇用主6か月の就労制限があるため、雇用形態に関わらずこの点を意識しましょう。",
       "自分がどの雇用形態かは、契約書・Letter of Offer・Payslipで確認できます。Payslipに『Casual』と記載され手当が乗っているか、Part-timeなら有給が積み上がっているかをチェックしましょう。近年は一定の条件を満たすCasualが継続雇用（permanent）への転換を求められる仕組みもあり、詳細はFair Workで確認できます。",
     ],
     keyFacts: [
@@ -694,7 +695,7 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["employment-contract-checklist", "award-rates-penalty-rates", "working-rights", "visa-six-month-work-limitation", "payslip-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -708,6 +709,7 @@ export const jobsArticles: Article[] = [
     description:
       "自分の最低時給や土日・祝日・夜間の割増（Penalty Rate）は、Fair WorkのPay Calculatorで調べられます。Award（賃金裁定）の探し方と確認手順を解説します。",
     content: [
+      "2026年12月1日以降に始まる最初の完全な給与期間から、ファストフード、小売のレベル1〜3、薬局アシスタントのレベル1〜2の対象Awardで、同じ雇用主に6か月を超えて雇用されている18〜20歳の最低賃金率が段階的に変わります。年齢・Award・等級・日付を指定してFair Workの計算ツールで確認してください。",
       "結論から言うと、自分の正しい最低時給と土日・祝日・夜間の割増（Penalty Rate）は、Fair Work OmbudsmanのPay and Conditions Tool（Pay Calculator）で無料で調べられます。多くの労働者は、業界・職種ごとに定められたAward（賃金裁定）に基づく最低条件が適用され、これはNational Minimum Wageより高いことが多いです。",
       "Award（アワード）とは、業界・職種ごとの最低賃金・割増・手当を定めた法的文書です。飲食はHospitality Award、小売はGeneral Retail Award、清掃はCleaning Services Awardなど、100以上のAwardがあります。自分に適用されるAwardは、Fair Workの『Find my award』で職種を選んで特定できます。",
       "Penalty Rate（割増賃金）は、土曜・日曜・祝日・早朝・深夜など、通常より不利な時間帯に働いたときに支払われる高い時給です。例えば日曜や祝日は平日より高い率になるのが一般的で、率はAwardごとに異なります。カジュアルは、これらの割増に加えてCasual loadingも重なる場合があります。",
@@ -742,10 +744,12 @@ export const jobsArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Fair Work Ombudsman｜18〜20歳の対象Awardの賃金改定（2026年11月2日更新）", url: "https://www.fairwork.gov.au/about-us/workplace-laws/award-changes/major-award-changes/junior-wage-changes-to-retail-fast-food-and-pharmacy-awards" },
       { label: "Fair Work Ombudsman（公式）", url: "https://www.fairwork.gov.au/" },
     ],
     verifiedAt: "2026-07-18",
     officialSources: [
+      { label: "Fair Work Ombudsman｜18〜20歳の対象Awardの賃金改定（2026年11月2日更新）", url: "https://www.fairwork.gov.au/about-us/workplace-laws/award-changes/major-award-changes/junior-wage-changes-to-retail-fast-food-and-pharmacy-awards", accessedAt: "2026-11-18" },
       {
         label: "Fair Work Ombudsman｜Pay and Conditions Tool（Pay Calculator）",
         url: "https://www.fairwork.gov.au/pay-and-wages/pay-calculator",
@@ -758,7 +762,7 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["employment-types", "employment-contract-checklist", "underpayment-unpaid-wages", "working-rights", "payslip-guide"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-08",
     published: true,
   },
 
@@ -831,6 +835,7 @@ export const jobsArticles: Article[] = [
     description:
       "給料が支払われない、最低賃金を下回る、割増が払われない——そんなときの具体的な対応手順を、証拠の残し方からFair Workへの相談まで解説します。",
     content: [
+      "2026年11月11日に公表されたNSW州のブルーベリー農園の事案では、日本人を含むワーキングホリデー労働者2人への未払い分が法的措置の開始後に支払われ、是正通知に従わなかった派遣会社と取締役に裁判所が制裁金を科しました。",
       "結論から言うと、給料未払いや最低賃金違反に気づいたら、①証拠を集める②自分の正しい賃金を確認する③雇用主に書面で連絡する④解決しなければFair Work Ombudsmanに相談する、の順で対応します。ワーホリでもビザや国籍に関係なく賃金を取り戻す権利があり、相談は無料・多言語対応です。",
       "まず証拠を集めます。Payslip、労働時間の記録（自分でつけたメモやFair Workの『Record My Hours』アプリ）、雇用契約やシフト表、雇用主とのメッセージ、銀行の入金履歴を保存します。これらが未払い額を示す土台になります。記録が手元にないほど立証は難しくなるため、日頃から残す習慣が大切です。",
       "次に、自分の正しい賃金を確認します。Fair WorkのPay Calculatorで、職種・雇用形態・時間帯に応じた最低時給と割増を調べ、実際の支払いとの差額を計算します。2026年7月時点のNational Minimum Wageは時給26.44豪ドルで、多くのAwardはこれ以上です。",
@@ -865,10 +870,12 @@ export const jobsArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Fair Work Ombudsman｜NSW州の果樹労働者の裁判結果", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release" },
       { label: "Fair Work Ombudsman（公式）", url: "https://www.fairwork.gov.au/" },
     ],
     verifiedAt: "2026-07-18",
     officialSources: [
+      { label: "Fair Work Ombudsman｜NSW州の果樹労働者の裁判結果", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release", accessedAt: "2026-11-18" },
       {
         label: "Fair Work Ombudsman｜Fixing a workplace problem",
         url: "https://www.fairwork.gov.au/workplace-problems/fixing-a-workplace-problem",
@@ -881,7 +888,7 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["working-rights", "award-rates-penalty-rates", "cash-in-hand-jobs", "payslip-guide", "termination-final-pay"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-15",
     published: true,
   },
 
@@ -897,7 +904,7 @@ export const jobsArticles: Article[] = [
     content: [
       "結論から言うと、現金で給料を受け取ること自体は違法ではありません。問題になるのは、その現金払いが『税金の無申告』『最低賃金割れ』『Payslipやスーパー（Super）の不払い』とセットになっている場合です。多くの『Cash in Hand』の仕事はこれらの問題を伴い、結果的にワーホリ本人が大きく損をします。",
       "現金払いに潜むリスクは複数あります。まず、雇用主がATOに申告せず源泉徴収もしていないと、Payslipが出ず、Superannuation（退職年金）も積み立てられません。あなたの労働記録が残らないため、最低賃金を下回っていても立証が難しく、未払いの回収も困難になります。",
-      "ワーホリにとって特に痛いのは、タックスリターン（確定申告）とセカンドビザへの影響です。記録に残らない収入は、後で申告や還付の裏付けができません。ファーム等のSpecified Work（88日）でセカンドビザを狙う場合、Payslipや銀行入金の記録がないと日数を証明できず、ビザ申請で不利になります。",
+      "ワーホリにとって特に痛いのは、タックスリターン（確定申告）とセカンドビザへの影響です。記録に残らない収入は、後で申告や還付の裏付けができません。ファーム等のSpecified Workでセカンドビザを狙う場合、Payslipや銀行入金の記録がないと日数を証明できず、ビザ申請で不利になります。",
       "労災保険（Workers Compensation）の観点でもリスクがあります。記録のない現金労働中に怪我をすると、労災の補償を受けにくく、治療費を自己負担する恐れがあります。『税金が引かれないから手取りが多い』という一見の魅力の裏で、保護と証明を失っているのが現金オンリーの仕事です。",
       "対処としては、たとえ現金で受け取る場合でも、①Payslipを必ず求める②時給が最低賃金以上か確認する③TFNを提出し正しく源泉徴収してもらう④労働時間と入金を自分でも記録する、を徹底しましょう。これらが守られない現金払いは避けるのが賢明です。不当な扱いはFair Work Ombudsman（無料・多言語）に相談できます。",
     ],
@@ -946,7 +953,7 @@ export const jobsArticles: Article[] = [
       },
     ],
     relatedSlugs: ["working-rights", "underpayment-unpaid-wages", "payslip-guide", "tfn-guide", "farm-second-visa"],
-    updatedAt: "2026-07-18",
+    updatedAt: "2026-11-22",
     published: true,
   },
 

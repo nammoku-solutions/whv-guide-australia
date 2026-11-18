@@ -13,8 +13,17 @@ function byDateDesc(a: NewsItem, b: NewsItem): number {
   return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
 }
 
-export function getAllNews(): NewsItem[] {
-  return newsItems.filter((item) => item.published).slice().sort(byDateDesc);
+// 公開日の基準は、週次ニュースの運用と同じブリスベン時間です。
+const newsDateFormatter = new Intl.DateTimeFormat("sv-SE", {
+  timeZone: "Australia/Brisbane",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+export function getAllNews(now = new Date()): NewsItem[] {
+  const today = newsDateFormatter.format(now);
+  return newsItems.filter((item) => item.published && item.date <= today).sort(byDateDesc);
 }
 
 export function getLatestNews(limit = 3): NewsItem[] {

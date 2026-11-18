@@ -5,7 +5,7 @@
  */
 
 import { getSupabaseServerClient } from "@/lib/supabaseServer";
-import { newsItems } from "@/lib/newsData";
+import { getAllNews } from "@/lib/news";
 import type { NewsItem, NewsCategory } from "@/types/news";
 import type { ChangeGroup, RiskLevel } from "@/lib/monitor/types";
 
@@ -106,7 +106,7 @@ function byDateDesc(a: NewsItem, b: NewsItem): number {
 /** 手書き＋自動の公開ニュースをマージして新しい順に返す。 */
 export async function getMergedNews(): Promise<NewsItem[]> {
   const auto = await getAutomatedNews();
-  const staticNews = newsItems.filter((n) => n.published);
+  const staticNews = getAllNews();
   // slug 衝突時は手書きを優先。
   const seen = new Set(staticNews.map((n) => n.slug));
   const merged = [...staticNews, ...auto.filter((a) => !seen.has(a.slug))];

@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import {
   isValidIsoDate,
+  SECOND_VISA_INVITATION_TARGET_DAYS,
+  SECOND_VISA_TARGET_DAYS,
   summarizeWorkDays,
 } from "@/lib/tools/logic/second-visa.mjs";
 import { useLocalStorageState } from "@/components/tools/useLocalStorageState";
@@ -19,7 +21,7 @@ function makeId(): string {
 }
 
 /**
- * セカンドビザ88日カウンター。ユーザーが入力した勤務日を記録し、88日に対する進捗と
+ * セカンドビザ勤務日カウンター。ユーザーが入力した勤務日を記録し、選んだ目標に対する進捗と
  * 証拠書類の有無を集計する。ビザの可否・業務や地域の該当性は判定しない（記録専用）。
  */
 export function EightyEightDayCalculator() {
@@ -28,6 +30,11 @@ export function EightyEightDayCalculator() {
     [],
   );
 
+  const [isInvitationRoute, setIsInvitationRoute] = useLocalStorageState<boolean>(
+    "whv-tool-second-visa-invitation-route",
+    false,
+  );
+  const target = isInvitationRoute ? SECOND_VISA_INVITATION_TARGET_DAYS : SECOND_VISA_TARGET_DAYS;
   const [date, setDate] = useState("");
   const [hasEvidence, setHasEvidence] = useState(false);
   const [note, setNote] = useState("");
@@ -38,7 +45,7 @@ export function EightyEightDayCalculator() {
     [records],
   );
 
-  const summary = useMemo(() => summarizeWorkDays(records), [records]);
+  const summary = useMemo(() => summarizeWorkDays(records, target), [records, target]);
 
   const addRecord = () => {
     if (!date) {
@@ -77,6 +84,22 @@ export function EightyEightDayCalculator() {
     <div className="space-y-6">
       {/* Summary */}
       <section className="rounded-2xl border border-slate-200 bg-white p-5" aria-label="集計">
+        <label htmlFor="wd-target" className="block text-sm font-semibold text-slate-800">
+          記録上の目標
+        </label>
+        <select
+          id="wd-target"
+          value={isInvitationRoute ? "invitation" : "transition"}
+          onChange={(e) => setIsInvitationRoute(e.target.value === "invitation")}
+          aria-describedby="wd-target-note"
+          className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700"
+        >
+          <option value="transition">88日｜2027年2月28日までの移行措置</option>
+          <option value="invitation">120日｜2027年3月1日からの招待制</option>
+        </select>
+        <p id="wd-target-note" className="mb-4 mt-2 text-xs text-slate-600">
+          88日の移行措置は、期限までに指定労働を完了し、有効な申請を提出できる場合に適用されます。目標を変えても勤務記録は消えません。
+        </p>
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="rounded-xl bg-emerald-50 p-4 text-center">
             <p className="text-xs font-semibold text-emerald-800">記録した勤務日数</p>
@@ -100,7 +123,7 @@ export function EightyEightDayCalculator() {
           aria-valuenow={summary.percent}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`88日に対する進捗 ${summary.percent}%`}
+          aria-label={`目標 ${summary.target} 日に対する進捗 ${summary.percent}%`}
         >
           <div
             className="h-full rounded-full bg-emerald-500 transition-all"
@@ -110,7 +133,7 @@ export function EightyEightDayCalculator() {
         <p className="mt-2 text-sm text-slate-600" aria-live="polite">
           {summary.reached
             ? `記録上は目標の ${summary.target} 日に到達しています。ただしビザの可否は移民局が判断します。`
-            : `88日まであと ${summary.remaining} 日（記録上の日数）。`}
+            : `目標まであと ${summary.remaining} 日（記録上の日数）。`}
         </p>
       </section>
 

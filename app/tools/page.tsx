@@ -9,7 +9,7 @@ import { buildCategoryMetadata } from "@/lib/socialImages";
 export const metadata: Metadata = buildCategoryMetadata("tools", {
   title: "便利ツール・テンプレート",
   description:
-    "オーストラリアワーホリの準備・生活・仕事に役立つ無料ツール集。到着後チェックリスト、持ち物リスト、セカンドビザ88日カウンターなど、端末に保存できる実用ツールをまとめています。",
+    "オーストラリアワーホリの準備・生活・仕事に役立つ無料ツール集。到着後チェックリスト、持ち物リスト、セカンドビザ指定労働カウンター（88日・120日）など、端末に保存できる実用ツールをまとめています。",
   path: "/tools",
 });
 

@@ -44,7 +44,7 @@ export const primaryNavGroups: NavGroup[] = [
     label: "仕事・ビザ",
     links: [
       { href: "/jobs", label: "仕事探し" },
-      { href: "/farm", label: "ファーム・88日" },
+      { href: "/farm", label: "ファーム・指定労働" },
       { href: "/second-visa", label: "セカンド・サードビザ" },
       { href: "/gig-work", label: "ギグワーク・配達" },
     ],
@@ -93,7 +93,7 @@ export const categoryDirectory: NavLink[] = [
   { href: "/visa", label: "ビザ・渡航準備", description: "ワーホリビザの申請と渡航前の準備。" },
   { href: "/arrival", label: "到着後の手続き", description: "到着直後にやる初期セットアップ。" },
   { href: "/jobs", label: "仕事探し", description: "レジュメ・面接・求人サイトの使い方。" },
-  { href: "/farm", label: "ファーム・セカンドビザ", description: "88日と地域・職種の選び方。" },
+  { href: "/farm", label: "ファーム・セカンドビザ", description: "指定労働の必要日数と地域・職種の選び方。" },
   { href: "/money", label: "お金・送金", description: "口座・送金・両替をスマートに。" },
   { href: "/tfn", label: "税金・TFN・ABN", description: "納税者番号と確定申告の基礎。" },
   { href: "/housing", label: "家探し", description: "シェアハウス・内見・ボンド。" },

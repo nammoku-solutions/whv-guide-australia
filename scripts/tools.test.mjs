@@ -15,6 +15,7 @@ import {
   countWorkDays,
   summarizeWorkDays,
   SECOND_VISA_TARGET_DAYS,
+  SECOND_VISA_INVITATION_TARGET_DAYS,
 } from "../lib/tools/logic/second-visa.mjs";
 import {
   normalizePostcode,
@@ -483,4 +484,19 @@ test("documentToText: blank optional fields are omitted, not faked", () => {
   const text = documentToText(doc);
   // no placeholder/invented values are inserted
   assert.ok(!/\bTODO\b|\bN\/A\b|undefined|null/.test(text));
+});
+
+
+test("same specified-work records show separate progress for 88-day and 120-day targets", () => {
+  const dates = Array.from({ length: 120 }, (_, day) => ({
+    date: new Date(Date.UTC(2026, 7, 1 + day)).toISOString().slice(0, 10),
+  }));
+  const records = dates.slice(0, 88);
+  assert.equal(summarizeWorkDays(records).reached, true);
+  const updated = summarizeWorkDays(records, SECOND_VISA_INVITATION_TARGET_DAYS);
+  assert.equal(updated.worked, 88);
+  assert.equal(updated.target, 120);
+  assert.equal(updated.remaining, 32);
+  assert.equal(updated.reached, false);
+  assert.equal(summarizeWorkDays(dates, SECOND_VISA_INVITATION_TARGET_DAYS).reached, true);
 });

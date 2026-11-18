@@ -9,16 +9,17 @@ export const secondVisaArticles: Article[] = [
     description:
       "滞在を最大3年に延ばすためのセカンド/サードビザ。対象となる労働（Specified Work）の条件、必要日数、申請手順と注意点をまとめました。",
     content: [
+      "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
+      "新制度の登録は2026年12月1日から、初回招待は2027年1月中旬の予定です。指定労働を終える前にも国内外から登録でき、改定前に行った適格な指定労働も新要件に算入されます。登録は招待を保証せず、招待は現在のビザを延長しません。招待後に要件を満たしたうえで、招待から12か月以内に申請します。",
+      "従来の88日・179日は、所定の勤務日・シフトがフルタイム相当であることが前提の暦日期間です。勤務期間の週末や通常の休息日が含まれる場合がありますが、悪天候で働けなかった無給日は含まれません。",
       "ワーキングホリデー（417）は、規定の労働（Specified Work）を一定日数こなすことで、2年目（セカンド）・3年目（サード）のビザを申請できます。これにより最長3年の滞在が可能になります。",
-      "セカンドビザは『88日（約3か月）』、サードビザは『6か月（約179日）』のSpecified Workが条件です。対象となる仕事の種類・地域（指定ポストコード）が細かく定められているため、働き始める前に必ず要件を確認しましょう。",
       "もっとも一般的なのはファーム（果物・野菜の収穫やパッキング）ですが、建設・鉱業・漁業・植林なども対象になる場合があります。働いた日数は給与明細やPayslip、雇用主の証明で記録を残すことが重要です。",
-      "『88日』のカウントには注意が必要です。日数は暦日ベースで数えますが、フルタイム相当の勤務日のみが対象で、雨で仕事がなかった日や自己都合の休みは含められないのが原則です。歩合制（piece rate）で働く場合は、フルタイム相当の労働時間を満たしているかがポイントになります。地域や作物によって収穫期が異なるため、88日を効率よく貯めるには収穫期に合わせて地域を選ぶことが重要です。",
       "申請の証拠として最も重視されるのがPayslip（給与明細）と銀行への給与入金記録です。雇用主が発行するべきこれらの書類が揃っていないと、規定日数を満たしていても申請が認められないことがあります。働いた農場・雇用主名・期間・時給/歩合・振込額が分かる記録を、働いた分すべて保管しておきましょう。フォーム（Form 1263）による自己申告に加え、これらの客観的な証拠が求められる場合があります。",
       "近年は規定日数の偽証や賃金未払いといった問題を背景に、審査で書類の裏付けがより厳しく確認される傾向があります。『日数を偽って証明してあげる』といった持ちかけには絶対に応じないでください。虚偽の申請は不許可となるだけでなく、将来のビザ取得にも悪影響を及ぼします。正規のPayslipを発行しない農場やブローカーは避けるのが賢明です。",
     ],
     keyFacts: [
-      { label: "セカンド条件", value: "Specified Workを88日（フルタイム相当）" },
-      { label: "サード条件", value: "2年目に6か月（約179日）のSpecified Work" },
+      { label: "セカンド条件", value: "移行措置は88日。2027年3月1日から120日" },
+      { label: "サード条件", value: "2年目の指定労働179日。2027年3月1日から要招待" },
       { label: "申請料（各回）", value: "約1,000 AUD（2025年7月改定）" },
       { label: "対象業種", value: "農業・畜産・建設・鉱業・漁業・植林など" },
       { label: "地域要件", value: "指定された地方（regional）のポストコードのみ対象" },
@@ -36,14 +37,14 @@ export const secondVisaArticles: Article[] = [
           "TFNを提出し、給与が銀行振込・Payslip発行される正規の条件で働きます。現金払いのみの仕事は日数の証明が難しくなります。",
       },
       {
-        title: "88日（または6か月）を達成",
+        title: "適用される日数を満たす",
         description:
           "フルタイム相当の労働日数を満たします。週休や悪天候での休みのカウント方法は要件に従って記録します。",
       },
       {
         title: "ImmiAccountで申請",
         description:
-          "必要日数を満たしたら、Payslip等の証拠を添えてオンラインで申請します。1年目のビザが有効なうちに申請するのが安全です。",
+          "移行期限までに指定労働を完了して有効な申請を提出するか、新制度で招待を受けてほかの条件も満たしてから申請します。豪州にいる場合は現在のビザが切れる前に有効な申請をするか出国してください。",
       },
     ],
     tips: [
@@ -53,7 +54,7 @@ export const secondVisaArticles: Article[] = [
     ],
     faqs: [
       {
-        question: "88日は連続でなくてもいい？",
+        question: "従来の88日は連続でなくてもいい？",
         answer:
           "連続している必要はありません。複数の雇用主・期間を合算できます。ただし各期間が対象業種・対象地域の条件を満たしている必要があります。",
       },
@@ -69,6 +70,8 @@ export const secondVisaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
+      { label: "Department of Home Affairs｜移行期間と招待制の公式フローチャート", url: "https://immi.homeaffairs.gov.au/programs-subsite/files/whm-upcoming-changes-flow-chart.pdf" },
       {
         label: "Department of Home Affairs｜Specified work",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/specified-work",
@@ -76,6 +79,7 @@ export const secondVisaArticles: Article[] = [
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Second Working Holiday visa（3か月のspecified work・申請料 AUD1,000）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/second-working-holiday-417",
@@ -97,7 +101,7 @@ export const secondVisaArticles: Article[] = [
       "対象業種・指定地域・必要日数の定義は予告なく変更されます。働き始める前に必ず公式情報で最新の条件を確認してください。",
     ],
     relatedSlugs: ["farm-second-visa", "farm-finding", "whv-complete-guide", "specified-work-postcodes", "farm-payslip-evidence", "88-day-calculation", "specified-work-industries", "six-month-specified-work"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -110,8 +114,9 @@ export const secondVisaArticles: Article[] = [
     priority: "P0",
     searchIntent: "セカンドビザ88日の数え方",
     description:
-      "セカンドビザに必要な「3か月＝最低88暦日」のSpecified Workの数え方を、公式ルールに基づいて解説。フルタイム相当の考え方、悪天候・祝日・歩合制・シフト勤務のカウント方法までまとめます。",
+      "セカンドビザの移行措置に適用される「3か月＝最低88暦日」のSpecified Workの数え方を、公式ルールに基づいて解説。フルタイム相当の考え方、悪天候・祝日・歩合制・シフト勤務のカウント方法までまとめます。",
     content: [
+      "この記事は、2027年2月28日までに指定労働を完了して有効な申請を提出する場合の、従来の88日の数え方です。2027年3月1日からはセカンドに招待と120日の指定労働が必要です。改定前の適格な労働は算入されます。120日での詳細な数え方は、申請前に公式の最新案内をご確認ください。",
       "結論から言うと、セカンド（2つ目の）ワーキングホリデー（サブクラス417）ビザに必要な「3か月」のSpecified Workは、公式には『1年で最も短い3か月分に相当する期間＝最低88暦日（カレンダー上の88日）』を意味します。この88日には、勤務期間中の週末や休息日も含めて数えます（出典：Department of Home Affairs｜Specified work）。",
       "ただし「88日ぶんの勤務」とは、あなたと同じ業種・役割のフルタイム従業員が3か月（88暦日）で通常こなす日数・シフトと同じだけ働く、という意味です。つまり単にカレンダーで88日が経過すればよいのではなく、フルタイム相当の勤務量を満たす必要があります。",
       "数え方には柔軟性があります。例えば、(1)週5日で3暦月連続して働く、(2)週5日未満で3暦月より長い期間働く、(3)フルタイム・パートタイム・歩合制（piecework）を組み合わせた複数の短期就労を合算して『3暦月で週5日相当』にする、といった方法が認められています。88日を連続して行う必要はなく、複数の雇用主・期間に分けても構いません。",
@@ -159,6 +164,7 @@ export const secondVisaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
       {
         label: "Department of Home Affairs｜Specified work（How to count specified work）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/specified-work",
@@ -166,6 +172,7 @@ export const secondVisaArticles: Article[] = [
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Department of Home Affairs｜Specified work（3か月＝最低88暦日・数え方）※ページ更新 2025-09-11",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/specified-work",
@@ -173,7 +180,7 @@ export const secondVisaArticles: Article[] = [
       },
     ],
     relatedSlugs: ["second-visa-guide", "specified-work-industries", "farm-payslip-evidence", "specified-work-postcodes", "farm-second-visa", "farm-finding"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-22",
     published: true,
   },
 
@@ -257,6 +264,7 @@ export const secondVisaArticles: Article[] = [
     description:
       "3つ目（サード）のワーホリ（417）ビザに必要な「6か月＝最低179暦日」のSpecified Workの条件を公式ルールで解説。いつの労働が対象か、2つ目のビザ中に行う必要がある点、数え方の基本をまとめます。",
     content: [
+      "日本のパスポートで申請する場合、サードの指定労働は2027年3月1日以降も179日のままですが、同日から招待が必要です。招待なしで申請するには、2027年2月28日までに指定労働を完了し、有効な申請を提出してください。",
       "結論から言うと、3つ目（サード）のワーキングホリデー（サブクラス417）ビザには、『6か月＝1年で最も短い6か月分に相当する期間＝最低179暦日』のSpecified Workが必要です。この179日には勤務期間中の週末・休息日も含めて数えます（出典：Department of Home Affairs｜Specified work）。",
       "重要な条件が2つあります。1つ目は『2019年7月1日以降に行われた労働であること』。2つ目は『原則として2つ目（セカンド）のワーホリビザを保持している間に行った労働であること』です。つまりサードビザの6か月は、1つ目のビザ中に行った労働では原則カウントできません（1年目の労働はセカンドビザ用、2年目の労働がサードビザ用、という関係です）。",
       "数え方の考え方は88日（セカンド）と同じで、あなたと同じ業種・役割のフルタイム従業員が6か月（179暦日）で通常こなす日数・シフトを満たす必要があります。連続している必要はなく、フルタイム・パートタイム・歩合制を組み合わせて合算できます。1暦日は最大1日分までで、無給の悪天候日は算入できません。有給の祝日・病欠は1日として数えられます。",
@@ -288,7 +296,7 @@ export const secondVisaArticles: Article[] = [
       {
         question: "1年目に働いたファームの日数はサードビザに使えますか？",
         answer:
-          "原則として使えません。サードビザの6か月は、原則としてセカンドビザを保持している間（2年目）に行った労働が対象です。1年目の労働はセカンドビザ申請のための88日に使います。",
+          "原則として使えません。サードビザの6か月は、原則としてセカンドビザを保持している間（2年目）に行った労働が対象です。1年目の適格な労働はセカンドビザの申請に使います。",
       },
       {
         question: "6か月は179日ちょうど働けばいいですか？",
@@ -297,6 +305,7 @@ export const secondVisaArticles: Article[] = [
       },
     ],
     sources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
       {
         label: "Department of Home Affairs｜Specified work（Minimum period）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/specified-work",
@@ -304,6 +313,7 @@ export const secondVisaArticles: Article[] = [
     ],
     verifiedAt: "2026-07-16",
     officialSources: [
+      { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
       {
         label: "Department of Home Affairs｜Specified work（6か月＝最低179暦日・条件）※ページ更新 2025-09-11",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/specified-work",
@@ -311,7 +321,7 @@ export const secondVisaArticles: Article[] = [
       },
     ],
     relatedSlugs: ["second-visa-guide", "88-day-calculation", "specified-work-industries", "specified-work-postcodes", "farm-payslip-evidence", "farm-second-visa"],
-    updatedAt: "2026-07-16",
+    updatedAt: "2026-11-22",
     published: true,
   },
 ];
