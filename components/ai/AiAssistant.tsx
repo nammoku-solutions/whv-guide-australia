@@ -209,7 +209,7 @@ export function AiAssistant() {
   );
 
   return (
-    <div className="fixed bottom-20 right-4 z-40 flex flex-col items-end gap-3 print:hidden">
+    <div className="fixed bottom-[calc(4.25rem+env(safe-area-inset-bottom))] right-3 z-40 flex flex-col items-end gap-2 sm:right-4 print:hidden">
       {open ? (
         <section
           id={panelId}
@@ -415,7 +415,7 @@ export function AiAssistant() {
         aria-expanded={open}
         aria-controls={panelId}
         aria-label={open ? "AIアシスタントを閉じる" : "AIに質問する"}
-        className="flex items-center gap-2 rounded-full bg-sky-700 px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-sky-800"
+        className="flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-lg border border-sky-800 bg-sky-800 px-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
         onMouseDown={() => {
           if (!open) trackAiEvent("ai_chat_open", {});
         }}
@@ -424,10 +424,8 @@ export function AiAssistant() {
           <span aria-hidden="true">✕ 閉じる</span>
         ) : (
           <>
-            <span aria-hidden="true" className="text-base">
-              🇦🇺
-            </span>
-            <span>AIに質問</span>
+            <span aria-hidden="true" className="font-semibold">AI</span>
+            <span className="hidden sm:inline">に質問</span>
           </>
         )}
       </button>

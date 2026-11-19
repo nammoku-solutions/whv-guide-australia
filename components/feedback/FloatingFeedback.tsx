@@ -15,7 +15,7 @@ export function FloatingFeedback() {
   const currentUrl = pathname ?? "";
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3 print:hidden">
+    <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-3 z-40 flex flex-col items-end gap-2 sm:right-4 print:hidden">
       {open ? (
         <div
           role="dialog"
@@ -50,16 +50,17 @@ export function FloatingFeedback() {
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-label={open ? "フィードバックを閉じる" : "フィードバックを送る"}
-        className="flex items-center gap-2 rounded-full bg-sky-700 px-4 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-sky-800"
+        className="flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-lg border border-sky-200 bg-white px-2.5 text-sm font-semibold text-sky-900 shadow-sm transition hover:bg-sky-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-800"
       >
         {open ? (
           <span aria-hidden="true">✕ 閉じる</span>
         ) : (
           <>
-            <span aria-hidden="true" className="text-base">
-              💬
-            </span>
-            <span>フィードバック</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="size-5">
+              <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l1.6-3.2A7.5 7.5 0 1 1 20 11.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+              <path d="M9 11.5h7" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+            </svg>
+            <span className="hidden sm:inline">フィードバック</span>
           </>
         )}
       </button>
