@@ -1,0 +1,513 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "WHV Compass: deterministic official-source monitor. No public endpoints, AI, app data writes, or NAT.",
+  "Parameters": {
+    "NotificationEmail": {
+      "Type": "String",
+      "AllowedPattern": "[^\\s@]+@[^\\s@]+\\.[^\\s@]+",
+      "NoEcho": true
+    },
+    "EnableSchedule": {
+      "Type": "String",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Default": "false"
+    }
+  },
+  "Conditions": {
+    "EnableSchedules": {
+      "Fn::Equals": [
+        {
+          "Ref": "EnableSchedule"
+        },
+        "true"
+      ]
+    }
+  },
+  "Resources": {
+    "State": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Id": "keep-recent-versions",
+              "Status": "Enabled",
+              "NoncurrentVersionExpiration": {
+                "NoncurrentDays": 35
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "Notifications": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {}
+    },
+    "EmailSubscription": {
+      "Type": "AWS::SNS::Subscription",
+      "Properties": {
+        "Endpoint": {
+          "Ref": "NotificationEmail"
+        },
+        "Protocol": "email",
+        "TopicArn": {
+          "Ref": "Notifications"
+        }
+      }
+    },
+    "MonitorLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AWS::StackName}-worker"
+        },
+        "RetentionInDays": 30
+      }
+    },
+    "WorkerRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "monitor-state-and-notifications",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "${State.Arn}/monitor/state.json"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "s3:ListBucket",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "State",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "sns:Publish",
+                  "Resource": {
+                    "Ref": "Notifications"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-worker:log-stream:*"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Worker": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": {
+          "Fn::Sub": "${AWS::StackName}-worker"
+        },
+        "Runtime": "nodejs22.x",
+        "Architectures": [
+          "arm64"
+        ],
+        "Handler": "index.handler",
+        "MemorySize": 512,
+        "Timeout": 240,
+        "Role": {
+          "Fn::GetAtt": [
+            "WorkerRole",
+            "Arn"
+          ]
+        },
+        "ReservedConcurrentExecutions": 1,
+        "Environment": {
+          "Variables": {
+            "WHV_MONITOR_BUCKET": {
+              "Ref": "State"
+            },
+            "WHV_MONITOR_TOPIC_ARN": {
+              "Ref": "Notifications"
+            },
+            "MONITOR_MAX_CONTENT_CHARS": "120000"
+          }
+        },
+        "Code": {
+          "ZipFile": "__WHV_MONITOR_BUNDLE__"
+        }
+      },
+      "DependsOn": [
+        "MonitorLogs"
+      ]
+    },
+    "AsyncRetries": {
+      "Type": "AWS::Lambda::EventInvokeConfig",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Worker"
+        },
+        "Qualifier": "$LATEST",
+        "MaximumRetryAttempts": 2,
+        "MaximumEventAgeInSeconds": 3600
+      }
+    },
+    "MissedDeliveries": {
+      "Type": "AWS::SQS::Queue",
+      "Properties": {
+        "SqsManagedSseEnabled": true,
+        "MessageRetentionPeriod": 1209600
+      }
+    },
+    "ScheduleGroup": {
+      "Type": "AWS::Scheduler::ScheduleGroup",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-jobs"
+        }
+      }
+    },
+    "ScheduleRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "scheduler.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                },
+                "ArnEquals": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "ScheduleGroup",
+                      "Arn"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "invoke-worker",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "lambda:InvokeFunction",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "Worker",
+                      "Arn"
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "sqs:SendMessage",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "MissedDeliveries",
+                      "Arn"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "WorkerErrors": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "WHV worker exceptions. Check CloudWatch logs for failed runs and retry outcomes.",
+        "MetricName": "Errors",
+        "Namespace": "AWS/Lambda",
+        "Dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": {
+              "Ref": "Worker"
+            }
+          }
+        ],
+        "AlarmActions": [
+          {
+            "Ref": "Notifications"
+          }
+        ],
+        "TreatMissingData": "notBreaching",
+        "EvaluationPeriods": 1,
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-lambda-errors"
+        }
+      },
+      "DependsOn": [
+        "AlarmTopicPolicy"
+      ]
+    },
+    "SchedulerDeliveryErrors": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "EventBridge Scheduler could not invoke the WHV monitor.",
+        "MetricName": "ApproximateNumberOfMessagesVisible",
+        "Namespace": "AWS/SQS",
+        "Dimensions": [
+          {
+            "Name": "QueueName",
+            "Value": {
+              "Fn::GetAtt": [
+                "MissedDeliveries",
+                "QueueName"
+              ]
+            }
+          }
+        ],
+        "AlarmActions": [
+          {
+            "Ref": "Notifications"
+          }
+        ],
+        "TreatMissingData": "notBreaching",
+        "EvaluationPeriods": 1,
+        "Period": 300,
+        "Statistic": "Maximum",
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-delivery-errors"
+        }
+      },
+      "DependsOn": [
+        "AlarmTopicPolicy"
+      ]
+    },
+    "Weekly": {
+      "Type": "AWS::Scheduler::Schedule",
+      "Properties": {
+        "GroupName": {
+          "Ref": "ScheduleGroup"
+        },
+        "Name": "weekly",
+        "ScheduleExpression": "cron(0 19 ? * SUN *)",
+        "ScheduleExpressionTimezone": "Australia/Brisbane",
+        "FlexibleTimeWindow": {
+          "Mode": "OFF"
+        },
+        "State": {
+          "Fn::If": [
+            "EnableSchedules",
+            "ENABLED",
+            "DISABLED"
+          ]
+        },
+        "Target": {
+          "Arn": {
+            "Fn::GetAtt": [
+              "Worker",
+              "Arn"
+            ]
+          },
+          "RoleArn": {
+            "Fn::GetAtt": [
+              "ScheduleRole",
+              "Arn"
+            ]
+          },
+          "Input": "{\"mode\": \"weekly\", \"scheduledTime\": \"<aws.scheduler.scheduled-time>\"}",
+          "DeadLetterConfig": {
+            "Arn": {
+              "Fn::GetAtt": [
+                "MissedDeliveries",
+                "Arn"
+              ]
+            }
+          },
+          "RetryPolicy": {
+            "MaximumRetryAttempts": 3,
+            "MaximumEventAgeInSeconds": 1800
+          }
+        }
+      }
+    },
+    "Watchdog": {
+      "Type": "AWS::Scheduler::Schedule",
+      "Properties": {
+        "GroupName": {
+          "Ref": "ScheduleGroup"
+        },
+        "Name": "watchdog",
+        "ScheduleExpression": "cron(0 21 ? * SUN *)",
+        "ScheduleExpressionTimezone": "Australia/Brisbane",
+        "FlexibleTimeWindow": {
+          "Mode": "OFF"
+        },
+        "State": {
+          "Fn::If": [
+            "EnableSchedules",
+            "ENABLED",
+            "DISABLED"
+          ]
+        },
+        "Target": {
+          "Arn": {
+            "Fn::GetAtt": [
+              "Worker",
+              "Arn"
+            ]
+          },
+          "RoleArn": {
+            "Fn::GetAtt": [
+              "ScheduleRole",
+              "Arn"
+            ]
+          },
+          "Input": "{\"mode\": \"watchdog\", \"scheduledTime\": \"<aws.scheduler.scheduled-time>\"}",
+          "DeadLetterConfig": {
+            "Arn": {
+              "Fn::GetAtt": [
+                "MissedDeliveries",
+                "Arn"
+              ]
+            }
+          },
+          "RetryPolicy": {
+            "MaximumRetryAttempts": 3,
+            "MaximumEventAgeInSeconds": 1800
+          }
+        }
+      }
+    },
+    "AlarmTopicPolicy": {
+      "Type": "AWS::SNS::TopicPolicy",
+      "Properties": {
+        "Topics": [
+          {
+            "Ref": "Notifications"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "AllowThisStackAlarms",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudwatch.amazonaws.com"
+              },
+              "Action": "sns:Publish",
+              "Resource": {
+                "Ref": "Notifications"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                },
+                "ArnEquals": {
+                  "aws:SourceArn": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${AWS::StackName}-lambda-errors"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${AWS::StackName}-delivery-errors"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "FunctionName": {
+      "Value": {
+        "Ref": "Worker"
+      }
+    },
+    "StateBucket": {
+      "Value": {
+        "Ref": "State"
+      }
+    },
+    "NotificationTopic": {
+      "Value": {
+        "Ref": "Notifications"
+      }
+    },
+    "SchedulerGroup": {
+      "Value": {
+        "Ref": "ScheduleGroup"
+      }
+    }
+  }
+}
