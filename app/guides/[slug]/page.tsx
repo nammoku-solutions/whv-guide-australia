@@ -175,121 +175,128 @@ export default async function GuideDetailPage({ params }: GuideDetailPageProps) 
       : null;
 
   return (
-    <Container className="space-y-8 py-10">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      {faqJsonLd ? (
+    <Container className="py-6 sm:py-9">
+      <div className="mx-auto max-w-3xl space-y-7 sm:space-y-9">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
         />
-      ) : null}
-      {howToJsonLd ? (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
-      ) : null}
-      <Breadcrumbs
-        items={[
-          { label: "ホーム", href: "/" },
-          { label: getCategoryLabel(article.category), href: `/${article.category}` },
-          { label: article.title },
-        ]}
-      />
-      <ArticleHeader article={article} />
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <ShareButtons title={article.title} />
-        <SaveButton itemType="article" itemId={article.slug} />
+        {faqJsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        ) : null}
+        {howToJsonLd ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+          />
+        ) : null}
+        <Breadcrumbs
+          items={[
+            { label: "ホーム", href: "/" },
+            { label: getCategoryLabel(article.category), href: `/${article.category}` },
+            { label: article.title },
+          ]}
+        />
+        <ArticleHeader article={article} />
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <ShareButtons title={article.title} />
+          <SaveButton itemType="article" itemId={article.slug} />
+        </div>
+
+        {article.verifiedAt ? (
+          <VerifiedDate verifiedAt={article.verifiedAt} updatedAt={article.updatedAt} />
+        ) : null}
+
+        {article.answer ? <AnswerBox answer={article.answer} /> : null}
+
+        {article.points && article.points.length > 0 ? (
+          <ArticlePoints points={article.points} />
+        ) : null}
+
+        {article.audience && article.audience.length > 0 ? (
+          <AudienceBox audience={article.audience} />
+        ) : null}
+
+        {article.keyFacts && article.keyFacts.length > 0 ? (
+          <KeyFacts facts={article.keyFacts} />
+        ) : null}
+
+        {article.procedure ? <ProcedureChecklist procedure={article.procedure} /> : null}
+
+        <TableOfContents steps={article.steps} />
+        {article.examples ? (
+          <a href="#article-examples" className="inline-flex min-h-11 items-center font-semibold text-sky-800 underline underline-offset-4">
+            {article.examples.title}へ移動
+          </a>
+        ) : null}
+
+        <article className="space-y-5 text-base leading-8 text-slate-800">
+          {article.content.map((paragraph) => (
+            <p key={paragraph} className="leading-8">
+              {paragraph}
+            </p>
+          ))}
+        </article>
+
+        {inlineImages.length > 0 ? <ArticleImageGallery images={inlineImages} /> : null}
+
+        {article.examples ? <ArticleExamples section={article.examples} /> : null}
+
+        {article.steps.length > 0 ? (
+          <section aria-labelledby="guide-steps">
+            <h2 id="guide-steps" className="mb-4 text-xl font-bold text-slate-950">手順</h2>
+            <div className="border-t border-slate-200">
+              {article.steps.map((step, index) => (
+                <StepBlock key={step.title} step={step} index={index} />
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {article.procedure ? (
+          <section aria-labelledby="procedure-completion" className="border-l-2 border-emerald-700 bg-emerald-50 p-4">
+            <h2 id="procedure-completion" className="font-semibold text-slate-900">完了の目安</h2>
+            <p className="mt-1 text-sm leading-relaxed text-slate-800">{article.procedure.completion}</p>
+          </section>
+        ) : null}
+
+        {article.tips && article.tips.length > 0 ? <TipsBox tips={article.tips} /> : null}
+
+        {article.phrases && article.phrases.length > 0 ? (
+          <PhraseList phrases={article.phrases} />
+        ) : null}
+
+        {article.commonMistakes && article.commonMistakes.length > 0 ? (
+          <CommonMistakes mistakes={article.commonMistakes} />
+        ) : null}
+
+        <WarningBox items={article.warnings ?? []} />
+        <ArticleAd />
+
+        {article.faqs && article.faqs.length > 0 ? <FaqList faqs={article.faqs} /> : null}
+
+        {article.sources && article.sources.length > 0 ? (
+          <SourceLinks sources={article.sources} />
+        ) : null}
+
+        {article.officialSources && article.officialSources.length > 0 ? (
+          <OfficialSourceBox sources={article.officialSources} />
+        ) : null}
+
+        <ArticleFeedback slug={article.slug} title={article.title} />
+        <FeedbackRequestLink pageUrl={`/guides/${article.slug}`} />
+
+        <RelatedToolsBox articleSlug={article.slug} />
+
+        <RelatedArticles articles={relatedArticles} />
       </div>
-
-      {article.verifiedAt ? (
-        <VerifiedDate verifiedAt={article.verifiedAt} updatedAt={article.updatedAt} />
-      ) : null}
-
-      {article.answer ? <AnswerBox answer={article.answer} /> : null}
-
-      {article.points && article.points.length > 0 ? (
-        <ArticlePoints points={article.points} />
-      ) : null}
-
-      {article.audience && article.audience.length > 0 ? (
-        <AudienceBox audience={article.audience} />
-      ) : null}
-
-      {article.keyFacts && article.keyFacts.length > 0 ? (
-        <KeyFacts facts={article.keyFacts} />
-      ) : null}
-
-      {article.procedure ? <ProcedureChecklist procedure={article.procedure} /> : null}
-
-      <TableOfContents steps={article.steps} />
-      {article.examples ? (
-        <a href="#article-examples" className="inline-flex min-h-11 items-center font-semibold text-sky-800 underline underline-offset-4">
-          {article.examples.title}へ移動
-        </a>
-      ) : null}
-
-      <article className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 leading-8 text-slate-700 sm:text-[15px]">
-        {article.content.map((paragraph) => (
-          <p key={paragraph} className="leading-8">
-            {paragraph}
-          </p>
-        ))}
-      </article>
-
-      {inlineImages.length > 0 ? <ArticleImageGallery images={inlineImages} /> : null}
-
-      {article.examples ? <ArticleExamples section={article.examples} /> : null}
-
-      <section className="space-y-3">
-        {article.steps.map((step, index) => (
-          <StepBlock key={step.title} step={step} index={index} />
-        ))}
-      </section>
-
-      {article.procedure ? (
-        <section aria-labelledby="procedure-completion" className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-          <h2 id="procedure-completion" className="font-semibold text-slate-900">完了の目安</h2>
-          <p className="mt-1 text-sm leading-relaxed text-slate-800">{article.procedure.completion}</p>
-        </section>
-      ) : null}
-
-      {article.tips && article.tips.length > 0 ? <TipsBox tips={article.tips} /> : null}
-
-      {article.phrases && article.phrases.length > 0 ? (
-        <PhraseList phrases={article.phrases} />
-      ) : null}
-
-      {article.commonMistakes && article.commonMistakes.length > 0 ? (
-        <CommonMistakes mistakes={article.commonMistakes} />
-      ) : null}
-
-      <WarningBox items={article.warnings ?? []} />
-      <ArticleAd />
-
-      {article.faqs && article.faqs.length > 0 ? <FaqList faqs={article.faqs} /> : null}
-
-      {article.sources && article.sources.length > 0 ? (
-        <SourceLinks sources={article.sources} />
-      ) : null}
-
-      {article.officialSources && article.officialSources.length > 0 ? (
-        <OfficialSourceBox sources={article.officialSources} />
-      ) : null}
-
-      <ArticleFeedback slug={article.slug} title={article.title} />
-      <FeedbackRequestLink pageUrl={`/guides/${article.slug}`} />
-
-      <RelatedToolsBox articleSlug={article.slug} />
-
-      <RelatedArticles articles={relatedArticles} />
     </Container>
   );
 }

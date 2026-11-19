@@ -11,10 +11,15 @@ export function StepBlock({ step, index }: StepBlockProps) {
   return (
     <section
       id={`step-${index + 1}`}
-      className="scroll-mt-24 rounded-2xl border border-sky-100 bg-sky-50/60 p-4"
+      className="scroll-mt-24 border-b border-slate-200 py-5 sm:py-6"
     >
-      <p className="text-xs font-bold uppercase tracking-wide text-sky-700">Step {index + 1}</p>
-      <h3 className="mt-1 text-lg font-semibold text-slate-900">{step.title}</h3>
+      <h3 className="flex items-baseline gap-3 text-lg font-semibold text-slate-900">
+        <span className="shrink-0 font-mono text-sm tabular-nums text-sky-700">
+          <span className="sr-only">手順 </span>
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span>{step.title}</span>
+      </h3>
       <p className="mt-2 text-sm text-slate-700">{step.description}</p>
 
       {step.checklist?.length ? (

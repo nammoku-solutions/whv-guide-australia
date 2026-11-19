@@ -47,14 +47,14 @@ export function SearchBox({
       onSubmit={handleSubmit}
       className={
         isHome
-          ? "flex w-full items-stretch gap-2 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-slate-200"
+          ? "flex w-full items-stretch gap-1 rounded-lg border border-slate-300 bg-white p-1"
           : "flex items-stretch gap-1.5"
       }
     >
       <label htmlFor={inputId} className="sr-only">
         記事を検索
       </label>
-      <div className="relative flex-1">
+      <div className="relative min-w-0 flex-1">
         <span
           aria-hidden="true"
           className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -74,7 +74,7 @@ export function SearchBox({
           enterKeyHint="search"
           className={
             isHome
-              ? "w-full rounded-xl border border-transparent bg-slate-50 py-3 pl-10 pr-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-sky-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-200"
+              ? "w-full rounded-md border border-transparent py-2.5 pl-9 pr-2 text-base text-slate-900 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
               : "w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200"
           }
         />
@@ -83,7 +83,7 @@ export function SearchBox({
         type="submit"
         className={
           isHome
-            ? "shrink-0 rounded-xl bg-sky-600 px-5 py-3 text-base font-bold text-white transition hover:bg-sky-700"
+            ? "shrink-0 rounded-md bg-sky-800 px-3.5 py-2.5 text-sm font-bold text-white transition hover:bg-sky-900 sm:px-5"
             : "shrink-0 rounded-lg bg-sky-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-sky-700"
         }
       >
