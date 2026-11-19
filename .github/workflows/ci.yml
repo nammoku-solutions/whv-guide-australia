@@ -45,3 +45,9 @@ jobs:
 
       - name: Test utility tools
         run: npm run test:tools
+
+      - name: Test and package standalone AWS monitor
+        run: |
+          bash -n infra/whv-monitor/deploy.sh
+          node --import tsx --test infra/whv-monitor/core.test.mts
+          node infra/whv-monitor/build.mjs "$RUNNER_TEMP/whv-monitor.template.json"

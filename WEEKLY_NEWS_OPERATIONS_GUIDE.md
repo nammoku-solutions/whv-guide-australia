@@ -14,6 +14,10 @@ WHV Compassの現行の週次公式情報調査・コンテンツ保守手順で
 
 ChatGPTは、変更内容、公開日または適用日、影響対象、WHV Compassで更新候補となるページを整理します。
 
+### AWS差分監視への切替
+
+Vercel・Supabaseとは独立したAWSジョブを用意しています。AWSで初回動作と通知を確認するまでは既存の運用を切り替えません。準備・検証・有効化は [AWS週次監視ランブック](infra/whv-monitor/README.md) を参照してください。
+
 ## 2. What is intentionally NOT automated
 
 現在、以下は自動化しません。
