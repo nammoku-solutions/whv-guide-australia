@@ -1,6 +1,6 @@
 # WHV Compass AWS週次監視
 
-VercelのサイトとSupabaseはそのまま。AWSで、公式一次情報の取得・本文差分・定期実行の成否だけを管理する。既存の公式ソース一覧とHTML本文抽出を再利用し、Home AffairsのWHM最新情報、ATO Media Centre、Fair Work等の公式ニュース一覧も監視する。新しい公式ページはレビューしたうえで監視対象に追加する。
+VercelのサイトとSupabaseはそのまま。AWSで、公式一次情報の取得・本文差分・定期実行の成否だけを管理する。既存の公式ソース一覧と本文抽出を再利用し、Home AffairsのWHM最新情報、ATO Media Centreの公式RSS、Fair Work Ombudsmanの公式ニュース一覧も監視する。新しい公式ページはレビューしたうえで監視対象に追加する。
 
 ## 実行と通知
 
@@ -22,15 +22,15 @@ npm ci
 bash infra/whv-monitor/deploy.sh prepare
 ```
 
-1. `prepare` が `weekly DISABLED` と `watchdog DISABLED` を出したことを確認する。最後に、AWSのLambdaから実行した `probe` の `checked` と `failures` が出る。 `probe` はソース取得の確認のみで、S3への書き込みや監視通知はしない。
-2. AWS SNSから届く確認メールの **Confirm subscription** を押す。 `failures` にページがある場合は内容を確認し、重要な取得先が取れない場合は、同じ機関の取得可能な公式ページやフィードを検討する。
-3. 購読を確認したら、同じ本番スタックの定期実行を有効化する。 `NotificationEmail` の既存値は引き継ぐ。
+1. `prepare` が `weekly DISABLED` と `watchdog DISABLED` を出したことを確認する。最後に、本番Lambdaの `probe` が `succeeded`、`failures`、`missingNewsChannels` を出す。 `probe` はソース取得の確認のみで、S3への書き込みや監視通知はしない。再配置せず再確認するには `bash infra/whv-monitor/deploy.sh probe` を使う。
+2. `missingNewsChannels` に機関がある場合、配置済みのスタックは削除せず、定期実行を無効のままにする。Home AffairsのWHMニュース、ATOの公式ニュースRSS、Fair Work Ombudsmanのメディアリリースは、それぞれ実際に取得できる必要がある。その他の `failures` も確認する。取得できなかった公式情報は別途確認し、既存の調査経路は止めない。
+3. `missingNewsChannels` が空で、AWS SNSから届く確認メールの **Confirm subscription** で購読を確認したら、同じ本番スタックの定期実行を有効化する。 `enable` は配置済みLambdaでニュース取得を再確認してから実行する。`NotificationEmail` の既存値は引き継ぐ。
 
 ```bash
 bash infra/whv-monitor/deploy.sh enable
 ```
 
-成功時は `weekly ENABLED` と `watchdog ENABLED` を出す。次の日曜19:00の最初の実行後にS3またはCloudWatch Logsで実行記録を確認する。AWSから通知が届くことと正常実行を確認してから、不要になったChatGPTタスクを停止する。
+成功時は `weekly ENABLED` と `watchdog ENABLED` を出す。次の日曜19:00の最初の実行後にS3またはCloudWatch Logsで実行記録を確認する。AWSの本文差分監視は、過去14日間の検索やニュース候補の登録をするChatGPTタスクの代わりにはならない。
 
 ### 初回作成がロールバックした場合
 

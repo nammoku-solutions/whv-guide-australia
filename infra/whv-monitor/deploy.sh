@@ -4,8 +4,8 @@ umask 077
 
 phase="${1:-prepare}"
 case "$phase" in
-  prepare|enable|disable) ;;
-  *) echo "Usage: bash infra/whv-monitor/deploy.sh [prepare|enable|disable]" >&2; exit 2 ;;
+  prepare|probe|enable|disable) ;;
+  *) echo "Usage: bash infra/whv-monitor/deploy.sh [prepare|probe|enable|disable]" >&2; exit 2 ;;
 esac
 
 profile=nammoku-prod
@@ -39,6 +39,33 @@ stack_output() {
     --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue | [0]" --output text
 }
 
+probe() {
+  local worker
+  worker="$(stack_output FunctionName)"
+  aw lambda invoke --function-name "$worker" --cli-binary-format raw-in-base64-out \
+    --payload '{"mode":"probe"}' --cli-read-timeout 270 "$tmp/probe.json" > "$tmp/invocation.json"
+  jq . "$tmp/probe.json"
+  if ! jq -e '.FunctionError == null' "$tmp/invocation.json" >/dev/null ||
+    ! jq -e '.checked > 0 and (.succeeded | type == "array") and (.failures | type == "array") and
+      (.missingNewsChannels | type == "array") and (.checked == ((.succeeded | length) + (.failures | length)))' \
+      "$tmp/probe.json" >/dev/null; then
+    echo "STOP: probe failed or the deployed worker is outdated. Run prepare with the current code." >&2
+    return 1
+  fi
+}
+
+require_news_coverage() {
+  if ! jq -e '(.missingNewsChannels | length) == 0' "$tmp/probe.json" >/dev/null; then
+    echo "STOP: priority official news channels could not be fetched. Schedules were not enabled." >&2
+    return 1
+  fi
+}
+
+if [[ "$phase" == probe ]]; then
+  probe
+  exit 0
+fi
+
 if [[ "$phase" == prepare ]]; then
   read -r -p "AWSからの通知を受け取るメールアドレス: " notify_email
   [[ -n "$notify_email" ]] || { echo "STOP: notification email is required." >&2; exit 1; }
@@ -53,6 +80,8 @@ else
       echo "STOP: confirm the SNS email subscription before enabling the schedules." >&2
       exit 1
     }
+    probe
+    require_news_coverage
     overrides=("EnableSchedule=true")
   else
     overrides=("EnableSchedule=false")
@@ -74,10 +103,6 @@ for schedule in weekly watchdog; do
 done
 
 if [[ "$phase" == prepare ]]; then
-  worker="$(stack_output FunctionName)"
-  aw lambda invoke --function-name "$worker" --cli-binary-format raw-in-base64-out \
-    --payload '{"mode":"probe"}' --cli-read-timeout 270 "$tmp/probe.json" > "$tmp/invocation.json"
-  jq . "$tmp/probe.json"
-  jq -e '.FunctionError == null' "$tmp/invocation.json" >/dev/null
-  jq -e '.checked > 0 and (.failures | type == "array")' "$tmp/probe.json" >/dev/null
+  probe
+  require_news_coverage
 fi

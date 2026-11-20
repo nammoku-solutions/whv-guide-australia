@@ -1,9 +1,17 @@
 import { createHash } from "node:crypto";
-import { extractHtml } from "../../lib/monitor/extract";
+import { extractFeed, extractHtml } from "../../lib/monitor/extract";
 import { getEnabledSources } from "../../lib/monitor/registry";
 import { isOfficialHost } from "../../lib/monitor/backfill/officialDomains";
 
-type Source = { sourceId: string; sourceName: string; url: string; fetchTimeoutMs?: number };
+type NewsChannel = "Home Affairs WHM" | "Australian Taxation Office" | "Fair Work Ombudsman";
+type Source = {
+  sourceId: string;
+  sourceName: string;
+  url: string;
+  fetchTimeoutMs?: number;
+  format?: "rss";
+  newsChannel?: NewsChannel;
+};
 type Snapshot = { url: string; hash: string; text: string };
 type Failure = { title: string; url: string; reason: string };
 type Change = { title: string; url: string; added: string[]; removed: string[] };
@@ -31,20 +39,28 @@ export type Ports = {
 };
 
 const sourceById = new Map<string, Source>();
+const requiredNewsChannels: NewsChannel[] = ["Home Affairs WHM", "Australian Taxation Office", "Fair Work Ombudsman"];
+// Standalone AWS monitor corrections, without changing the site's news pipeline.
+const awsSourceOverrides: Record<string, string> = {
+  "servicensw-licence": "https://www.service.nsw.gov.au/services/nsw-driver-licence",
+  "qld-rta-bonds": "https://www.rta.qld.gov.au/starting-a-tenancy/rental-bond",
+};
 for (const s of getEnabledSources()) {
   if (s.monitoringMethod !== "html") continue;
-  sourceById.set(s.sourceId, s);
+  sourceById.set(s.sourceId, { ...s, url: awsSourceOverrides[s.sourceId] ?? s.url });
   if (s.historical?.method === "archive") {
     sourceById.set(`${s.sourceId}-news-index`, {
       sourceId: `${s.sourceId}-news-index`, sourceName: `${s.organisation} — news index`,
       url: s.historical.listUrl, fetchTimeoutMs: s.fetchTimeoutMs,
+      ...(s.sourceId === "fairwork-minimum-wages" ? { newsChannel: "Fair Work Ombudsman" } : {}),
     });
   }
 }
-for (const s of [
-  { sourceId: "homeaffairs-whm-news", sourceName: "Home Affairs — WHM program latest news", url: "https://immi.homeaffairs.gov.au/programs-subsite/Pages/working-holiday-maker/latest-news.aspx" },
-  { sourceId: "ato-media-centre", sourceName: "ATO — media centre", url: "https://www.ato.gov.au/media-centre" },
-]) sourceById.set(s.sourceId, s);
+const newsSources: Source[] = [
+  { sourceId: "homeaffairs-whm-news", sourceName: "Home Affairs — WHM program latest news", url: "https://immi.homeaffairs.gov.au/what-we-do/whm-program/latest-news", newsChannel: "Home Affairs WHM" },
+  { sourceId: "ato-media-centre-rss", sourceName: "ATO — media centre RSS", url: "https://www.ato.gov.au/rss.aspx?category=1837", format: "rss", newsChannel: "Australian Taxation Office" },
+];
+for (const s of newsSources) sourceById.set(s.sourceId, s);
 export const monitoredSources = [...sourceById.values()];
 
 export function emptyState(): State {
@@ -85,7 +101,11 @@ async function capture(s: Source, fetchImpl: typeof fetch): Promise<Snapshot> {
     if (!officialUrl(url)) throw new Error("redirect outside the official source allowlist");
     const res = await fetchImpl(url, {
       redirect: "manual", signal,
-      headers: { "User-Agent": "WHV-Compass-Official-Monitor/1.0 (+https://whv-guide-australia.com/about)", "Accept-Language": "en-AU,en;q=0.9", Accept: "text/html,application/xhtml+xml" },
+      headers: {
+        "User-Agent": "WHV-Compass-Official-Monitor/1.0 (+https://whv-guide-australia.com/about)",
+        "Accept-Language": "en-AU,en;q=0.9",
+        Accept: s.format === "rss" ? "application/rss+xml,application/xml,text/xml" : "text/html,application/xhtml+xml",
+      },
     });
     if ([301, 302, 303, 307, 308].includes(res.status)) {
       await res.body?.cancel();
@@ -98,16 +118,27 @@ async function capture(s: Source, fetchImpl: typeof fetch): Promise<Snapshot> {
       await res.body?.cancel();
       throw new Error(`HTTP ${res.status}`);
     }
-    if (!/^(text\/html|application\/xhtml\+xml)(?:;|$)/i.test(res.headers.get("content-type") ?? "")) {
+    const allowedType = s.format === "rss"
+      ? /^(?:application\/(?:rss\+xml|xml)|text\/xml)(?:;|$)/i
+      : /^(?:text\/html|application\/xhtml\+xml)(?:;|$)/i;
+    if (!allowedType.test(res.headers.get("content-type") ?? "")) {
       await res.body?.cancel();
       throw new Error("unexpected content type");
     }
-    const html = await limitedText(res);
-    if (/<title\b[^>]*>\s*(?:access denied|request rejected|just a moment|attention required|verify you are human|service unavailable|page not found|403 forbidden)/i.test(html)) {
+    const body = await limitedText(res);
+    if (/<title\b[^>]*>\s*(?:access denied|request rejected|just a moment|attention required|verify you are human|service unavailable|page not found|403 forbidden|azure waf)/i.test(body)) {
       throw new Error("blocked or error page");
     }
-    const text = extractHtml(html).text;
-    if (text.length < 160) throw new Error("official page text not found");
+    let text: string;
+    if (s.format === "rss") {
+      const feed = extractFeed(body);
+      if (!/<rss\b[^>]*>[\s\S]*<\/rss>/i.test(body) || !feed.latestTitle || !feed.latestUrl ||
+          !officialUrl(new URL(feed.latestUrl, url))) throw new Error("official RSS entries not found");
+      text = `${feed.latestUrl}\n${feed.latestPublishedAt ?? ""}\n${feed.text}`;
+    } else {
+      text = extractHtml(body).text;
+      if (text.length < 160) throw new Error("official page text not found");
+    }
     // Keep readable evidence, but hash the entire extracted text; late sections still trigger review.
     return { url: url.toString(), hash: createHash("sha256").update(text).digest("hex"), text };
   }
@@ -161,7 +192,14 @@ function compose(week: string, run: Run): string {
 export async function runMonitor(event: WeeklyEvent, ports: Ports, sources = monitoredSources) {
   if (event.mode === "probe") {
     const results = await inspect(sources, ports);
-    return { checked: results.length, failures: results.flatMap((r) => "failure" in r ? [r.failure] : []) };
+    const succeeded = results.flatMap((r) => "snapshot" in r ? [{
+      sourceId: r.source.sourceId, title: r.source.sourceName, url: r.snapshot.url,
+    }] : []);
+    const coveredNewsChannels = new Set(results.flatMap((r) => "snapshot" in r && r.source.newsChannel ? [r.source.newsChannel] : []));
+    return {
+      checked: results.length, succeeded, failures: results.flatMap((r) => "failure" in r ? [r.failure] : []),
+      missingNewsChannels: requiredNewsChannels.filter((channel) => !coveredNewsChannels.has(channel)),
+    };
   }
   if (event.mode !== "weekly" && event.mode !== "watchdog") throw new Error("unknown monitor mode");
   const week = scheduledSunday(event.scheduledTime);
