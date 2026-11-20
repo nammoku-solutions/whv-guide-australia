@@ -54,10 +54,54 @@ test("uses only reviewed sources, including the three priority news channels", (
   assert.ok(monitoredSources.length >= 18);
   assert.equal(new Set(monitoredSources.map((s) => s.sourceId)).size, monitoredSources.length);
   for (const url of [
-    "https://immi.homeaffairs.gov.au/programs-subsite/Pages/working-holiday-maker/latest-news.aspx",
-    "https://www.ato.gov.au/media-centre",
+    "https://immi.homeaffairs.gov.au/what-we-do/whm-program/latest-news",
+    "https://www.ato.gov.au/rss.aspx?category=1837",
     "https://www.fairwork.gov.au/newsroom/media-releases",
+    "https://www.service.nsw.gov.au/services/nsw-driver-licence",
+    "https://www.rta.qld.gov.au/starting-a-tenancy/rental-bond",
   ]) assert.ok(monitoredSources.some((s) => s.url === url), url);
+});
+
+test("probe accepts short ATO RSS with text/xml and reports only the missing priority channels", async () => {
+  const f = fixture();
+  const sources = monitoredSources.filter((s) => s.newsChannel);
+  const ato = sources.find((s) => s.newsChannel === "Australian Taxation Office")!;
+  const fairwork = sources.find((s) => s.newsChannel === "Fair Work Ombudsman")!;
+  const out = await runMonitor({ mode: "probe" }, {
+    ...f.ports,
+    fetch: async (url, init) => {
+      if (String(url) === ato.url) {
+        assert.match(new Headers(init?.headers).get("accept")!, /text\/xml/);
+        return new Response(`<rss version="2.0"><channel><item><title>ATO news</title><link>https://www.ato.gov.au/notice</link></item></channel></rss>`, {
+          headers: { "content-type": "text/xml; charset=utf-8" },
+        });
+      }
+      return String(url) === fairwork.url ? new Response(null, { status: 403 }) : result("Official WHM update");
+    },
+  }, sources);
+  assert.ok(out.succeeded && out.missingNewsChannels && Array.isArray(out.failures));
+  assert.equal(out.checked, 3);
+  assert.ok(out.succeeded.some((s) => s.sourceId === ato.sourceId));
+  assert.deepEqual(out.missingNewsChannels, ["Fair Work Ombudsman"]);
+  assert.deepEqual(out.failures, [{ title: fairwork.sourceName, url: fairwork.url, reason: "HTTP 403" }]);
+  assert.deepEqual(f.state(), emptyState());
+  assert.deepEqual(f.sent, []);
+});
+
+test("probe does not treat a challenged or unrelated feed as ATO news", async () => {
+  const f = fixture();
+  const ato = monitoredSources.find((s) => s.newsChannel === "Australian Taxation Office")!;
+  for (const body of [
+    "<html><title>Access Denied</title></html>",
+    "<rss><channel><item><title>Unrelated news</title><link>https://example.com/news</link></item></channel></rss>",
+  ]) {
+    f.page(() => new Response(body, { headers: { "content-type": "text/xml" } }));
+    const out = await runMonitor({ mode: "probe" }, f.ports, [ato]);
+    assert.ok(out.succeeded && out.missingNewsChannels && Array.isArray(out.failures));
+    assert.ok(out.missingNewsChannels.includes("Australian Taxation Office"));
+    assert.equal(out.succeeded.length, 0);
+    assert.equal(out.failures.length, 1);
+  }
 });
 
 test("seed a baseline and record an unchanged week without sending mail", async () => {
