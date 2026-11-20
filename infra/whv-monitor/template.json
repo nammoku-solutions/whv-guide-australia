@@ -171,7 +171,6 @@
             "Arn"
           ]
         },
-        "ReservedConcurrentExecutions": 1,
         "Environment": {
           "Variables": {
             "WHV_MONITOR_BUCKET": {

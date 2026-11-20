@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { emptyState, monitoredSources, runMonitor, type State, type Ports } from "./core";
+
+test("deploys the worker without consuming reserved Lambda concurrency", () => {
+  const template = JSON.parse(readFileSync(new URL("./template.json", import.meta.url), "utf8"));
+  assert.equal(Object.hasOwn(template.Resources.Worker.Properties, "ReservedConcurrentExecutions"), false);
+});
 
 const source = monitoredSources.find((s) => s.sourceId === "homeaffairs-whv-417")!;
 const times = {
