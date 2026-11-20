@@ -32,6 +32,10 @@ bash infra/whv-monitor/deploy.sh enable
 
 成功時は `weekly ENABLED` と `watchdog ENABLED` を出す。次の日曜19:00の最初の実行後にS3またはCloudWatch Logsで実行記録を確認する。AWSから通知が届くことと正常実行を確認してから、不要になったChatGPTタスクを停止する。
 
+### 初回作成がロールバックした場合
+
+旧テンプレートの `ReservedConcurrentExecutions` がアカウントの同時実行枠の制限に当たった場合は、予約枠を指定しない修正版を取得する。CloudFormationで本番アカウントと東京リージョンを確認し、専用スタック `whv-official-monitor` が現在も `ROLLBACK_COMPLETE` の場合に限り、その失敗したスタックを削除する。この状態のスタックは更新できない。削除完了を待ってから `prepare` を再実行し、新しいSNS確認メールで購読を確認する。すでに作成済みの稼働スタックや、保持されたS3バケットはこの手順の削除対象にしない。
+
 ### 運用
 
 - 一時停止は `bash infra/whv-monitor/deploy.sh disable`。S3の基準と履歴は残る。
