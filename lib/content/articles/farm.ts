@@ -847,9 +847,8 @@ export const farmArticles: Article[] = [
     ],
     sources: [
       { label: "Workforce Australia - Harvest", url: "https://www.workforceaustralia.gov.au/individuals/harvest" },
-      { label: "Fair Work Ombudsman｜日本人WHV労働者を含む賃金事案（2026年11月11日）", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release" },
     ],
-    verifiedAt: "2026-11-23",
+    verifiedAt: "2026-07-19",
     officialSources: [
       {
         label: "Workforce Australia｜Harvest（地域別の収穫求人・移動の目安）",
@@ -1236,8 +1235,9 @@ export const farmArticles: Article[] = [
     ],
     sources: [
       { label: "Workforce Australia - Harvest", url: "https://www.workforceaustralia.gov.au/individuals/harvest" },
+      { label: "Fair Work Ombudsman｜日本人WHV労働者を含む賃金事案（2026年11月11日）", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release" },
     ],
-    verifiedAt: "2026-07-19",
+    verifiedAt: "2026-11-23",
     officialSources: [
       {
         label: "Workforce Australia｜Harvest（作物・地域別の収穫求人）",
@@ -1248,6 +1248,11 @@ export const farmArticles: Article[] = [
         label: "Fair Work Ombudsman｜Horticulture Award (MA000028)",
         url: "https://www.fairwork.gov.au/employment-conditions/awards/awards-summary/ma000028-summary",
         accessedAt: "2026-07-19",
+      },
+      {
+        label: "Fair Work Ombudsman｜ブルーベリー収穫労働者の賃金事案（2026年11月11日）",
+        url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release",
+        accessedAt: "2026-11-23",
       },
     ],
     relatedSlugs: ["farm-season-calendar", "piecework-vs-hourly", "crop-strawberry", "farm-packing-shed", "farm-finding"],
