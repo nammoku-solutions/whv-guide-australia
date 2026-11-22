@@ -25,7 +25,7 @@ export const farmArticles: Article[] = [
       { title: "日数と申請ルートを確認", description: "期限までに有効な直接申請が可能か、新制度で招待が必要かを確認し、証拠を揃えます。" },
     ],
     tips: [
-      "「日数」は実働日ベースでカウント。天候で働けない日が出るため、3〜4か月の余裕を見て計画を。",
+      "指定労働の日数は実働日の単純合計とは限りません。業界のフルタイム相当の勤務期間なら通常の週末・休息日が含まれる場合があります。無給の悪天候休業日は算入できないため、公式の数え方を確認して余裕を持って計画しましょう。",
       "時給制の合法的な農場を選ぶこと。歩合制でも最低賃金が保証される必要があります。",
     ],
     warnings: [
@@ -356,7 +356,7 @@ export const farmArticles: Article[] = [
       "重要なのは、2022年4月28日以降、Horticulture Award が適用される歩合制の労働者には『最低賃金の保証（floor）』が導入されたことです。これにより、働いた日ごとに、該当する最低時給（カジュアルなら割増込み）×その日の実働時間が保証されます。歩合の計算額がこれを上回る日は、高い方が支払われます。つまり『歩合だから最低賃金を下回っても仕方ない』は原則として認められません。Award の対象外（award-free）で働く場合でも、全国最低賃金（National Minimum Wage）は守られる必要があります。",
       "契約前に必ず確認すべきことは、①時給制か歩合制か、②歩合制なら単価（1バケツ／1箱いくらか）と最低賃金保証の有無、③Payslip（給与明細）を発行するか、④宿代・送迎費・道具代の天引きはあるか、⑤給与は銀行振込か、の5点です。これらを口約束ではなくメッセージや書面で残し、実際のPayslipで単価・時間・控除が正しいかを毎回チェックしましょう。",
       "なお、Horticulture Award は果樹・野菜・花きなどの園芸を対象としますが、ワイン用ぶどう（Wine Award）、林業（silviculture）、サトウキビ（Sugar Award）などは別の賞レートが適用されます。自分の作業がどの賞レートに当たるかで最低賃金が変わるため、賃金に疑問があるときはFair Work Ombudsman（公正労働オンブズマン）に確認するのが確実です。",
-      "2026年11月11日、Fair Work Ombudsmanは日本人を含むワーホリ労働者2人への未払いをめぐり、NSW州の派遣会社と取締役に計75,600豪ドルの制裁金が科されたと発表しました。未払い分14,038豪ドルは法的措置の開始後に支払われています。制度改定ではなく、既存ルールの執行事例です。",
+      "2026年11月11日、Fair Work Ombudsmanは日本人を含むワーホリ労働者2人への未払いをめぐり、NSW州の派遣会社と取締役に計75,600豪ドルの制裁金が科されたと発表しました。未払い分14,038豪ドルは法的措置の開始後に支払われています。会社が是正通知に従わなかったことへの制裁であり、制度改定ではなく、既存の最低保証賃金ルールの執行事例です。",
     ],
     keyFacts: [
       { label: "時給制(hourly)", value: "働いた時間で支払い。収入が安定・初心者向き" },
@@ -395,7 +395,7 @@ export const farmArticles: Article[] = [
       { label: "Fair Work Ombudsman｜NSW州のブルーベリー収穫労働者の裁判結果（2026年11月11日）", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release" },
       { label: "Fair Work - Piece rates", url: "https://www.fairwork.gov.au/pay-and-wages/minimum-wages/piece-rates-and-commission-payments" },
     ],
-    verifiedAt: "2026-07-19",
+    verifiedAt: "2026-11-23",
     officialSources: [
       { label: "Fair Work Ombudsman｜NSW州のブルーベリー収穫労働者の裁判結果（2026年11月11日）", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release", accessedAt: "2026-11-18" },
       {
@@ -410,7 +410,7 @@ export const farmArticles: Article[] = [
       },
     ],
     relatedSlugs: ["farm-payslip-evidence", "farm-finding", "farm-labour-hire-contractors", "farm-weather-no-work", "second-visa-guide"],
-    updatedAt: "2026-11-15",
+    updatedAt: "2026-11-23",
     published: true,
   },
 
@@ -847,8 +847,9 @@ export const farmArticles: Article[] = [
     ],
     sources: [
       { label: "Workforce Australia - Harvest", url: "https://www.workforceaustralia.gov.au/individuals/harvest" },
+      { label: "Fair Work Ombudsman｜日本人WHV労働者を含む賃金事案（2026年11月11日）", url: "https://www.fairwork.gov.au/newsroom/media-releases/2026-media-releases/november-2026/20261111-four-seasons-workforce-penalty-media-release" },
     ],
-    verifiedAt: "2026-07-19",
+    verifiedAt: "2026-11-23",
     officialSources: [
       {
         label: "Workforce Australia｜Harvest（地域別の収穫求人・移動の目安）",
@@ -1206,6 +1207,7 @@ export const farmArticles: Article[] = [
       "仕事内容は、熟した青い実だけを選んで手で摘み、トレイやバケツに入れていくピッキングが主です。実がやわらかく傷みやすいので、丁寧かつスピーディーに扱う技術が求められます。収穫後は選別・パッキング（箱詰め）の作業もあり、屋内のパッキングは天候に左右されにくい利点があります。",
       "シーズンと産地は幅広く、主要産地はニューサウスウェールズ州北部（コフスハーバー周辺）や、クイーンズランド州、タスマニア、ビクトリアなどです。品種と地域により収穫期が分散し、地域を移動すれば長い期間ブルーベリーの仕事を続けられることもあります。狙う産地の収穫時期は、シーズンカレンダーやWorkforce Australiaで確認しましょう。",
       "稼ぎ方のポイントは、歩合制で速く正確に摘むことです。園芸Award（MA000028）が適用される歩合制なら最低賃金の保証があるため、慣れないうちも一定額は守られます。それでも収入は個人差が大きいので、時給制と歩合制のどちらか、単価はいくらかを就労前に確認してください。日焼け・水分補給などの基本対策を守り、Payslipを毎回保管してセカンドビザの証拠にしましょう。",
+      "Fair Work Ombudsmanは2026年11月11日、コフスハーバー周辺のブルーベリー農園で働いた日本人・中国人WHV労働者に関する未払い事案で、派遣会社と取締役に合計75,600豪ドルの制裁金が科されたと公表しました。最低保証賃金ルールの新設ではなく、既存ルールの執行事例です。歩合制でも毎日の実働時間と給与明細を照合しましょう。",
     ],
     keyFacts: [
       { label: "主な作業", value: "手摘みのピッキング＋選別・パッキング" },
@@ -1249,7 +1251,7 @@ export const farmArticles: Article[] = [
       },
     ],
     relatedSlugs: ["farm-season-calendar", "piecework-vs-hourly", "crop-strawberry", "farm-packing-shed", "farm-finding"],
-    updatedAt: "2026-07-19",
+    updatedAt: "2026-11-23",
     published: true,
   },
 
