@@ -11,6 +11,8 @@ export const secondVisaArticles: Article[] = [
     content: [
       "日本のパスポートで申請する場合、2027年2月28日までに指定労働（セカンド88日・サード179日）を完了し、有効な申請を提出できれば従来どおり直接申請できます。2027年3月1日からは招待が必要で、セカンドの指定労働は120日、サードは179日のままです。",
       "新制度の登録は2026年12月1日から、初回招待は2027年1月中旬の予定です。指定労働を終える前にも国内外から登録でき、改定前に行った適格な指定労働も新要件に算入されます。登録は招待を保証せず、招待は現在のビザを延長しません。招待後に要件を満たしたうえで、招待から12か月以内に申請します。",
+      "招待は初回以降、原則として毎月行われる予定です。登録は毎年6月30日まで有効で、7月1日以降も招待を希望する場合は再登録が必要です。登録・招待済みでも現在のビザの滞在期限は延びません。豪州国内で有効なビザ申請を提出した場合は審査中にブリッジングビザが認められることがありますが、登録・招待だけでは認められません。",
+      "招待されなかった場合は現在のビザが満了する前に豪州を出国する必要があります。出国後に後続の招待回で選ばれる可能性はありますが、その場合も招待から12か月以内に指定労働・年齢等の要件を満たして申請する必要があります。",
       "従来の88日・179日は、所定の勤務日・シフトがフルタイム相当であることが前提の暦日期間です。勤務期間の週末や通常の休息日が含まれる場合がありますが、悪天候で働けなかった無給日は含まれません。",
       "ワーキングホリデー（417）は、規定の労働（Specified Work）を一定日数こなすことで、2年目（セカンド）・3年目（サード）のビザを申請できます。これにより最長3年の滞在が可能になります。",
       "もっとも一般的なのはファーム（果物・野菜の収穫やパッキング）ですが、建設・鉱業・漁業・植林なども対象になる場合があります。働いた日数は給与明細やPayslip、雇用主の証明で記録を残すことが重要です。",
@@ -24,6 +26,7 @@ export const secondVisaArticles: Article[] = [
       { label: "対象業種", value: "農業・畜産・建設・鉱業・漁業・植林など" },
       { label: "地域要件", value: "指定された地方（regional）のポストコードのみ対象" },
       { label: "証明", value: "Payslip・雇用主の書類・銀行入金記録を保管" },
+      { label: "登録期限", value: "毎年6月30日まで有効。7月1日以降は再登録" },
     ],
     steps: [
       {
@@ -66,7 +69,9 @@ export const secondVisaArticles: Article[] = [
         title: "必要な場合は登録して招待を待つ",
         description: "直接申請の移行条件を満たせない場合は、Home Affairsの案内から登録し、招待が届いたら期限を確認します。登録受付は2026年12月1日開始予定です。",
         checklist: [
-          "招待は許可の保証ではなく、同じビザでの滞在期限を延ばさない。"
+          "招待は許可の保証ではなく、同じビザでの滞在期限を延ばさない。",
+          "招待は初回2027年1月中旬、以降は原則毎月。登録は毎年6月30日まで有効で再登録が必要。",
+          "招待から12か月以内に申請。招待がなく現ビザが切れる場合は期限前に出国する。"
         ],
         links: [
           {
@@ -115,6 +120,14 @@ export const secondVisaArticles: Article[] = [
         answer:
           "原則として、正規に課税され記録が残る労働が必要です。現金のみで証明が残らない働き方は認められないリスクが高く、避けるべきです。",
       },
+      {
+        question: "登録や招待で今のビザの滞在期限が延びますか？",
+        answer: "いいえ。登録も招待も現在のビザを延長しません。招待されなかった場合は現ビザの満了前に豪州を出国する必要があります。豪州国内で有効な申請を提出した場合のブリッジングビザは個別の条件によります。",
+      },
+      {
+        question: "一度登録すれば翌年度も招待対象になりますか？",
+        answer: "いいえ。登録の有効期限は毎年6月30日です。7月1日以降の招待回にも参加するには、再登録が必要です。",
+      },
     ],
     sources: [
       { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx" },
@@ -124,9 +137,14 @@ export const secondVisaArticles: Article[] = [
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/specified-work",
       },
     ],
-    verifiedAt: "2026-07-16",
+    verifiedAt: "2026-11-23",
     officialSources: [
       { label: "Department of Home Affairs｜セカンド・サードビザの変更発表（2026年11月17日）", url: "https://www.homeaffairs.gov.au/news-subsite/Pages/2026-Nov/working-holiday-maker-visa-application-rules-are-changing.aspx", accessedAt: "2026-11-18" },
+      {
+        label: "Department of Home Affairs｜移行措置・招待制の公式フローチャート",
+        url: "https://immi.homeaffairs.gov.au/programs-subsite/files/whm-upcoming-changes-flow-chart.pdf",
+        accessedAt: "2026-11-23",
+      },
       {
         label: "Second Working Holiday visa（3か月のspecified work・申請料 AUD1,000）",
         url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417/second-working-holiday-417",
@@ -148,7 +166,7 @@ export const secondVisaArticles: Article[] = [
       "対象業種・指定地域・必要日数の定義は予告なく変更されます。働き始める前に必ず公式情報で最新の条件を確認してください。",
     ],
     relatedSlugs: ["farm-second-visa", "farm-finding", "whv-complete-guide", "specified-work-postcodes", "farm-payslip-evidence", "88-day-calculation", "specified-work-industries", "six-month-specified-work"],
-    updatedAt: "2026-11-18",
+    updatedAt: "2026-11-23",
     published: true,
     procedure: {
       preparation: [
@@ -164,7 +182,8 @@ export const secondVisaArticles: Article[] = [
           title: "新制度の確認",
           items: [
             "2027年2月28日までに有効な直接申請を提出できるか判定する",
-            "招待方式なら登録と招待通知を確認。登録・招待だけでは現ビザは延長されない"
+            "招待方式なら登録と招待通知を確認。登録・招待だけでは現ビザは延長されない",
+            "登録の6月30日期限・招待の12か月申請期限・現在のビザ満了日は別々に管理する"
           ]
         }
       ],
